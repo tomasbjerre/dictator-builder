@@ -1,6 +1,8 @@
 # Dictator Lib
 
-A library designed to help create dictators. Se the example [Haffaz](https://github.com/tomasbjerre/haffaz) dictator. A dictator is basically just a command line tool distributed with NPM.
+A library designed to help create dictators. A dictator is basically just a command line tool distributed with NPM. A user can work with any language, or tools, as the dictator is run from command line and its only output are files.
+
+Se the example [Haffaz](https://github.com/tomasbjerre/haffaz) dictator, it can be run from command line with: `npx haffaz@latest`.
 
 ## What it solves
 
