@@ -15,7 +15,6 @@ const description = packageJson.description
   ? packageJson.description + ". "
   : "";
 
-clear();
 console.log(
   chalk.green(figlet.textSync(packageJson.name, { horizontalLayout: "full" }))
 );
