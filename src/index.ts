@@ -84,7 +84,7 @@ if (dictatables.length === 0) {
   log(
     LOGGING.INFO,
     `Found ${dictatables.length} dictatables:\n\n`,
-    dictatables
+    ...dictatables
   );
 }
 
