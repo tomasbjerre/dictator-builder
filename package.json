@@ -2,11 +2,13 @@
   "name": "dictator-builder",
   "version": "0.0.1",
   "scripts": {
-    "build": "tsc -p ."
+    "build": "npm run format && tsc -p .",
+    "format": "prettier --write '{*.md,src/**/*.ts}'"
   },
   "devDependencies": {
     "@types/node": "^13.13.2",
     "nodemon": "^2.0.3",
+    "prettier": "^2.0.5",
     "ts-node": "^8.9.0",
     "typescript": "^3.8.3"
   },
