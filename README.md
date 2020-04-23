@@ -64,8 +64,9 @@ What you need is a `/package.json` like:
 ```json
 {
   "name": "your-dictator-name",
-  "scripts": {
-    "build": "dictator-builder"
+  "main": "dictator-builder/lib/index.js",
+  "bin": {
+    "dictator-builder": "dictator-builder/lib/index.js"
   },
   "dependencies": {
     "dictator-builder": "^a.b.c"
