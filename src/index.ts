@@ -8,8 +8,16 @@ import { Logger, LEVEL } from './logging';
 import { DictatableFinder } from './dictatablesFinder';
 import { DictatableConfigVerifier } from './dictatablesConfigVerifier';
 import { DictatableConfigApplier } from './dictatableConfigApplier';
-
-const packageJsonDictator = require(path.join(process.cwd(), 'package.json'));
+import pkgUp from 'pkg-up';
+const packageJsonDictatorIn = path.join(__dirname, '..', '..');
+const packageJsonDictatorPath = pkgUp.sync({ cwd: packageJsonDictatorIn });
+if (!packageJsonDictatorPath) {
+  console.log(`Unable to find package.json withing ${packageJsonDictatorIn}`);
+  //This happens when testing with "npm link", so is not failing here!
+}
+const packageJsonDictator = packageJsonDictatorPath
+  ? require(packageJsonDictatorPath)
+  : {};
 const description = packageJsonDictator.description
   ? packageJsonDictator.description + '. '
   : '';
