@@ -87,7 +87,7 @@ There is a `schema.json` in this tool describing dictatable config. There are al
 
 It can be run like this:
 
-```json
+```bash
 <dictator-name> [options]
 
 Options:
