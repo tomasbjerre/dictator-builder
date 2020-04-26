@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { Logger, LEVEL } from './logging';
 import { DictatableConfig } from './types';
+import { Validator, Schema } from 'jsonschema';
 
 const DEFAULT_DICTATABLES_FOLDER = 'dictatables';
 const DEFAULT_DICTATABLE_CONFIG = '.dictatable-config.json';
@@ -52,10 +53,24 @@ export class DictatableFinder {
       return this.getValidatedDictatableConfig(dictatableConfigFilePath);
     });
   }
+
   private getValidatedDictatableConfig(jsonFilePath: string): DictatableConfig {
-    //TODO: Validate with schema.json https://github.com/tdegrunt/jsonschema#readme
     const dictatableConfigJson = fs.readFileSync(jsonFilePath, 'utf8');
+    const schema = JSON.parse(
+      fs.readFileSync(path.join(__dirname, 'schema.json'), 'utf8')
+    ) as Schema;
     this.logger.log(LEVEL.VERBOSE, `Found config:\n`, dictatableConfigJson);
-    return JSON.parse(dictatableConfigJson);
+    const validationConfig = JSON.parse(dictatableConfigJson);
+    const v = new Validator();
+    const result = v.validate(validationConfig, schema);
+    if (result.valid) {
+      return validationConfig;
+    }
+    const errors = result.errors.map((it) => it.toString()).join('\n');
+    this.logger.log(
+      LEVEL.ERROR,
+      `The configuration in ${jsonFilePath} is not valid:\n${errors}`
+    );
+    process.exit(1);
   }
 }
