@@ -94,6 +94,6 @@ Options:
   -V, --version          output the version number
   -l, --logging <level>  One of VERBOSE,INFO,ERROR default is INFO.
   -d, --dry-run          Only show what will be done.
-  -v, --verify           Fail if all requirements are not fulfilled.
+  -c, --check            Fail if all requirements are not fulfilled.
   -h, --help             display help for command
 ```
