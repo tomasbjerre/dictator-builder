@@ -1,18 +1,11 @@
 #!/usr/bin/env node
 
-export enum LOGGING {
-  VERBOSE = 'VERBOSE',
-  INFO = 'INFO',
-  ERROR = 'ERROR',
-}
-
-export class DictatableConfig {}
-
 import chalk from 'chalk';
 const figlet = require('figlet');
 import path from 'path';
 import program from 'commander';
 import fs from 'fs';
+import { LOGGING, DictatableConfig } from './index.d';
 
 const DEFAULT_DICTATABLES_FOLDER = 'dictatables';
 const DEFAULT_DICTATABLE_CONFIG = '.dictatable-config.json';
@@ -94,7 +87,17 @@ if (dictatables.length === 0) {
   );
 }
 
-function verifyConfig(dictatableConfig: DictatableConfig) {
+function getValidatedDictatableConfig(jsonFilePath: string): DictatableConfig {
+  //TODO: Validate with schema.json https://github.com/tdegrunt/jsonschema#readme
+  const dictatableConfigJson = fs.readFileSync(
+    jsonFilePath,
+    'utf8'
+  );
+  log(LOGGING.VERBOSE, `Found config:\n`, dictatableConfigJson);
+  return JSON.parse(dictatableConfigJson);
+}
+
+function verifyConfigIsApplied(dictatableConfig: DictatableConfig) {
   //TODO
   return false;
 }
@@ -105,14 +108,10 @@ function applyConfig(dictatableConfig: DictatableConfig) {
 
 dictatables.forEach((dictatable) => {
   log(LOGGING.VERBOSE, `Analyzing ${dictatable}...`);
-  const dictatableConfigJson = fs.readFileSync(
-    path.resolve(dictatablesFolder, dictatable, DEFAULT_DICTATABLE_CONFIG),
-    'utf8'
-  );
-  log(LOGGING.VERBOSE, `Found config:\n`, dictatableConfigJson);
-  const dictatableConfig: DictatableConfig = JSON.parse(dictatableConfigJson);
-
-  if (!verifyConfig(dictatableConfig)) {
+  const dictatableConfigFilePath = path.resolve(dictatablesFolder, dictatable, DEFAULT_DICTATABLE_CONFIG);
+  const dictatableConfig: DictatableConfig = getValidatedDictatableConfig(dictatableConfigFilePath);
+  
+  if (!verifyConfigIsApplied(dictatableConfig)) {
     log(LOGGING.INFO, `Applying ${dictatable}...`);
     applyConfig(dictatableConfig);
   }
