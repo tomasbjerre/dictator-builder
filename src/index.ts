@@ -36,9 +36,11 @@ program
   .version(packageJsonDictator.version)
   .description(description)
   .option(
-    '-l, --logging <level>',
+    `-l, --logging <level>`,
     `One of ${Object.values(LEVEL)} default is ${LEVEL.INFO}.`
   )
+  .option(`-d, --dry-run`, `Only show what will be done.`)
+  .option(`-v, --verify`, `Fail if all requirements are not fulfilled.`)
   .parse(process.argv);
 const logger = new Logger(program.logging || LEVEL.INFO);
 
