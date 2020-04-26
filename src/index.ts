@@ -67,7 +67,7 @@ function log(level: LOGGING, message?: string, ...optionalParams: any[]) {
 
 const dictatablesFolder = DEFAULT_DICTATABLES_FOLDER;
 if (!fs.existsSync(dictatablesFolder)) {
-  log(LOGGING.ERROR, 'Was unable to find folder: ${dictatablesFolder}');
+  log(LOGGING.ERROR, `Was unable to find folder: ${dictatablesFolder}`);
   process.exit(1);
 }
 
@@ -83,7 +83,7 @@ const dictatables = fs
 if (dictatables.length === 0) {
   log(
     LOGGING.ERROR,
-    'Was unable to find any dictatables within folder: ${dictatablesFolder}'
+    `Was unable to find any dictatables within folder: ${dictatablesFolder}`
   );
   process.exit(1);
 } else {
