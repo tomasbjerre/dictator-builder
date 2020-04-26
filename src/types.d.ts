@@ -1,9 +1,3 @@
-export enum LOGGING {
-  VERBOSE = 'VERBOSE',
-  INFO = 'INFO',
-  ERROR = 'ERROR',
-}
-
 export interface DictatableConfig {
   message: String;
   copy: DictatableConfigCopy[];
@@ -20,6 +14,7 @@ export interface DictatableConfigRequirement {
   message: String;
   notHaveJsonPathNodes: DictatableConfigRequirementJsonPath;
   haveJsonPathValues: DictatableConfigRequirementJsonPath;
+  haveLineContaining: DictatableConfigRequirementLineContaining;
 }
 
 export interface DictatableConfigRequirementJsonPath {
@@ -31,4 +26,9 @@ export interface DictatableConfigRequirementJsonPathValue {
   message: String;
   expression: string;
   value: String;
+}
+
+export interface DictatableConfigRequirementLineContaining {
+  message: String;
+  values: string[];
 }

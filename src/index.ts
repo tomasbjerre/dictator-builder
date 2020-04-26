@@ -4,11 +4,16 @@ import chalk from 'chalk';
 const figlet = require('figlet');
 import path from 'path';
 import program from 'commander';
-import fs from 'fs';
-import { LOGGING, DictatableConfig } from './index.d';
+import { Logger, LEVEL } from './logging';
+import { DictatableFinder } from './dictatablesFinder';
+import { DictatableConfigVerifier } from './dictatablesConfigVerifier';
+import { DictatableConfigApplier } from './dictatableConfigApplier';
 
-const DEFAULT_DICTATABLES_FOLDER = 'dictatables';
-const DEFAULT_DICTATABLE_CONFIG = '.dictatable-config.json';
+export enum LOGGING {
+  VERBOSE = 'VERBOSE',
+  INFO = 'INFO',
+  ERROR = 'ERROR',
+}
 
 const packageJsonDictator = require(path.join(process.cwd(), 'package.json'));
 const description = packageJsonDictator.description
@@ -33,86 +38,16 @@ program
     `One of ${Object.values(LOGGING)} default is ${LOGGING.INFO}.`
   )
   .parse(process.argv);
-const loggingLevel: LOGGING = program.logging || 'INFO';
+const logger = new Logger(program.logging || LEVEL.INFO);
 
-function log(level: LOGGING, message?: string, ...optionalParams: any[]) {
-  if (loggingLevel === LOGGING.INFO && level === LOGGING.VERBOSE) {
-    return;
-  }
-  if (loggingLevel === LOGGING.ERROR && level !== LOGGING.ERROR) {
-    return;
-  }
-  if (level === LOGGING.ERROR) {
-    if (optionalParams.length > 0) {
-      console.error(message, optionalParams);
-    } else {
-      console.error(message);
-    }
-  } else {
-    if (optionalParams.length > 0) {
-      console.log(message, optionalParams);
-    } else {
-      console.log(message);
-    }
-  }
-  console.log();
-}
+const dictatables = new DictatableFinder(logger).getDictatables();
+const dictatableConfigVerifier = new DictatableConfigVerifier();
+const dictatableConfigApplier = new DictatableConfigApplier();
 
-const dictatablesFolder = DEFAULT_DICTATABLES_FOLDER;
-if (!fs.existsSync(dictatablesFolder)) {
-  log(LOGGING.ERROR, `Was unable to find folder: ${dictatablesFolder}`);
-  process.exit(1);
-}
-
-const dictatables = fs
-  .readdirSync(dictatablesFolder)
-  .filter((file) =>
-    fs
-      .statSync(
-        path.resolve(dictatablesFolder, file, DEFAULT_DICTATABLE_CONFIG)
-      )
-      .isFile()
-  );
-if (dictatables.length === 0) {
-  log(
-    LOGGING.ERROR,
-    `Was unable to find any dictatables within folder: ${dictatablesFolder}`
-  );
-  process.exit(1);
-} else {
-  log(
-    LOGGING.INFO,
-    `Found ${dictatables.length} dictatables:\n\n`,
-    ...dictatables
-  );
-}
-
-function getValidatedDictatableConfig(jsonFilePath: string): DictatableConfig {
-  //TODO: Validate with schema.json https://github.com/tdegrunt/jsonschema#readme
-  const dictatableConfigJson = fs.readFileSync(
-    jsonFilePath,
-    'utf8'
-  );
-  log(LOGGING.VERBOSE, `Found config:\n`, dictatableConfigJson);
-  return JSON.parse(dictatableConfigJson);
-}
-
-function verifyConfigIsApplied(dictatableConfig: DictatableConfig) {
-  //TODO
-  return false;
-}
-
-function applyConfig(dictatableConfig: DictatableConfig) {
-  //TODO
-}
-
-dictatables.forEach((dictatable) => {
-  log(LOGGING.VERBOSE, `Analyzing ${dictatable}...`);
-  const dictatableConfigFilePath = path.resolve(dictatablesFolder, dictatable, DEFAULT_DICTATABLE_CONFIG);
-  const dictatableConfig: DictatableConfig = getValidatedDictatableConfig(dictatableConfigFilePath);
-  
-  if (!verifyConfigIsApplied(dictatableConfig)) {
-    log(LOGGING.INFO, `Applying ${dictatable}...`);
-    applyConfig(dictatableConfig);
+dictatables.forEach((dictatableConfig) => {
+  logger.log(LEVEL.VERBOSE, `Analyzing ${dictatableConfig}...`);
+  if (!dictatableConfigVerifier.verify(dictatableConfig)) {
+    logger.log(LEVEL.INFO, `Applying ${dictatableConfig}...`);
+    dictatableConfigApplier.apply(dictatableConfig);
   }
 });

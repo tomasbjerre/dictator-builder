@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "build": "npm run format && npm run generate-schema && tsc -p .",
-    "generate-schema": "npx typescript-json-schema src/index.d.ts DictatableConfig > src/schema.json",
+    "generate-schema": "npx typescript-json-schema src/types.d.ts DictatableConfig > src/schema.json && cp src/schema.json lib",
     "format": "prettier --write '{*.md,*.json,src/**/*.ts}'"
   },
   "devDependencies": {
