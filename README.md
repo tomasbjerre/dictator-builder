@@ -1,6 +1,6 @@
 # Dictator Builder
 
-[![NPM](https://img.shields.io/npm/v/wiremock.svg?style=flat-square) ](https://www.npmjs.com/package/wiremock)
+[![NPM](https://img.shields.io/npm/v/dictator-builder.svg?style=flat-square) ](https://www.npmjs.com/package/dictator-builder)
 [![Build Status](https://travis-ci.org/tomasbjerre/dictator-builder.svg?branch=master)](https://travis-ci.org/tomasbjerre/dictator-builder)
 
 A tool designed to help create dictators. A dictator dictates how parts of a folder should look like. Originally designed to avoid code duplication in source code repositories.
