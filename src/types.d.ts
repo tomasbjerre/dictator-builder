@@ -34,6 +34,9 @@ export interface DictatableConfigRequirement {
   notHaveJsonPathNodes?: DictatableConfigRequirementJsonPath;
   haveJsonPathValues?: DictatableConfigRequirementJsonPath;
   beSubsetOfJsonFile?: DictatableConfigRequirementBeSubsetOfJsonFile;
+  notHaveXPathPathNodes?: DictatableConfigRequirementXPath;
+  haveXPathValues?: DictatableConfigRequirementXPath;
+  beSubsetOfXmlFile?: DictatableConfigRequirementBeSubsetOfXmlFile;
   haveLineContaining?: DictatableConfigRequirementLineContaining;
   itShould?: DictatableConfigRequirementItShould;
 }
@@ -71,6 +74,46 @@ export interface DictatableConfigRequirementJsonPathValue {
   /**
    * @type string
    * @description JSONPath expression
+   */
+  expression: string;
+  /**
+   * @type string
+   * @description A value that should match.
+   */
+  value?: String;
+}
+
+export interface DictatableConfigRequirementXPath {
+  /**
+   * @type string
+   * @description Optional message
+   */
+  message: String;
+  values: DictatableConfigRequirementXPathValue[];
+}
+
+export interface DictatableConfigRequirementBeSubsetOfXmlFile {
+  /**
+   * @type string
+   * @description Optional message
+   */
+  message: String;
+  /**
+   * @type string
+   * @description A file that should contain a superset of the target file.
+   */
+  file: String;
+}
+
+export interface DictatableConfigRequirementXPathValue {
+  /**
+   * @type string
+   * @description Optional message
+   */
+  message: String;
+  /**
+   * @type string
+   * @description XPath expression
    */
   expression: string;
   /**

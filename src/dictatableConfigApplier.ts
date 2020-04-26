@@ -4,7 +4,5 @@ import { DictatableConfig } from './types';
 
 export class DictatableConfigApplier {
   constructor() {}
-  apply(config: DictatableConfig): boolean {
-    return false;
-  }
+  apply(config: DictatableConfig) {}
 }
