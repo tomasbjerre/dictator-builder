@@ -8,26 +8,31 @@ export enum LOGGING {
 
 export class DictatableConfig {}
 
-const chalk = require('chalk');
+import chalk from 'chalk';
 const figlet = require('figlet');
-const path = require('path');
-const program = require('commander');
-const pkgUp = require('pkg-up');
+import path from 'path';
+import program from 'commander';
 import fs from 'fs';
-const packageJson = require(pkgUp.sync());
 
 const DEFAULT_DICTATABLES_FOLDER = 'dictatables';
 const DEFAULT_DICTATABLE_CONFIG = '.dictatable-config.json';
 
-const description = packageJson.description
-  ? packageJson.description + '. '
+const packageJsonDictator = require(path.join(process.cwd(), 'package.json'));
+const description = packageJsonDictator.description
+  ? packageJsonDictator.description + '. '
   : '';
 console.log(
-  chalk.green(figlet.textSync(packageJson.name, { horizontalLayout: 'full' }))
+  chalk.green(
+    figlet.textSync(packageJsonDictator.name, { horizontalLayout: 'full' })
+  )
+);
+const packageJsonBuilder = require(path.join(__dirname, '..', 'package.json'));
+console.log(
+  `Built with ${packageJsonBuilder.name}@${packageJsonBuilder.version}.`
 );
 
 program
-  .version(packageJson.version)
+  .version(packageJsonDictator.version)
   .description(description)
   .option(
     '-l, --logging <level>',
