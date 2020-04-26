@@ -28,6 +28,5 @@ export class Logger {
         console.log(message);
       }
     }
-    console.log();
   }
 }

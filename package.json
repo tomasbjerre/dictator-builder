@@ -1,9 +1,21 @@
 {
   "name": "dictator-builder",
   "version": "0.0.1",
+  "homepage": "https://github.com/tomasbjerre/dictator-builder",
+  "repository": "git@github.com:tomasbjerre/dictator-builder.git",
+  "files": [
+    "lib"
+  ],
+  "author": "Tomas Bjerre",
+  "keywords": [
+    "dictator",
+    "husky",
+    "automation",
+    "repository-config"
+  ],
   "scripts": {
     "build": "npm run format && npm run generate-schema && tsc -p .",
-    "generate-schema": "npx typescript-json-schema src/types.d.ts DictatableConfig --required --noExtraProps --id dictatableconfig -o src/schema.json && cp src/schema.json lib",
+    "generate-schema": "npx typescript-json-schema src/types.d.ts DictatableConfig --required --noExtraProps -o src/schema.json && cp src/schema.json lib",
     "format": "prettier --write '{*.md,*.json,src/**/*.ts}'"
   },
   "devDependencies": {

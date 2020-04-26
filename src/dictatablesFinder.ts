@@ -10,9 +10,13 @@ const DEFAULT_DICTATABLES_FOLDER = 'dictatables';
 const DEFAULT_DICTATABLE_CONFIG = '.dictatable-config.json';
 const dictatablesFolder = DEFAULT_DICTATABLES_FOLDER;
 
+export interface DictatableConfigWithFilename extends DictatableConfig {
+  dictatableConfigFilename: string;
+}
+
 export class DictatableFinder {
   constructor(private logger: Logger) {}
-  getDictatables(): DictatableConfig[] {
+  getDictatables(): DictatableConfigWithFilename[] {
     if (!fs.existsSync(dictatablesFolder)) {
       this.logger.log(
         LEVEL.ERROR,
@@ -42,6 +46,7 @@ export class DictatableFinder {
         `Found ${dictatables.length} dictatables:\n\n`,
         ...dictatables
       );
+      this.logger.log(LEVEL.INFO, ``);
     }
 
     return dictatables.map((dictatable) => {
@@ -54,7 +59,9 @@ export class DictatableFinder {
     });
   }
 
-  private getValidatedDictatableConfig(jsonFilePath: string): DictatableConfig {
+  private getValidatedDictatableConfig(
+    jsonFilePath: string
+  ): DictatableConfigWithFilename {
     const dictatableConfigJson = fs.readFileSync(jsonFilePath, 'utf8');
     const schema = JSON.parse(
       fs.readFileSync(path.join(__dirname, 'schema.json'), 'utf8')
@@ -64,6 +71,7 @@ export class DictatableFinder {
     const v = new Validator();
     const result = v.validate(validationConfig, schema);
     if (result.valid) {
+      validationConfig.dictatableConfigFilename = jsonFilePath;
       return validationConfig;
     }
     const errors = result.errors.map((it) => it.toString()).join('\n');

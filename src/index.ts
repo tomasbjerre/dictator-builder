@@ -9,12 +9,6 @@ import { DictatableFinder } from './dictatablesFinder';
 import { DictatableConfigVerifier } from './dictatablesConfigVerifier';
 import { DictatableConfigApplier } from './dictatableConfigApplier';
 
-export enum LOGGING {
-  VERBOSE = 'VERBOSE',
-  INFO = 'INFO',
-  ERROR = 'ERROR',
-}
-
 const packageJsonDictator = require(path.join(process.cwd(), 'package.json'));
 const description = packageJsonDictator.description
   ? packageJsonDictator.description + '. '
@@ -26,16 +20,16 @@ console.log(
 );
 const packageJsonBuilder = require(path.join(__dirname, '..', 'package.json'));
 console.log(
-  `  Built with ${packageJsonBuilder.name}@${packageJsonBuilder.version}.`
+  `  Built with ${packageJsonBuilder.name}@${packageJsonBuilder.version}.\n` +
+    `  ${packageJsonBuilder.homepage}\n`
 );
-console.log('  https://github.com/tomasbjerre/dictator-builder\n');
 
 program
   .version(packageJsonDictator.version)
   .description(description)
   .option(
     '-l, --logging <level>',
-    `One of ${Object.values(LOGGING)} default is ${LOGGING.INFO}.`
+    `One of ${Object.values(LEVEL)} default is ${LEVEL.INFO}.`
   )
   .parse(process.argv);
 const logger = new Logger(program.logging || LEVEL.INFO);
@@ -45,9 +39,18 @@ const dictatableConfigVerifier = new DictatableConfigVerifier();
 const dictatableConfigApplier = new DictatableConfigApplier();
 
 dictatables.forEach((dictatableConfig) => {
-  logger.log(LEVEL.VERBOSE, `Analyzing ${dictatableConfig}...`);
+  logger.log(
+    LEVEL.VERBOSE,
+    `Analyzing ${dictatableConfig.dictatableConfigFilename}...`
+  );
   if (!dictatableConfigVerifier.verify(dictatableConfig)) {
-    logger.log(LEVEL.INFO, `Applying ${dictatableConfig}...`);
+    logger.log(
+      LEVEL.INFO,
+      `Applying ${path.relative(
+        process.cwd(),
+        dictatableConfig.dictatableConfigFilename
+      )}...`
+    );
     dictatableConfigApplier.apply(dictatableConfig);
   }
 });
