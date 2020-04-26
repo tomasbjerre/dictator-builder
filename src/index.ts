@@ -28,8 +28,9 @@ console.log(
 );
 const packageJsonBuilder = require(path.join(__dirname, '..', 'package.json'));
 console.log(
-  `Built with ${packageJsonBuilder.name}@${packageJsonBuilder.version}.`
+  `  Built with ${packageJsonBuilder.name}@${packageJsonBuilder.version}.`
 );
+console.log('  https://github.com/tomasbjerre/dictator-builder\n');
 
 program
   .version(packageJsonDictator.version)
