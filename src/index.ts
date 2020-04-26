@@ -52,13 +52,7 @@ dictatables.forEach((dictatableConfig) => {
     `Analyzing ${dictatableConfig.dictatableConfigFilename}...`
   );
   if (!dictatableConfigVerifier.verify(dictatableConfig)) {
-    logger.log(
-      LEVEL.INFO,
-      `Applying ${path.relative(
-        process.cwd(),
-        dictatableConfig.dictatableConfigFilename
-      )}...`
-    );
+    logger.log(LEVEL.INFO, `Applying ${dictatableConfig.dictatableName}...`);
     dictatableConfigApplier.apply(dictatableConfig);
   }
 });
