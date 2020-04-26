@@ -1,5 +1,8 @@
 # Dictator Builder
 
+[![NPM](https://img.shields.io/npm/v/wiremock.svg?style=flat-square) ](https://www.npmjs.com/package/wiremock)
+[![Build Status](https://travis-ci.org/tomasbjerre/dictator-builder.svg?branch=master)](https://travis-ci.org/tomasbjerre/dictator-builder)
+
 A tool designed to help create dictators. A dictator dictates how parts of a folder should look like. Originally designed to avoid code duplication in source code repositories.
 
 When working with `npm` within an organization you typically aggree on some parts of the `package.json`, like some `scripts` that should always be there or some `dependencies` that should, or should not, be used. You may also have an identical `tsconfig.json` in every repository.
