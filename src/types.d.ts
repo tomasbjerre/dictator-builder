@@ -33,6 +33,7 @@ export interface DictatableConfigRequirement {
   message: String;
   notHaveJsonPathNodes?: DictatableConfigRequirementJsonPath;
   haveJsonPathValues?: DictatableConfigRequirementJsonPath;
+  beSubsetOfJsonFile?: DictatableConfigRequirementBeSubsetOfJsonFile;
   haveLineContaining?: DictatableConfigRequirementLineContaining;
   itShould?: DictatableConfigRequirementItShould;
 }
@@ -46,6 +47,19 @@ export interface DictatableConfigRequirementJsonPath {
    */
   message: String;
   values: DictatableConfigRequirementJsonPathValue[];
+}
+
+export interface DictatableConfigRequirementBeSubsetOfJsonFile {
+  /**
+   * @type string
+   * @description Optional message
+   */
+  message: String;
+  /**
+   * @type string
+   * @description A file that should contain a superset of the target file.
+   */
+  file: String;
 }
 
 export interface DictatableConfigRequirementJsonPathValue {
