@@ -3,7 +3,7 @@
 import { DictatableConfig } from './types';
 
 export class DictatableConfigVerifier {
-  constructor() {}
+  constructor(private dictatorPath: string) {}
   verify(config: DictatableConfig): boolean {
     return false;
   }

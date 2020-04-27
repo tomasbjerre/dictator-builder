@@ -8,7 +8,6 @@ import { Validator, Schema } from 'jsonschema';
 
 const DEFAULT_DICTATABLES_FOLDER = 'dictatables';
 const DEFAULT_DICTATABLE_CONFIG = '.dictatable-config.json';
-const dictatablesFolder = DEFAULT_DICTATABLES_FOLDER;
 
 export interface DictatableConfigWithExtras extends DictatableConfig {
   dictatableConfigFilename: string;
@@ -16,14 +15,12 @@ export interface DictatableConfigWithExtras extends DictatableConfig {
 }
 
 export class DictatableFinder {
-  constructor(private logger: Logger) {}
+  constructor(private logger: Logger, private dictatorPath: string) {}
   getDictatables(): DictatableConfigWithExtras[] {
+    const dictatablesFolder = this.getDictatablesFolder();
+
     if (!fs.existsSync(dictatablesFolder)) {
-      this.logger.log(
-        LEVEL.ERROR,
-        `Was unable to find folder: ${dictatablesFolder}`
-      );
-      process.exit(1);
+      throw Error(`Was unable to find folder: ${dictatablesFolder}`);
     }
 
     const dictatables = fs
@@ -36,11 +33,9 @@ export class DictatableFinder {
           .isFile()
       );
     if (dictatables.length === 0) {
-      this.logger.log(
-        LEVEL.ERROR,
+      throw Error(
         `Was unable to find any dictatables within folder: ${dictatablesFolder}`
       );
-      process.exit(1);
     } else {
       this.logger.log(
         LEVEL.INFO,
@@ -55,11 +50,15 @@ export class DictatableFinder {
     });
   }
 
+  private getDictatablesFolder() {
+    return path.join(this.dictatorPath, DEFAULT_DICTATABLES_FOLDER);
+  }
+
   private getValidatedDictatableConfig(
     dictatable: string
   ): DictatableConfigWithExtras {
     const jsonFilePath = path.resolve(
-      dictatablesFolder,
+      this.getDictatablesFolder(),
       dictatable,
       DEFAULT_DICTATABLE_CONFIG
     );
@@ -77,10 +76,8 @@ export class DictatableFinder {
       return validationConfig;
     }
     const errors = result.errors.map((it) => it.toString()).join('\n');
-    this.logger.log(
-      LEVEL.ERROR,
+    throw Error(
       `The configuration in ${jsonFilePath} is not valid:\n${errors}`
     );
-    process.exit(1);
   }
 }

@@ -3,6 +3,6 @@
 import { DictatableConfig } from './types';
 
 export class DictatableConfigApplier {
-  constructor() {}
+  constructor(private dictatorPath: string) {}
   apply(config: DictatableConfig) {}
 }

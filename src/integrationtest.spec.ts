@@ -22,12 +22,9 @@ test('test examples', () => {
     }
     console.log(`Copy ${given} to ${actual}`);
     fsextra.copySync(given, actual);
-    console.log(`Mocking process.cwd() to ${actual}`);
-    const spy = jest.spyOn(process, 'cwd');
-    spy.mockReturnValue(actual);
 
-    console.log(`Executing dictator-builder...`)
-    dictatorBuilder(new Logger(LEVEL.VERBOSE))
+    console.log(`Executing dictator-builder...`);
+    dictatorBuilder(new Logger(LEVEL.VERBOSE), actual);
 
     //  jämför med expected
   });
