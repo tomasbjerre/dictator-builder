@@ -16,10 +16,17 @@
   "scripts": {
     "build": "npm run format && npm run generate-schema && tsc -p .",
     "generate-schema": "npx typescript-json-schema src/types.d.ts DictatableConfig --required --noExtraProps -o src/schema.json && cp src/schema.json lib",
-    "format": "prettier --write '{*.md,*.json,src/**/*.ts}'"
+    "format": "prettier --write '{*.md,*.json,{src,test}/*.ts}'",
+    "test": "npm run build && jest"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/jest": "^25.2.1",
     "@types/node": "^10.0.0",
+    "babel-jest": "^25.4.0",
+    "jest": "^25.4.0",
     "nodemon": "^2.0.3",
     "prettier": "^2.0.5",
     "ts-node": "^8.9.0",
