@@ -5,9 +5,7 @@ const figlet = require('figlet');
 import path from 'path';
 import program from 'commander';
 import { Logger, LEVEL } from './logging';
-import { DictatableFinder } from './dictatablesFinder';
-import { DictatableConfigVerifier } from './dictatablesConfigVerifier';
-import { DictatableConfigApplier } from './dictatableConfigApplier';
+import dictatorBuilder from './dictatorBuilder';
 import pkgUp from 'pkg-up';
 const packageJsonDictatorIn = path.join(__dirname, '..', '..');
 const packageJsonDictatorPath = pkgUp.sync({ cwd: packageJsonDictatorIn });
@@ -44,17 +42,4 @@ program
   .parse(process.argv);
 const logger = new Logger(program.logging || LEVEL.INFO);
 
-const dictatables = new DictatableFinder(logger).getDictatables();
-const dictatableConfigVerifier = new DictatableConfigVerifier();
-const dictatableConfigApplier = new DictatableConfigApplier();
-
-dictatables.forEach((dictatableConfig) => {
-  logger.log(
-    LEVEL.VERBOSE,
-    `Analyzing ${dictatableConfig.dictatableConfigFilename}...`
-  );
-  if (!dictatableConfigVerifier.verify(dictatableConfig)) {
-    logger.log(LEVEL.INFO, `Applying ${dictatableConfig.dictatableName}...`);
-    dictatableConfigApplier.apply(dictatableConfig);
-  }
-});
+dictatorBuilder(logger);
