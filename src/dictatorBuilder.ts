@@ -5,14 +5,21 @@ import { LEVEL, Logger } from './logging';
 
 export default function runDictator(
   logger: Logger,
-  dictatorPath = process.cwd()
+  dictatorPath: string,
+  targetPath = process.cwd()
 ) {
   const dictatables = new DictatableFinder(
     logger,
     dictatorPath
   ).getDictatables();
-  const dictatableConfigVerifier = new DictatableConfigVerifier(dictatorPath);
-  const dictatableConfigApplier = new DictatableConfigApplier(dictatorPath);
+  const dictatableConfigVerifier = new DictatableConfigVerifier(
+    dictatorPath,
+    targetPath
+  );
+  const dictatableConfigApplier = new DictatableConfigApplier(
+    dictatorPath,
+    targetPath
+  );
 
   dictatables.forEach((dictatableConfig) => {
     logger.log(

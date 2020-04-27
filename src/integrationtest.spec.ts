@@ -1,5 +1,4 @@
 import fs from 'fs';
-const fsextra = require('fs-extra');
 import path from 'path';
 var rimraf = require('rimraf');
 import dictatorBuilder from './dictatorBuilder';
@@ -15,20 +14,18 @@ test('test examples', () => {
         `  Testing ${example}\n` +
         `------------------------------------------------\n\n`
     );
-    const given = path.join(examplesPath, example, 'given');
+    const givenDictator = path.join(examplesPath, example, 'given');
     const expected = path.join(examplesPath, example, 'expected');
-    const actual = path.join(examplesPath, example, 'actual');
-    if (fs.existsSync(actual)) {
-      console.log(`Removing ${actual}`);
-      rimraf.sync(actual);
+    const actualTarget = path.join(examplesPath, example, 'actual');
+    if (fs.existsSync(actualTarget)) {
+      console.log(`Removing ${actualTarget}`);
+      rimraf.sync(actualTarget);
     }
-    console.log(`Copy ${given} to ${actual}`);
-    fsextra.copySync(given, actual);
 
     console.log(`Executing dictator-builder...`);
-    dictatorBuilder(new Logger(LEVEL.VERBOSE), actual);
+    dictatorBuilder(new Logger(LEVEL.VERBOSE), givenDictator, actualTarget);
 
-    const res: Result = compareSync(expected, actual, {
+    const res: Result = compareSync(expected, actualTarget, {
       compareContent: true,
       compareDate: false,
       compareSize: false,
@@ -39,7 +36,7 @@ test('test examples', () => {
       console.log(
         `Test case: ${example}\n` +
           `  expected ${expected}\n` +
-          `  to equal ${actual}`
+          `  to equal ${actualTarget}`
       );
     }
     expect(res.differences).toBe(0);

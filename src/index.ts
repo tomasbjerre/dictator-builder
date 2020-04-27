@@ -42,4 +42,4 @@ program
   .parse(process.argv);
 const logger = new Logger(program.logging || LEVEL.INFO);
 
-dictatorBuilder(logger);
+dictatorBuilder(logger, packageJsonDictatorIn);

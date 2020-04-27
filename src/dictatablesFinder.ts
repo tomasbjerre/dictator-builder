@@ -6,7 +6,7 @@ import { Logger, LEVEL } from './logging';
 import { DictatableConfig } from './types';
 import { Validator, Schema } from 'jsonschema';
 
-const DEFAULT_DICTATABLES_FOLDER = 'dictatables';
+export const DEFAULT_DICTATABLES_FOLDER = 'dictatables';
 const DEFAULT_DICTATABLE_CONFIG = '.dictatable-config.json';
 
 export interface DictatableConfigWithExtras extends DictatableConfig {
