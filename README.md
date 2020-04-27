@@ -55,7 +55,7 @@ This tool has supporting functionality to help create such dictators. A dictator
 
 ## Creating a dictator
 
-There is an [example dictator here](https://github.com/tomasbjerre/haffaz) dictator.
+There is an [example dictator here](https://github.com/tomasbjerre/haffaz) dictator. There are also [examples](/examples) in this repo used for testing.
 
 What you need is a `/package.json` like:
 
