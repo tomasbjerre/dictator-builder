@@ -7,7 +7,7 @@ import program from 'commander';
 import { Logger, LEVEL } from './logging';
 import dictatorBuilder from './dictatorBuilder';
 import pkgUp from 'pkg-up';
-const packageJsonDictatorIn = path.join(__dirname, '..', '..');
+const packageJsonDictatorIn = path.join(__dirname, '..', '..', '..');
 const packageJsonDictatorPath = pkgUp.sync({ cwd: packageJsonDictatorIn });
 if (!packageJsonDictatorPath) {
   console.log(`Unable to find package.json withing ${packageJsonDictatorIn}`);
