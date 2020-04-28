@@ -18,7 +18,7 @@
     "generate-schema": "npx typescript-json-schema src/types.d.ts DictatableConfig --required --noExtraProps -o src/schema.json && cp src/schema.json lib",
     "format": "prettier --write '{*.md,*.json,{src,test}/*.ts}'",
     "test": "npm run build && jest",
-    "release": "npm version patch && npm run test && npm publish && git push"
+    "release": "npm version patch && npm run test && npm publish && git push --follow-tags"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
