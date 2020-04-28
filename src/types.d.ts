@@ -18,6 +18,11 @@ export interface DictatableConfigCopy {
    * @type string
    */
   to: string;
+
+  /**
+   * @description chmod the file after its copied
+   */
+  cmod?: number;
 }
 
 export interface DictatableConfigRequirement {

@@ -4,6 +4,10 @@
     {
       "from": "readmefile.txt",
       "to": "README.md"
+    },
+    {
+      "from": "readmefile2.txt",
+      "to": "README2.md"
     }
   ]
 }
