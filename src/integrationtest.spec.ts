@@ -3,7 +3,8 @@ import path from 'path';
 var rimraf = require('rimraf');
 import dictatorBuilder from './dictatorBuilder';
 import { Logger, LEVEL } from './logging';
-import { compare, compareSync, Options, Result } from 'dir-compare';
+import { compareSync, Result } from 'dir-compare';
+const fsextra = require('fs-extra');
 
 test('test examples', () => {
   const examplesPath = path.join(__dirname, '..', 'examples');
@@ -14,15 +15,21 @@ test('test examples', () => {
         `  Testing ${example}\n` +
         `------------------------------------------------\n\n`
     );
-    const givenDictator = path.join(examplesPath, example, 'given');
+    const givenDictator = path.join(examplesPath, example, 'givenDictator');
+    const givenTarget = path.join(examplesPath, example, 'given');
     const expected = path.join(examplesPath, example, 'expected');
     const actualTarget = path.join(examplesPath, example, 'actual');
     if (fs.existsSync(actualTarget)) {
       console.log(`Removing ${actualTarget}`);
       rimraf.sync(actualTarget);
     }
+    fsextra.copySync(givenTarget, actualTarget);
 
-    console.log(`Executing dictator-builder...`);
+    console.log(
+      `Executing dictator-builder configured in ${givenDictator}\n` +
+        ` on ${givenTarget}\n` +
+        ` and storing result in ${actualTarget}...`
+    );
     dictatorBuilder(new Logger(LEVEL.VERBOSE), givenDictator, actualTarget);
 
     const res: Result = compareSync(expected, actualTarget, {

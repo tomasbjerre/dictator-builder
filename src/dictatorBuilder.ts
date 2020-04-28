@@ -1,6 +1,5 @@
 import { DictatableFinder } from './dictatablesFinder';
-import { DictatableConfigVerifier } from './dictatablesConfigVerifier';
-import { DictatableConfigApplier } from './dictatableConfigApplier';
+import { WorkCreator, Work } from './work/workCreator';
 import { LEVEL, Logger } from './logging';
 
 export default function runDictator(
@@ -12,23 +11,20 @@ export default function runDictator(
     logger,
     dictatorPath
   ).getDictatables();
-  const dictatableConfigVerifier = new DictatableConfigVerifier(
-    dictatorPath,
-    targetPath
+  const workCreator = new WorkCreator(logger, dictatorPath, targetPath);
+  const work = ([] as Work[]).concat(
+    ...dictatables.map((it) => workCreator.getWork(it))
   );
-  const dictatableConfigApplier = new DictatableConfigApplier(
-    dictatorPath,
-    targetPath
-  );
-
-  dictatables.forEach((dictatableConfig) => {
-    logger.log(
-      LEVEL.VERBOSE,
-      `Analyzing ${dictatableConfig.dictatableConfigFilename}...`
-    );
-    if (!dictatableConfigVerifier.verify(dictatableConfig)) {
-      logger.log(LEVEL.INFO, `Applying ${dictatableConfig.dictatableName}...`);
-      dictatableConfigApplier.apply(dictatableConfig);
-    }
-  });
+  work
+    .filter((it) => {
+      const applied = it.isApplied();
+      if (applied) {
+        logger.log(LEVEL.INFO, `Up to date: ${it.info()}`);
+      }
+      return !applied;
+    })
+    .forEach((it) => {
+      logger.log(LEVEL.INFO, `Applying: ${it.info()}`);
+      it.apply();
+    });
 }
