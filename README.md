@@ -1,6 +1,15 @@
-# Dictator Lib
+# Dictator Builder
 
-A library designed to help create dictators. Se the example [Haffaz](https://github.com/tomasbjerre/haffaz) dictator. A dictator is basically just a command line tool distributed with NPM.
+[![NPM](https://img.shields.io/npm/v/dictator-builder.svg?style=flat-square) ](https://www.npmjs.com/package/dictator-builder)
+[![Build Status](https://travis-ci.org/tomasbjerre/dictator-builder.svg?branch=master)](https://travis-ci.org/tomasbjerre/dictator-builder)
+
+A tool designed to help create dictators. A dictator dictates how parts of a folder should look like. Originally designed to avoid code duplication in source code repositories.
+
+When working with `npm` within an organization you typically aggree on some parts of the `package.json`, like some `scripts` that should always be there or some `dependencies` that should, or should not, be used. You may also have an identical `tsconfig.json` in every repository.
+
+A dictator is basically just a command line tool distributed with NPM. The package is self contained including all files and configuration needed. A user can **work with any language**, or tools, as the dictator is run from command line and its only output are files.
+
+Se the example [Haffaz](https://github.com/tomasbjerre/haffaz) dictator, it can be run from command line with: `npx haffaz@latest`.
 
 ## What it solves
 
@@ -38,35 +47,26 @@ bin
 
 ### This solution
 
-This library treats files as either:
+This tool has supporting functionality to help create such dictators. A dictator is an NPM package that includes all files and configuration needed to verify, and apply, requirements to a code repository. So we have:
 
-- `OWNED` - Meaning the dictator takes total control of the file.
-- `REQUIRED` - Meaning the dictator has some requirements to enforce on the file.
-
-**Owned** files are completely in control of the dictator. They are created, when needed, by the dictator and never committed to version control.
-
-**Required** files are partly maintained by the dictator. Like a JSON file can have some of its attributes enforced while others are left untouched.
-
-This is implemented by this library. The library has supporting functionality to help create such dictators. A dictator is an NPM package that includes all files and configuration needed to decide what needs to be done with a code repository. So we have:
-
-- 1 dictator library.
+- 1 dictator-builder (this tool).
 - 1, or more, dictators. Perhaps if you have both Angular and Vue, you create one dictator to dictate AngularJS repositories and one to dicate Vue repositories.
-- 1, or more, code repositories that use 1 dictator.
+- 1, or more, code repositories that use 1, or more, dictators.
 
 ## Creating a dictator
 
-There is an [example dictator here](https://github.com/tomasbjerre/haffaz) dictator.
+There is an [example dictator here](https://github.com/tomasbjerre/haffaz) dictator. There are also [examples](/examples) in this repo used for testing.
 
 What you need is a `/package.json` like:
 
 ```json
 {
   "name": "your-dictator-name",
-  "scripts": {
-    "build": "dictator-cli build"
+  "bin": {
+    "dictator-builder": "dictator-builder/lib/index.js"
   },
   "dependencies": {
-    "dictator-lib": "^a.b.c"
+    "dictator-builder": "^a.b.c"
   }
 }
 ```
@@ -80,37 +80,20 @@ You also need a folder `/dictatables/[dictatableName]/[dictatableConfig]` like:
 ```
 
 - `dictatableName` is something to help organize files and have a name for it.
-- `dictatableConfig` is at least `.dictatable-config.json` containg metadata about the folder. Rules when to apply it and such.
+- `dictatableConfig` is at least the `.dictatable-config.json` file containg [DictatableConfig](/src/types.d.ts). Rules when to apply it and such.
   - You can also place other files in `dictatableConfig` folder and refer to them from `dictatable-config.json`.
 
-## The dictatable config
+There is a `schema.json` in this tool describing dictatable config. There are also TypeScript types [here](/src/types.d.ts).
 
-The `.dictatable-config.json` consists of:
+It can be run like this:
 
-```
-{
- /**
-  * Example: some_file
-  */
- "sourceFile": "string"
- /**
-  * Example: .gitignore
-  */
- "targetFile": "string"
- /**
-  * Example: "OWNED" or "REQUIRED"
-  */
- "configurationType": "string"
- /**
-  * Om configurationType är REQUIRED.
-  */
- "contentRequirements": [
-  {
-   "type": JSONPATH, XPATH
-   "expression" "string"
-   "value": "string"
-  }
- ]
-}
+```bash
+<dictator-name> [options]
 
+Options:
+  -V, --version          output the version number
+  -l, --logging <level>  One of VERBOSE,INFO,ERROR default is INFO.
+  -d, --dry-run          Only show what will be done.
+  -c, --check            Fail if all requirements are not fulfilled.
+  -h, --help             display help for command
 ```

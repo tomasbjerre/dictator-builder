@@ -1,0 +1,48 @@
+{
+  "name": "dictator-builder",
+  "version": "0.0.6",
+  "homepage": "https://github.com/tomasbjerre/dictator-builder",
+  "repository": "git@github.com:tomasbjerre/dictator-builder.git",
+  "files": [
+    "lib"
+  ],
+  "author": "Tomas Bjerre",
+  "keywords": [
+    "dictator",
+    "husky",
+    "automation",
+    "repository-config"
+  ],
+  "scripts": {
+    "build": "npm run format && mkdir -p lib && npm run generate-schema && tsc -p .",
+    "generate-schema": "npx typescript-json-schema src/types.d.ts DictatableConfig --required --noExtraProps -o src/schema.json && cp src/schema.json lib",
+    "format": "prettier --write '{*.md,*.json,{src,test}/*.ts}'",
+    "test": "npm run build && jest",
+    "release": "npm version patch && npm run test && npm publish && git push --follow-tags"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^10.0.0",
+    "babel-jest": "^25.4.0",
+    "dir-compare": "^2.3.0",
+    "fs-extra": "^9.0.0",
+    "jest": "^25.4.0",
+    "nodemon": "^2.0.3",
+    "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.9.0",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "clear": "^0.1.0",
+    "commander": "^5.0.0",
+    "figlet": "^1.3.0",
+    "jsonschema": "^1.2.6",
+    "path": "^0.12.7",
+    "pkg-up": "^3.1.0"
+  }
+}
