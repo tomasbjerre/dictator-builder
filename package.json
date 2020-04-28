@@ -14,7 +14,7 @@
     "repository-config"
   ],
   "scripts": {
-    "build": "npm run format && npm run generate-schema && tsc -p .",
+    "build": "npm run format && npm run generate-schema && mkdir -p lib && tsc -p .",
     "generate-schema": "npx typescript-json-schema src/types.d.ts DictatableConfig --required --noExtraProps -o src/schema.json && cp src/schema.json lib",
     "format": "prettier --write '{*.md,*.json,{src,test}/*.ts}'",
     "test": "npm run build && jest",
