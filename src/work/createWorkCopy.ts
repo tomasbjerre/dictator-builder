@@ -3,32 +3,79 @@ import path from 'path';
 import { DictatableConfigCopy } from '../types';
 import { Work } from './workCreator';
 import { WorkUtils } from './workUtils';
+import Glob from 'glob';
+import { Logger, LEVEL } from '../logging';
 
 export default function createWorkCopy(
+  logger: Logger,
   workUtils: WorkUtils,
   copy: DictatableConfigCopy
 ): Work {
-  const files: string[] = [];
+  let notApplied: [string, string][] = [];
   return {
     isApplied() {
-      const copyFrom = workUtils.fileInDictator(copy.from);
+      const copyFromEvaluated = Glob.sync(workUtils.fileInDictator(copy.from));
+      const copyFilesFiles = copyFromEvaluated.map((it) =>
+        fs.statSync(it).isFile() ? [it] : getFilesInFolder(it)
+      );
+      const copyFrom = ([] as string[]).concat(...copyFilesFiles);
+
       const copyTo = workUtils.fileInTarget(copy.to);
-      return workUtils.isSameFile(copyFrom, copyTo);
+
+      if (copyFrom.length == 0) {
+        logger.log(LEVEL.INFO, `0 files matched ${copy.from}`);
+        return true;
+      }
+      if (
+        (copyFrom.length == 1 &&
+          fs.existsSync(copyTo) &&
+          fs.statSync(copyTo).isFile()) ||
+        !fs.existsSync(copyTo)
+      ) {
+        notApplied = [[copyFrom[0], copyTo]];
+        logger.log(LEVEL.VERBOSE, `copying file to file`, notApplied);
+      } else {
+        notApplied = copyFrom.map((copyFrom) => {
+          const filename = path.basename(copyFrom);
+          return [copyFrom, path.join(copyTo, filename)];
+        });
+        logger.log(LEVEL.VERBOSE, `copying files to folder`, notApplied);
+      }
+      notApplied = notApplied.filter(
+        (it) => !workUtils.isSameFile(it[0], it[1])
+      );
+      logger.log(LEVEL.VERBOSE, `not applied files: `, notApplied);
+      return notApplied.length == 0;
     },
     apply() {
-      const copyFrom = workUtils.fileInDictator(copy.from);
-      const copyTo = workUtils.fileInTarget(copy.to);
-      if (fs.existsSync(copyTo)) {
-        fs.unlinkSync(copyTo);
+      for (const [copyFrom, copyTo] of notApplied) {
+        if (fs.existsSync(copyTo) && fs.statSync(copyTo).isFile()) {
+          fs.unlinkSync(copyTo);
+        }
+        const targetDir = path.dirname(copyTo);
+        if (!fs.existsSync(targetDir)) {
+          fs.mkdirSync(targetDir);
+        }
+        fs.copyFileSync(copyFrom, copyTo);
       }
-      const targetDir = path.dirname(copyTo);
-      if (!fs.existsSync(targetDir)) {
-        fs.mkdirSync(targetDir);
-      }
-      fs.copyFileSync(copyFrom, copyTo);
     },
     info() {
       return `copy ${copy.from} to ${copy.to}`;
     },
   };
+}
+
+function getFilesInFolder(dir: string) {
+  let results: string[] = [];
+  var list = fs.readdirSync(dir);
+  list.forEach(function (file) {
+    file = dir + '/' + file;
+    var stat = fs.statSync(file);
+    if (stat && stat.isDirectory()) {
+      results = results.concat(getFilesInFolder(file));
+    } else {
+      results.push(file);
+    }
+  });
+  return results;
 }

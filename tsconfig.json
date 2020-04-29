@@ -7,7 +7,7 @@
     "outDir": "lib",
     "rootDir": "src",
     "strict": true,
-    "types": ["node", "jest"],
+    "types": ["node", "jest", "glob"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "sourceMap": true,

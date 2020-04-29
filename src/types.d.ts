@@ -41,7 +41,7 @@ export interface DictatableConfigCopy {
    */
   from: string;
   /**
-   * @type string
+   * @type string Can be a file or folder, if it does not exists it will be created as a folder.
    */
   to: string;
 }

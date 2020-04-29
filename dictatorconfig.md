@@ -38,7 +38,7 @@ Properties of the `DictatableConfigCopy` object:
 
 Can be a glob pattern to match many files or folders.
 
-### `to` (string, required)
+### `to` (string Can be a file or folder, if it does not exists it will be created as a folder., required)
 
 ## `DictatableConfigRequirement` (object)
 
