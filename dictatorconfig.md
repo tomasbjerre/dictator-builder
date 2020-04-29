@@ -16,7 +16,7 @@ Properties of the `DictatableConfig` object:
 
 The object is an array with all elements of the type `DictatableConfigCopy`.
 
-### `message` (string, required)
+### `message` (string)
 
 Optional message. Can be used to explain this dictatable.
 
@@ -38,7 +38,7 @@ Properties of the `DictatableConfigCopy` object:
 
 Can be a glob pattern to match many files or folders.
 
-### `to` (string, required)
+### `to` (string Can be a file or folder, if it does not exists it will be created as a folder., required)
 
 ## `DictatableConfigRequirement` (object)
 
@@ -64,7 +64,7 @@ The target should have this chmod.
 
 ### `itShould` (DictatableConfigRequirementItShould)
 
-### `message` (string, required)
+### `message` (string)
 
 Optional message. Can be used to explain this requirement.
 

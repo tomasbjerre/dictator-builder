@@ -27,7 +27,7 @@ export class WorkCreator {
     );
 
     (config.copy || []).forEach((copy) => {
-      work.push(createWorkCopy(workUtils, copy));
+      work.push(createWorkCopy(this.logger, workUtils, copy));
     });
     return work;
   }

@@ -3,7 +3,7 @@ import path from 'path';
 var rimraf = require('rimraf');
 import dictatorBuilder from './dictatorBuilder';
 import { Logger, LEVEL } from './logging';
-import { compareSync, Result, fileCompareHandlers } from 'dir-compare';
+import { compareSync, Result } from 'dir-compare';
 const fsextra = require('fs-extra');
 
 test('test examples', () => {
@@ -39,7 +39,6 @@ test('test examples', () => {
       skipSymlinks: true,
     });
     if (res.differences !== 0) {
-      console.log(res);
       console.log(
         `Test case: ${example}\n` +
           `  expected ${expected}\n` +

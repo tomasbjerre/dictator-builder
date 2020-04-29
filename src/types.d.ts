@@ -6,7 +6,7 @@ export interface DictatableConfig {
    * @type string
    * @description Optional message. Can be used to explain this dictatable.
    */
-  message: String;
+  message?: String;
   /**
    * @description Conditions that, if met, makes this dictatable run. Empty triggers means it will always run.
    */
@@ -41,7 +41,7 @@ export interface DictatableConfigCopy {
    */
   from: string;
   /**
-   * @type string
+   * @type string Can be a file or folder, if it does not exists it will be created as a folder.
    */
   to: string;
 }
@@ -56,7 +56,7 @@ export interface DictatableConfigRequirement {
    * @type string
    * @description Optional message. Can be used to explain this requirement.
    */
-  message: String;
+  message?: String;
   notHaveJsonPathNodes?: DictatableConfigRequirementExpression;
   haveJsonPathValues?: DictatableConfigRequirementExpression;
   /**

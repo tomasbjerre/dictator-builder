@@ -1,13 +1,29 @@
 {
-  "message": "Some, optional, custom message informing users about these requirements.",
+  "message": "Copy some files",
   "copy": [
     {
       "from": "readmefile.txt",
       "to": "README.md"
     },
     {
+      "from": "readmefile.txt",
+      "to": "."
+    },
+    {
       "from": "readmefile2.txt",
-      "to": "README2.md"
+      "to": "file_to_new_folder/README2.md"
+    },
+    {
+      "from": "mix/*.txt",
+      "to": "files_to_new_folder"
+    },
+    {
+      "from": "mix",
+      "to": "to_new_folder"
+    },
+    {
+      "from": "mix/*.txt",
+      "to": "files_to_existing_folder"
     }
   ]
 }
