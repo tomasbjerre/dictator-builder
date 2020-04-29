@@ -8,6 +8,7 @@ export default function createWorkCopy(
   workUtils: WorkUtils,
   copy: DictatableConfigCopy
 ): Work {
+  const files: string[] = [];
   return {
     isApplied() {
       const copyFrom = workUtils.fileInDictator(copy.from);
