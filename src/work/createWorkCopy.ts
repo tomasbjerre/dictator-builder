@@ -1,11 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import { DictatableConfigCopy } from '../types';
-import {
-  DEFAULT_DICTATABLES_FOLDER,
-  DictatableConfigWithExtras,
-} from '../dictatablesFinder';
-
 import { Work } from './workCreator';
 import { WorkUtils } from './workUtils';
 

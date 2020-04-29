@@ -83,7 +83,11 @@ You also need a folder `/dictatables/[dictatableName]/[dictatableConfig]` like:
 - `dictatableConfig` is at least the `.dictatable-config.json` file containg [DictatableConfig](/src/types.d.ts). Rules when to apply it and such.
   - You can also place other files in `dictatableConfig` folder and refer to them from `dictatable-config.json`.
 
-There is a `schema.json` in this tool describing dictatable config. There are also TypeScript types [here](/src/types.d.ts).
+The dictatable config is documented with:
+
+- A [markdown file](/dictatorconfig.md) in the repository
+- A `schema.json` in the distributed package
+- TypeScript types [here](/src/types.d.ts)
 
 It can be run like this:
 

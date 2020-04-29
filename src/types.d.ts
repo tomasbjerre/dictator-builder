@@ -1,3 +1,6 @@
+/**
+ * @description The root element of a dictatable configuration file.
+ */
 export interface DictatableConfig {
   /**
    * @type string
@@ -22,7 +25,7 @@ export interface DictatableConfigCopy {
   /**
    * @description chmod the file after its copied
    */
-  cmod?: number;
+  cmod?: string;
 }
 
 export interface DictatableConfigRequirement {
@@ -44,6 +47,10 @@ export interface DictatableConfigRequirement {
   beSubsetOfXmlFile?: DictatableConfigRequirementBeSubsetOfXmlFile;
   haveLineContaining?: DictatableConfigRequirementLineContaining;
   itShould?: DictatableConfigRequirementItShould;
+  /**
+   * @description The target should have this chmod.
+   */
+  cmod?: string;
 }
 
 export type DictatableConfigRequirementItShould = 'NOT_EXIST' | 'EXIST';

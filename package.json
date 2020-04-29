@@ -15,8 +15,9 @@
   ],
   "scripts": {
     "build": "npm run format && mkdir -p lib && npm run generate-schema && tsc -p .",
-    "generate-schema": "npx typescript-json-schema src/types.d.ts DictatableConfig --required --noExtraProps -o src/schema.json && cp src/schema.json lib",
-    "format": "prettier --write '{*.md,*.json,src/*.ts,src/**/*.ts}'",
+    "generate-schema": "npx typescript-json-schema src/types.d.ts DictatableConfig --required --noExtraProps --topRef -o src/schema.json && cp src/schema.json lib && npm run generate-markdown-schema",
+    "generate-markdown-schema": "node generate-markdown-schema.js",
+    "format": "prettier --write '{*.md,*.js,*.json,src/*.ts,src/**/*.ts}'",
     "test": "npm run build && jest",
     "release": "npm version patch && npm run test && npm publish && git push --follow-tags"
   },
@@ -30,6 +31,7 @@
     "dir-compare": "^2.3.0",
     "fs-extra": "^9.0.0",
     "jest": "^25.4.0",
+    "json-schema-to-markdown": "^1.1.1",
     "nodemon": "^2.0.3",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
