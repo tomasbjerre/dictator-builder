@@ -24,6 +24,12 @@ Optional message
 
 The object is an array with all elements of the type `DictatableConfigRequirement`.
 
+### `triggers` (array, required)
+
+Conditions that, if met, makes this dictatable run. Empty triggers means it will always run.
+
+The object is an array with all elements of the type `DictatableConfigTrigger`.
+
 ## `DictatableConfigCopy` (object)
 
 Properties of the `DictatableConfigCopy` object:
@@ -165,3 +171,23 @@ Optional message
 ### `value` (string)
 
 A value that should match.
+
+## `DictatableConfigTrigger` (object)
+
+Properties of the `DictatableConfigTrigger` object:
+
+### `haveJsonPathValues` (DictatableConfigRequirementJsonPath)
+
+### `haveLineContaining` (DictatableConfigRequirementLineContaining)
+
+### `haveXPathValues` (DictatableConfigRequirementXPath)
+
+### `itShould` (DictatableConfigRequirementItShould)
+
+### `notHaveJsonPathNodes` (DictatableConfigRequirementJsonPath)
+
+### `notHaveXPathPathNodes` (DictatableConfigRequirementXPath)
+
+### `target` (string, required)
+
+The file to trigger on.

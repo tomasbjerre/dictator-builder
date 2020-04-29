@@ -7,8 +7,26 @@ export interface DictatableConfig {
    * @description Optional message
    */
   message: String;
+  /**
+   * @description Conditions that, if met, makes this dictatable run. Empty triggers means it will always run.
+   */
+  triggers?: DictatableConfigTrigger[];
   copy?: DictatableConfigCopy[];
   requirements?: DictatableConfigRequirement[];
+}
+
+export interface DictatableConfigTrigger {
+  /**
+   * @type string
+   * @description The file to trigger on.
+   */
+  target: string;
+  notHaveJsonPathNodes?: DictatableConfigRequirementJsonPath;
+  haveJsonPathValues?: DictatableConfigRequirementJsonPath;
+  notHaveXPathPathNodes?: DictatableConfigRequirementXPath;
+  haveXPathValues?: DictatableConfigRequirementXPath;
+  haveLineContaining?: DictatableConfigRequirementLineContaining;
+  itShould?: DictatableConfigRequirementItShould;
 }
 
 export interface DictatableConfigCopy {
