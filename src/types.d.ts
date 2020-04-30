@@ -6,13 +6,12 @@ export interface DictatableConfig {
    * @type string
    * @description Optional message. Can be used to explain this dictatable.
    */
-  message?: String;
+  message?: string;
   /**
    * @description Conditions that, if met, makes this dictatable run. Empty triggers means it will always run.
    */
   triggers?: DictatableConfigTrigger[];
-  copy?: DictatableConfigCopy[];
-  requirements?: DictatableConfigRequirement[];
+  actions?: DictatableConfigAction[];
 }
 
 export interface DictatableConfigTrigger {
@@ -22,75 +21,71 @@ export interface DictatableConfigTrigger {
    */
   target: string;
 
-  haveJsonPathValues?: DictatableConfigRequirementExpression[];
-  notHaveJsonPathNodes?: DictatableConfigRequirementExpression[];
+  haveJsonPathValues?: DictatableConfigActionExpression[];
+  notHaveJsonPathNodes?: DictatableConfigActionExpression[];
 
-  haveXPathValues?: DictatableConfigRequirementExpression[];
-  notHaveXPathPathNodes?: DictatableConfigRequirementExpression[];
+  haveXPathValues?: DictatableConfigActionExpression[];
+  notHaveXPathPathNodes?: DictatableConfigActionExpression[];
 
-  haveLineContaining?: DictatableConfigRequirementLineContaining[];
-  itShould?: DictatableConfigRequirementItShould;
-  haveEnvironmentVariable?: DictatableConfigRequirementEnvironmentVariable;
-  notHaveEnvironmentVariable?: DictatableConfigRequirementEnvironmentVariable;
+  haveLineContaining?: DictatableConfigActionLineContaining[];
+  itShould?: DictatableConfigActionItShould;
+  haveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
+  notHaveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
 }
 
-export interface DictatableConfigCopy {
-  /**
-   * @type string
-   * @description Can be a glob pattern to match many files or folders.
-   */
-  from: string;
-  /**
-   * @type string Can be a file or folder, if it does not exists it will be created as a folder.
-   */
-  to: string;
-}
-
-export interface DictatableConfigRequirement {
-  /**
-   * @type string
-   * @description The file to add requirements on.
-   */
-  target: string;
+export interface DictatableConfigAction {
   /**
    * @type string
    * @description Optional message. Can be used to explain this requirement.
    */
-  message?: String;
-  notHaveJsonPathNodes?: DictatableConfigRequirementExpression;
-  haveJsonPathValues?: DictatableConfigRequirementExpression;
+  message?: string;
+  /**
+   * @type string Can be a file or folder, if it does not exists it will be treated as a folder.
+   */
+  target: string;
+  /**
+   * @type string
+   * @description Can be a glob pattern to match many files or folders.
+   */
+  copyFrom?: string;
+  notHaveJsonPathNodes?: DictatableConfigActionExpression;
+  haveJsonPathValues?: DictatableConfigActionExpression;
   /**
    * @type string
    * @description A file that should contain a superset of the target file.
    */
   beSubsetOfJsonFile?: string;
-  notHaveXPathPathNodes?: DictatableConfigRequirementExpression;
-  haveXPathValues?: DictatableConfigRequirementExpression;
+  notHaveXPathPathNodes?: DictatableConfigActionExpression;
+  haveXPathValues?: DictatableConfigActionExpression;
   /**
    * @type string
    * @description A file that should contain a superset of the target file.
    */
   beSubsetOfXmlFile?: string;
-  haveLineContaining?: DictatableConfigRequirementLineContaining;
-  itShould?: DictatableConfigRequirementItShould;
+  haveLineContaining?: DictatableConfigActionLineContaining;
+  /**
+   * @type string
+   * @description A file that should EXIST or NOT_EXIST.
+   */
+  itShould?: DictatableConfigActionItShould;
   /**
    * @description The target should have this chmod.
    */
   chmod?: string;
 }
 
-export type DictatableConfigRequirementItShould = 'NOT_EXIST' | 'EXIST';
+export type DictatableConfigActionItShould = 'NOT_EXIST' | 'EXIST';
 
 /**
  * @description These may be used to make the tool behave differently, perhaps
  * copy or patch different files, depending on operating system.
  */
-export interface DictatableConfigRequirementEnvironmentVariable {
+export interface DictatableConfigActionEnvironmentVariable {
   /**
    * @type string
    * @description Optional message. Can be used to explain this requirement.
    */
-  message?: String;
+  message?: string;
   /**
    * @type string
    * @description Name of environment variable
@@ -103,12 +98,12 @@ export interface DictatableConfigRequirementEnvironmentVariable {
   value?: string;
 }
 
-export interface DictatableConfigRequirementExpression {
+export interface DictatableConfigActionExpression {
   /**
    * @type string
    * @description Optional message. Can be used to explain this expression.
    */
-  message?: String;
+  message?: string;
   /**
    * @type string
    * @description Expression
@@ -118,15 +113,15 @@ export interface DictatableConfigRequirementExpression {
    * @type string
    * @description A value that should match.
    */
-  value?: String;
+  value?: string;
 }
 
-export interface DictatableConfigRequirementLineContaining {
+export interface DictatableConfigActionLineContaining {
   /**
    * @type string
    * @description Optional message. Can be used to explain this expression.
    */
-  message?: String;
+  message?: string;
   /**
    * @items.type string
    * @items.minimum 1

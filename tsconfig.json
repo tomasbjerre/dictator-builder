@@ -13,5 +13,5 @@
     "sourceMap": true,
     "typeRoots": ["./node_modules/@types"]
   },
-  "include": ["src/*", "src/**/*"]
+  "include": ["src/*", "src/**/*", "test/integrationtest.spec.ts"]
 }

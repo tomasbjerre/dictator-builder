@@ -12,17 +12,13 @@ The root element of a dictatable configuration file.
 
 Properties of the `DictatableConfig` object:
 
-### `copy` (array)
+### `actions` (array)
 
-The object is an array with all elements of the type `DictatableConfigCopy`.
+The object is an array with all elements of the type `DictatableConfigAction`.
 
 ### `message` (string)
 
 Optional message. Can be used to explain this dictatable.
-
-### `requirements` (array)
-
-The object is an array with all elements of the type `DictatableConfigRequirement`.
 
 ### `triggers` (array)
 
@@ -30,19 +26,9 @@ Conditions that, if met, makes this dictatable run. Empty triggers means it will
 
 The object is an array with all elements of the type `DictatableConfigTrigger`.
 
-## `DictatableConfigCopy` (object)
+## `DictatableConfigAction` (object)
 
-Properties of the `DictatableConfigCopy` object:
-
-### `from` (string, required)
-
-Can be a glob pattern to match many files or folders.
-
-### `to` (string Can be a file or folder, if it does not exists it will be created as a folder., required)
-
-## `DictatableConfigRequirement` (object)
-
-Properties of the `DictatableConfigRequirement` object:
+Properties of the `DictatableConfigAction` object:
 
 ### `beSubsetOfJsonFile` (string)
 
@@ -56,32 +42,36 @@ A file that should contain a superset of the target file.
 
 The target should have this chmod.
 
-### `haveJsonPathValues` (DictatableConfigRequirementExpression)
+### `copyFrom` (string)
 
-### `haveLineContaining` (DictatableConfigRequirementLineContaining)
+Can be a glob pattern to match many files or folders.
 
-### `haveXPathValues` (DictatableConfigRequirementExpression)
+### `haveJsonPathValues` (DictatableConfigActionExpression)
 
-### `itShould` (DictatableConfigRequirementItShould)
+### `haveLineContaining` (DictatableConfigActionLineContaining)
+
+### `haveXPathValues` (DictatableConfigActionExpression)
+
+### `itShould` (string)
+
+A file that should EXIST or NOT_EXIST.
 
 ### `message` (string)
 
 Optional message. Can be used to explain this requirement.
 
-### `notHaveJsonPathNodes` (DictatableConfigRequirementExpression)
+### `notHaveJsonPathNodes` (DictatableConfigActionExpression)
 
-### `notHaveXPathPathNodes` (DictatableConfigRequirementExpression)
+### `notHaveXPathPathNodes` (DictatableConfigActionExpression)
 
-### `target` (string, required)
+### `target` (string Can be a file or folder, if it does not exists it will be treated as a folder., required)
 
-The file to add requirements on.
-
-## `DictatableConfigRequirementEnvironmentVariable` (object)
+## `DictatableConfigActionEnvironmentVariable` (object)
 
 These may be used to make the tool behave differently, perhaps
 copy or patch different files, depending on operating system.
 
-Properties of the `DictatableConfigRequirementEnvironmentVariable` object:
+Properties of the `DictatableConfigActionEnvironmentVariable` object:
 
 ### `message` (string)
 
@@ -95,9 +85,9 @@ Name of environment variable
 
 Optional value of variable
 
-## `DictatableConfigRequirementExpression` (object)
+## `DictatableConfigActionExpression` (object)
 
-Properties of the `DictatableConfigRequirementExpression` object:
+Properties of the `DictatableConfigActionExpression` object:
 
 ### `expression` (string, required)
 
@@ -111,11 +101,11 @@ Optional message. Can be used to explain this expression.
 
 A value that should match.
 
-## `DictatableConfigRequirementItShould` (string)
+## `DictatableConfigActionItShould` (string)
 
-## `DictatableConfigRequirementLineContaining` (object)
+## `DictatableConfigActionLineContaining` (object)
 
-Properties of the `DictatableConfigRequirementLineContaining` object:
+Properties of the `DictatableConfigActionLineContaining` object:
 
 ### `message` (string)
 
@@ -131,31 +121,31 @@ The object is an array with all elements of the type `string`.
 
 Properties of the `DictatableConfigTrigger` object:
 
-### `haveEnvironmentVariable` (DictatableConfigRequirementEnvironmentVariable)
+### `haveEnvironmentVariable` (DictatableConfigActionEnvironmentVariable)
 
 ### `haveJsonPathValues` (array)
 
-The object is an array with all elements of the type `DictatableConfigRequirementExpression`.
+The object is an array with all elements of the type `DictatableConfigActionExpression`.
 
 ### `haveLineContaining` (array)
 
-The object is an array with all elements of the type `DictatableConfigRequirementLineContaining`.
+The object is an array with all elements of the type `DictatableConfigActionLineContaining`.
 
 ### `haveXPathValues` (array)
 
-The object is an array with all elements of the type `DictatableConfigRequirementExpression`.
+The object is an array with all elements of the type `DictatableConfigActionExpression`.
 
-### `itShould` (DictatableConfigRequirementItShould)
+### `itShould` (DictatableConfigActionItShould)
 
-### `notHaveEnvironmentVariable` (DictatableConfigRequirementEnvironmentVariable)
+### `notHaveEnvironmentVariable` (DictatableConfigActionEnvironmentVariable)
 
 ### `notHaveJsonPathNodes` (array)
 
-The object is an array with all elements of the type `DictatableConfigRequirementExpression`.
+The object is an array with all elements of the type `DictatableConfigActionExpression`.
 
 ### `notHaveXPathPathNodes` (array)
 
-The object is an array with all elements of the type `DictatableConfigRequirementExpression`.
+The object is an array with all elements of the type `DictatableConfigActionExpression`.
 
 ### `target` (string, required)
 

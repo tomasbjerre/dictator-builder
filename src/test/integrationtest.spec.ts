@@ -1,13 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 var rimraf = require('rimraf');
-import dictatorBuilder from './dictatorBuilder';
-import { Logger, LEVEL } from './logging';
+import dictatorBuilder from '../dictatorBuilder';
+import { Logger, LEVEL } from '../common/Logger';
 import { compareSync, Result } from 'dir-compare';
 const fsextra = require('fs-extra');
 
 test('test examples', () => {
-  const examplesPath = path.join(__dirname, '..', 'examples');
+  const examplesPath = path.join(__dirname, '..', '..', 'examples');
   const examples = fs.readdirSync(examplesPath);
   examples.forEach((example) => {
     console.log(

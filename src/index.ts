@@ -4,7 +4,7 @@ import chalk from 'chalk';
 const figlet = require('figlet');
 import path from 'path';
 import program from 'commander';
-import { Logger, LEVEL } from './logging';
+import { Logger, LEVEL } from './common/Logger';
 import dictatorBuilder from './dictatorBuilder';
 import pkgUp from 'pkg-up';
 const packageJsonDictatorIn = path.join(__dirname, '..', '..', '..');

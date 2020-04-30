@@ -1,29 +1,29 @@
 {
-  "message": "Copy some files",
-  "copy": [
+  "message": "Example dictator copying some files",
+  "actions": [
     {
-      "from": "readmefile.txt",
-      "to": "README.md"
+      "copyFrom": "readmefile.txt",
+      "target": "README.md"
     },
     {
-      "from": "readmefile.txt",
-      "to": "."
+      "copyFrom": "readmefile.txt",
+      "target": "."
     },
     {
-      "from": "readmefile2.txt",
-      "to": "file_to_new_folder/README2.md"
+      "copyFrom": "readmefile2.txt",
+      "target": "file_to_new_folder/README2.md"
     },
     {
-      "from": "mix/*.txt",
-      "to": "files_to_new_folder"
+      "copyFrom": "mix/*.txt",
+      "target": "files_to_new_folder"
     },
     {
-      "from": "mix",
-      "to": "to_new_folder"
+      "copyFrom": "mix",
+      "target": "to_new_folder"
     },
     {
-      "from": "mix/*.txt",
-      "to": "files_to_existing_folder"
+      "copyFrom": "mix/*.txt",
+      "target": "files_to_existing_folder"
     }
   ]
 }

@@ -2,7 +2,7 @@
 
 import path from 'path';
 import fs from 'fs';
-import { Logger, LEVEL } from './logging';
+import { Logger, LEVEL } from './common/Logger';
 import { DictatableConfig } from './types';
 import { Validator, Schema } from 'jsonschema';
 
