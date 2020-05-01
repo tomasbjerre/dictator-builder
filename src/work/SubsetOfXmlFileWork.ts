@@ -4,8 +4,9 @@ import { Work } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
 const _ = require('underscore');
+const xml2js = require('xml2js');
 
-export class SubsetOfJsonFileWork implements Work {
+export class SubsetOfXmlFileWork implements Work {
   private targetFile: string;
   private actionFile: string;
   private patchedTargetFile?: any;
@@ -19,13 +20,22 @@ export class SubsetOfJsonFileWork implements Work {
     this.targetFile = fileOperations.fileInTarget(action.target);
     this.actionFile = fileOperations.fileInDictator(
       dictatableName,
-      action.beSubsetOfJsonFile!
+      action.beSubsetOfXmlFile!
     );
   }
 
   isApplied(): boolean {
-    const originalActionFile = JSON.parse(
-      fs.readFileSync(this.actionFile, 'utf8')
+    let originalActionFile: any = undefined;
+    xml2js.parseString(
+      fs.readFileSync(this.actionFile, 'utf8'),
+      (err: any, result: any) => {
+        originalActionFile = result;
+        this.logger.log(
+          LEVEL.VERBOSE,
+          `${this.actionFile}: `,
+          originalActionFile
+        );
+      }
     );
     if (!fs.existsSync(this.targetFile)) {
       this.patchedTargetFile = originalActionFile;
@@ -36,19 +46,26 @@ export class SubsetOfJsonFileWork implements Work {
       );
       return false;
     }
-    const originalTargetFile = JSON.parse(
-      fs.readFileSync(this.targetFile, 'utf8')
+    let originalTargetFile: any = undefined;
+    xml2js.parseString(
+      fs.readFileSync(this.targetFile, 'utf8'),
+      (err: any, result: any) => {
+        originalTargetFile = result;
+        this.logger.log(
+          LEVEL.VERBOSE,
+          `${this.targetFile}: `,
+          originalTargetFile
+        );
+      }
     );
     this.patchedTargetFile = _.extend(
       { ...originalTargetFile },
       originalActionFile
     );
-    this.logger.log(LEVEL.VERBOSE, `${this.targetFile}: `, originalTargetFile);
-    this.logger.log(LEVEL.VERBOSE, `${this.actionFile}: `, originalActionFile);
     const applied = _.isEqual(this.patchedTargetFile!, originalTargetFile);
     this.logger.log(
       LEVEL.VERBOSE,
-      `patchedTargetFile: ${applied} `,
+      `patched:\n ${this.actionFile}\n + ${this.targetFile}\n = `,
       this.patchedTargetFile
     );
     return applied;
@@ -56,12 +73,16 @@ export class SubsetOfJsonFileWork implements Work {
 
   apply(): void {
     this.logger.log(LEVEL.VERBOSE, `Writing file ${this.targetFile}`);
-    fs.writeFileSync(this.targetFile, JSON.stringify(this.patchedTargetFile), {
-      encoding: 'utf8',
-    });
+    fs.writeFileSync(
+      this.targetFile,
+      new xml2js.Builder().buildObject(this.patchedTargetFile),
+      {
+        encoding: 'utf8',
+      }
+    );
   }
 
   info(): string {
-    return `${this.action.target} should be subset of JSON in ${this.action.beSubsetOfJsonFile}`;
+    return `${this.action.target} should be subset of JSON in ${this.action.beSubsetOfXmlFile}`;
   }
 }

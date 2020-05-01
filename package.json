@@ -36,7 +36,8 @@
     "jsonschema": "^1.2.6",
     "path": "^0.12.7",
     "pkg-up": "^3.1.0",
-    "underscore": "^1.10.2"
+    "underscore": "^1.10.2",
+    "xml2js": "^0.4.23"
   },
   "homepage": "https://github.com/tomasbjerre/dictator-builder",
   "repository": "git@github.com:tomasbjerre/dictator-builder.git",

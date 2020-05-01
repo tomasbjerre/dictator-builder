@@ -1,0 +1,13 @@
+{
+  "message": "Example xml subset of other xml",
+  "actions": [
+    {
+      "beSubsetOfXmlFile": "dictated.xml",
+      "target": "new_file.xml"
+    },
+    {
+      "beSubsetOfXmlFile": "dictated.xml",
+      "target": "file_to_patch.xml"
+    }
+  ]
+}
