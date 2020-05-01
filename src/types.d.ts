@@ -11,10 +11,18 @@ export interface DictatableConfig {
    * @description Conditions that, if met, makes this dictatable run. Empty triggers means it will always run.
    */
   triggers?: DictatableConfigTrigger[];
+  /**
+   * @description Actions to perform if triggered.
+   */
   actions?: DictatableConfigAction[];
 }
 
 export interface DictatableConfigTrigger {
+  /**
+   * @type string
+   * @description Optional message. Can be used to explain this requirement.
+   */
+  message?: string;
   /**
    * @type string
    * @description The file to trigger on.
@@ -24,10 +32,14 @@ export interface DictatableConfigTrigger {
   haveJsonPathValues?: DictatableConfigActionExpression[];
   notHaveJsonPathNodes?: DictatableConfigActionExpression[];
 
-  haveXPathValues?: DictatableConfigActionExpression[];
+  /**
+   * @items.type string
+   * @items.minimum 1
+   * @description can be regular expression.
+   */
+  haveLineContaining?: string[];
   notHaveXPathPathNodes?: DictatableConfigActionExpression[];
-
-  haveLineContaining?: DictatableConfigActionLineContaining[];
+  haveXPathValues?: DictatableConfigActionExpression[];
   itShould?: DictatableConfigActionItShould;
   haveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
   notHaveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
@@ -48,21 +60,19 @@ export interface DictatableConfigAction {
    * @description Can be a glob pattern to match many files or folders.
    */
   copyFrom?: string;
-  notHaveJsonPathNodes?: DictatableConfigActionExpression;
-  haveJsonPathValues?: DictatableConfigActionExpression;
+  notHaveJsonPathNodes?: DictatableConfigActionExpression[];
+  haveJsonPathValues?: DictatableConfigActionExpression[];
   /**
    * @type string
    * @description A file that should contain a superset of the target file.
    */
   beSubsetOfJsonFile?: string;
-  notHaveXPathPathNodes?: DictatableConfigActionExpression;
-  haveXPathValues?: DictatableConfigActionExpression;
   /**
-   * @type string
-   * @description A file that should contain a superset of the target file.
+   * @items.type string
+   * @items.minimum 1
+   * @description Will be added to the end of the file if not found.
    */
-  beSubsetOfXmlFile?: string;
-  haveLineContaining?: DictatableConfigActionLineContaining;
+  haveLineContaining?: string[];
   /**
    * @type string
    * @description A file that should EXIST or NOT_EXIST.
@@ -83,11 +93,6 @@ export type DictatableConfigActionItShould = 'NOT_EXIST' | 'EXIST';
 export interface DictatableConfigActionEnvironmentVariable {
   /**
    * @type string
-   * @description Optional message. Can be used to explain this requirement.
-   */
-  message?: string;
-  /**
-   * @type string
    * @description Name of environment variable
    */
   name: string;
@@ -101,11 +106,6 @@ export interface DictatableConfigActionEnvironmentVariable {
 export interface DictatableConfigActionExpression {
   /**
    * @type string
-   * @description Optional message. Can be used to explain this expression.
-   */
-  message?: string;
-  /**
-   * @type string
    * @description Expression
    */
   expression: string;
@@ -114,18 +114,4 @@ export interface DictatableConfigActionExpression {
    * @description A value that should match.
    */
   value?: string;
-}
-
-export interface DictatableConfigActionLineContaining {
-  /**
-   * @type string
-   * @description Optional message. Can be used to explain this expression.
-   */
-  message?: string;
-  /**
-   * @items.type string
-   * @items.minimum 1
-   * @description can be regular expression.
-   */
-  values: string[];
 }

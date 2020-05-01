@@ -14,6 +14,8 @@ Properties of the `DictatableConfig` object:
 
 ### `actions` (array)
 
+Actions to perform if triggered.
+
 The object is an array with all elements of the type `DictatableConfigAction`.
 
 ### `message` (string)
@@ -34,10 +36,6 @@ Properties of the `DictatableConfigAction` object:
 
 A file that should contain a superset of the target file.
 
-### `beSubsetOfXmlFile` (string)
-
-A file that should contain a superset of the target file.
-
 ### `chmod` (string)
 
 The target should have this chmod.
@@ -46,11 +44,15 @@ The target should have this chmod.
 
 Can be a glob pattern to match many files or folders.
 
-### `haveJsonPathValues` (DictatableConfigActionExpression)
+### `haveJsonPathValues` (array)
 
-### `haveLineContaining` (DictatableConfigActionLineContaining)
+The object is an array with all elements of the type `DictatableConfigActionExpression`.
 
-### `haveXPathValues` (DictatableConfigActionExpression)
+### `haveLineContaining` (array)
+
+Will be added to the end of the file if not found.
+
+The object is an array with all elements of the type `string`.
 
 ### `itShould` (string)
 
@@ -60,9 +62,9 @@ A file that should EXIST or NOT_EXIST.
 
 Optional message. Can be used to explain this requirement.
 
-### `notHaveJsonPathNodes` (DictatableConfigActionExpression)
+### `notHaveJsonPathNodes` (array)
 
-### `notHaveXPathPathNodes` (DictatableConfigActionExpression)
+The object is an array with all elements of the type `DictatableConfigActionExpression`.
 
 ### `target` (string Can be a file or folder, if it does not exists it will be treated as a folder., required)
 
@@ -72,10 +74,6 @@ These may be used to make the tool behave differently, perhaps
 copy or patch different files, depending on operating system.
 
 Properties of the `DictatableConfigActionEnvironmentVariable` object:
-
-### `message` (string)
-
-Optional message. Can be used to explain this requirement.
 
 ### `name` (string, required)
 
@@ -93,29 +91,11 @@ Properties of the `DictatableConfigActionExpression` object:
 
 Expression
 
-### `message` (string)
-
-Optional message. Can be used to explain this expression.
-
 ### `value` (string)
 
 A value that should match.
 
 ## `DictatableConfigActionItShould` (string)
-
-## `DictatableConfigActionLineContaining` (object)
-
-Properties of the `DictatableConfigActionLineContaining` object:
-
-### `message` (string)
-
-Optional message. Can be used to explain this expression.
-
-### `values` (array, required)
-
-can be regular expression.
-
-The object is an array with all elements of the type `string`.
 
 ## `DictatableConfigTrigger` (object)
 
@@ -129,13 +109,19 @@ The object is an array with all elements of the type `DictatableConfigActionExpr
 
 ### `haveLineContaining` (array)
 
-The object is an array with all elements of the type `DictatableConfigActionLineContaining`.
+can be regular expression.
+
+The object is an array with all elements of the type `string`.
 
 ### `haveXPathValues` (array)
 
 The object is an array with all elements of the type `DictatableConfigActionExpression`.
 
 ### `itShould` (DictatableConfigActionItShould)
+
+### `message` (string)
+
+Optional message. Can be used to explain this requirement.
 
 ### `notHaveEnvironmentVariable` (DictatableConfigActionEnvironmentVariable)
 
