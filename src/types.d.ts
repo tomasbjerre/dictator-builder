@@ -30,7 +30,7 @@ export interface DictatableConfigTrigger {
   target: string;
 
   haveJsonPathValues?: DictatableConfigActionExpression[];
-  notHaveJsonPathNodes?: DictatableConfigActionExpression[];
+  notHaveJsonPathNodes?: string[];
 
   /**
    * @items.type string
@@ -38,7 +38,7 @@ export interface DictatableConfigTrigger {
    * @description can be regular expression.
    */
   haveLineContaining?: string[];
-  notHaveXPathPathNodes?: DictatableConfigActionExpression[];
+  notHaveXPathPathNodes?: string[];
   haveXPathValues?: DictatableConfigActionExpression[];
   /**
    * @type string
@@ -64,7 +64,7 @@ export interface DictatableConfigAction {
    * @description Can be a glob pattern to match many files or folders.
    */
   copyFrom?: string;
-  notHaveJsonPathNodes?: DictatableConfigActionExpression[];
+  notHaveJsonPathNodes?: string[];
   haveJsonPathValues?: DictatableConfigActionExpression[];
   /**
    * @type string

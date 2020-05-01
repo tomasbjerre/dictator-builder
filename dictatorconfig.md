@@ -60,7 +60,7 @@ Optional message. Can be used to explain this requirement.
 
 ### `notHaveJsonPathNodes` (array)
 
-The object is an array with all elements of the type `DictatableConfigActionExpression`.
+The object is an array with all elements of the type `string`.
 
 ### `target` (string Can be a file or folder, if it does not exists it will be treated as a folder., required)
 
@@ -125,11 +125,11 @@ Optional message. Can be used to explain this requirement.
 
 ### `notHaveJsonPathNodes` (array)
 
-The object is an array with all elements of the type `DictatableConfigActionExpression`.
+The object is an array with all elements of the type `string`.
 
 ### `notHaveXPathPathNodes` (array)
 
-The object is an array with all elements of the type `DictatableConfigActionExpression`.
+The object is an array with all elements of the type `string`.
 
 ### `target` (string, required)
 

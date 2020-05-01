@@ -1,0 +1,15 @@
+{
+  "message": "Example jsonpath values on files",
+  "actions": [
+    {
+      "message": "Should change the file",
+      "notHaveJsonPathNodes": ["$.c", "$.e.f"],
+      "target": "jsonfile1.json"
+    },
+    {
+      "message": "Should not change the file",
+      "notHaveJsonPathNodes": ["$.a"],
+      "target": "jsonfile2.json"
+    }
+  ]
+}

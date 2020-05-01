@@ -6,6 +6,7 @@ import { FileOperations } from '../common/FileOperations';
 import { SubsetOfJsonFileWork } from './SubsetOfJsonFileWork';
 import { ChmodWork } from './ChmodWork';
 import { HaveJsonPathValuesWork } from './HaveJsonPathValuesWork';
+import { NotHaveJsonPathNodesWork } from './NotHaveJsonPathNodesWork';
 
 export interface Work {
   isApplied(): boolean;
@@ -52,6 +53,11 @@ export class WorkCreator {
       if (action.haveJsonPathValues) {
         work.push(
           new HaveJsonPathValuesWork(this.logger, fileOperations, action)
+        );
+      }
+      if (action.notHaveJsonPathNodes) {
+        work.push(
+          new NotHaveJsonPathNodesWork(this.logger, fileOperations, action)
         );
       }
     });
