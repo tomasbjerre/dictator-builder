@@ -29,7 +29,7 @@ export function runDictator(
     }
     const work = new WorkCreator(logger).getWork(dictatable, fileOperations);
     const unapplied = performWork(options, logger, work);
-    if (options.check) {
+    if (options.check && unapplied.length > 0) {
       unappliedDictatables[dictatable.dictatableName] = unapplied;
     }
   });
