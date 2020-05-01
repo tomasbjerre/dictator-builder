@@ -54,10 +54,6 @@ Will be added to the end of the file if not found.
 
 The object is an array with all elements of the type `string`.
 
-### `itShould` (string)
-
-A file that should EXIST or NOT_EXIST.
-
 ### `message` (string)
 
 Optional message. Can be used to explain this requirement.
@@ -117,7 +113,9 @@ The object is an array with all elements of the type `string`.
 
 The object is an array with all elements of the type `DictatableConfigActionExpression`.
 
-### `itShould` (DictatableConfigActionItShould)
+### `itShould` (string)
+
+A file that should EXIST or NOT_EXIST.
 
 ### `message` (string)
 

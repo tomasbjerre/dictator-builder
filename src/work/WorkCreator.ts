@@ -4,6 +4,7 @@ import { DictatableConfigWithExtras } from '../DictatableFinder';
 import { CopyWork } from './CopyWork';
 import { FileOperations } from '../common/FileOperations';
 import { SubsetOfJsonFileWork } from './SubsetOfJsonFileWork';
+import { ChmodWork } from './ChmodWork';
 
 export interface Work {
   isApplied(): boolean;
@@ -43,6 +44,9 @@ export class WorkCreator {
             config.dictatableName
           )
         );
+      }
+      if (action.chmod) {
+        work.push(new ChmodWork(this.logger, fileOperations, action));
       }
     });
     return work;

@@ -40,6 +40,10 @@ export interface DictatableConfigTrigger {
   haveLineContaining?: string[];
   notHaveXPathPathNodes?: DictatableConfigActionExpression[];
   haveXPathValues?: DictatableConfigActionExpression[];
+  /**
+   * @type string
+   * @description A file that should EXIST or NOT_EXIST.
+   */
   itShould?: DictatableConfigActionItShould;
   haveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
   notHaveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
@@ -73,11 +77,6 @@ export interface DictatableConfigAction {
    * @description Will be added to the end of the file if not found.
    */
   haveLineContaining?: string[];
-  /**
-   * @type string
-   * @description A file that should EXIST or NOT_EXIST.
-   */
-  itShould?: DictatableConfigActionItShould;
   /**
    * @description The target should have this chmod.
    */

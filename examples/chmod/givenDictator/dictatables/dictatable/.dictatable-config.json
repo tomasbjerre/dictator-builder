@@ -1,0 +1,13 @@
+{
+  "message": "Example chmod requirements on files",
+  "actions": [
+    {
+      "chmod": "0755",
+      "target": "file1.sh"
+    },
+    {
+      "chmod": "0644",
+      "target": "file2.sh"
+    }
+  ]
+}
