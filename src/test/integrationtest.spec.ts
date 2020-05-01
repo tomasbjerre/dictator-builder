@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 var rimraf = require('rimraf');
-import dictatorBuilder from '../dictatorBuilder';
+import { runDictator, DictatorOptions } from '../dictatorBuilder';
 import { Logger, LEVEL } from '../common/Logger';
 import { compareSync, Result } from 'dir-compare';
 const fsextra = require('fs-extra');
@@ -29,7 +29,15 @@ test.each(examples)('%s', (example) => {
       ` on ${givenTarget}\n` +
       ` and storing result in ${actualTarget}...`
   );
-  dictatorBuilder(new Logger(LEVEL.VERBOSE), givenDictator, actualTarget);
+  runDictator(
+    {
+      dictatorPath: givenDictator,
+      check: false,
+      dryRun: false,
+    },
+    new Logger(LEVEL.VERBOSE),
+    actualTarget
+  );
 
   const res: Result = compareSync(expected, actualTarget, {
     compareContent: true,

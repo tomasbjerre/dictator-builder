@@ -5,7 +5,7 @@ const figlet = require('figlet');
 import path from 'path';
 import program from 'commander';
 import { Logger, LEVEL } from './common/Logger';
-import dictatorBuilder from './dictatorBuilder';
+import { runDictator, DictatorOptions } from './dictatorBuilder';
 import pkgUp from 'pkg-up';
 const packageJsonDictatorIn = path.join(__dirname, '..', '..', '..');
 const packageJsonDictatorPath = pkgUp.sync({ cwd: packageJsonDictatorIn });
@@ -41,5 +41,9 @@ program
   .option(`-c, --check`, `Fail if all requirements are not fulfilled.`)
   .parse(process.argv);
 const logger = new Logger(program.logging || LEVEL.INFO);
-
-dictatorBuilder(logger, packageJsonDictatorIn);
+const options: DictatorOptions = {
+  dryRun: program.dryRun,
+  check: program.check,
+  dictatorPath: packageJsonDictatorIn,
+};
+runDictator(options, logger, packageJsonDictatorIn);
