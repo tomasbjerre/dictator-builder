@@ -46,4 +46,4 @@ const options: DictatorOptions = {
   check: program.check,
   dictatorPath: packageJsonDictatorIn,
 };
-runDictator(options, logger, packageJsonDictatorIn);
+runDictator(options, logger);
