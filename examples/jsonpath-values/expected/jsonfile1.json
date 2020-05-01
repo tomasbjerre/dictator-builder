@@ -1,0 +1,5 @@
+{
+    "a": "new value on existing node",
+    "c": "d",
+    "newnode": "new value on new node"
+}

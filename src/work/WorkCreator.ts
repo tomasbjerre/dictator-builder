@@ -5,6 +5,7 @@ import { CopyWork } from './CopyWork';
 import { FileOperations } from '../common/FileOperations';
 import { SubsetOfJsonFileWork } from './SubsetOfJsonFileWork';
 import { ChmodWork } from './ChmodWork';
+import { HaveJsonPathValuesWork } from './HaveJsonPathValuesWork';
 
 export interface Work {
   isApplied(): boolean;
@@ -47,6 +48,11 @@ export class WorkCreator {
       }
       if (action.chmod) {
         work.push(new ChmodWork(this.logger, fileOperations, action));
+      }
+      if (action.haveJsonPathValues) {
+        work.push(
+          new HaveJsonPathValuesWork(this.logger, fileOperations, action)
+        );
       }
     });
     return work;

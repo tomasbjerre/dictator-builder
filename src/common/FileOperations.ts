@@ -22,6 +22,11 @@ export class FileOperations {
     return path.join(this.targetPath, file);
   }
 
+  public getTargetFileData(file: string): any {
+    const targetFile = this.fileInTarget(file);
+    return JSON.parse(fs.readFileSync(targetFile, 'utf8'));
+  }
+
   public isSameFile(file1: string, file2: string) {
     if (!fs.existsSync(file1) || !fs.existsSync(file2)) {
       return false;

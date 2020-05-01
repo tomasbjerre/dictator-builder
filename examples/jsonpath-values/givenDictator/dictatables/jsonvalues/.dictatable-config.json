@@ -1,0 +1,29 @@
+{
+  "message": "Example jsonpath values on files",
+  "actions": [
+    {
+      "message": "Should change the file",
+      "haveJsonPathValues": [
+        {
+          "expression": "$.a",
+          "value": "new value on existing node"
+        },
+        {
+          "expression": "$.newnode",
+          "value": "new value on new node"
+        }
+      ],
+      "target": "jsonfile1.json"
+    },
+    {
+      "message": "Should not change the file",
+      "haveJsonPathValues": [
+        {
+          "expression": "$.e",
+          "value": "f"
+        }
+      ],
+      "target": "jsonfile2.json"
+    }
+  ]
+}
