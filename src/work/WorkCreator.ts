@@ -1,12 +1,12 @@
 import { Logger, LEVEL } from '../common/Logger';
 import { DictatableConfigWithExtras } from '../DictatableFinder';
-
 import { CopyWork } from './CopyWork';
 import { FileOperations } from '../common/FileOperations';
 import { SubsetOfJsonFileWork } from './SubsetOfJsonFileWork';
 import { ChmodWork } from './ChmodWork';
 import { HaveJsonPathValuesWork } from './HaveJsonPathValuesWork';
 import { NotHaveJsonPathNodesWork } from './NotHaveJsonPathNodesWork';
+import { HaveLineContainingWork } from './HaveLineContainingWork';
 
 export interface Work {
   isApplied(): boolean;
@@ -17,23 +17,23 @@ export interface Work {
 export class WorkCreator {
   constructor(private logger: Logger) {}
   getWork(
-    config: DictatableConfigWithExtras,
+    dictatableConfig: DictatableConfigWithExtras,
     fileOperations: FileOperations
   ): Work[] {
     const work: Work[] = [];
     this.logger.log(
       LEVEL.VERBOSE,
-      `Analyzing ${config.dictatableConfigFilename}...`
+      `Analyzing ${dictatableConfig.dictatableConfigFilename}...`
     );
 
-    (config.actions || []).forEach((action) => {
+    (dictatableConfig.actions || []).forEach((action) => {
       if (action.copyFrom) {
         work.push(
           new CopyWork(
             this.logger,
             fileOperations,
             action,
-            config.dictatableName
+            dictatableConfig.dictatableName
           )
         );
       }
@@ -43,7 +43,7 @@ export class WorkCreator {
             this.logger,
             fileOperations,
             action,
-            config.dictatableName
+            dictatableConfig.dictatableName
           )
         );
       }
@@ -58,6 +58,11 @@ export class WorkCreator {
       if (action.notHaveJsonPathNodes) {
         work.push(
           new NotHaveJsonPathNodesWork(this.logger, fileOperations, action)
+        );
+      }
+      if (action.haveLineContaining) {
+        work.push(
+          new HaveLineContainingWork(this.logger, fileOperations, action)
         );
       }
     });

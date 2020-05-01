@@ -1,0 +1,15 @@
+{
+  "message": "Example file containing values",
+  "actions": [
+    {
+      "message": "Should change the file",
+      "haveLineContaining": ["newline", "line1"],
+      "target": "file1.txt"
+    },
+    {
+      "message": "Should not change the file",
+      "haveLineContaining": ["line4", "line5", "line6"],
+      "target": "file2.txt"
+    }
+  ]
+}
