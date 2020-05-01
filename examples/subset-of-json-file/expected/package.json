@@ -1,0 +1,16 @@
+{
+    "name": "dictator-builder",
+    "version": "0.0.7",
+    "scripts": {
+        "build": "ls build"
+    },
+    "dependencies": {
+        "@types/glob": "^7.1.1",
+        "underscore": "^1.10.2"
+    },
+    "license": "Apache 2",
+    "devDependencies": {
+        "@babel/core": "^7.9.0",
+        "@babel/preset-env": "^7.9.5"
+    }
+}

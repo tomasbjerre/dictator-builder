@@ -3,6 +3,7 @@ import { DictatableConfigWithExtras } from '../DictatableFinder';
 
 import { CopyWork } from './CopyWork';
 import { FileOperations } from '../common/FileOperations';
+import { SubsetOfJsonFileWork } from './SubsetOfJsonFileWork';
 
 export interface Work {
   isApplied(): boolean;
@@ -26,6 +27,16 @@ export class WorkCreator {
       if (action.copyFrom) {
         work.push(
           new CopyWork(
+            this.logger,
+            fileOperations,
+            action,
+            config.dictatableName
+          )
+        );
+      }
+      if (action.beSubsetOfJsonFile) {
+        work.push(
+          new SubsetOfJsonFileWork(
             this.logger,
             fileOperations,
             action,
