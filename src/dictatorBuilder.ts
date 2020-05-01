@@ -1,4 +1,4 @@
-import { DictatableFinder } from './DictatableFinder';
+import { DictatableFinder } from './dictatable/DictatableFinder';
 import { WorkCreator, Work } from './work/WorkCreator';
 import { LEVEL, Logger } from './common/Logger';
 import { FileOperations } from './common/FileOperations';
@@ -18,7 +18,8 @@ export function runDictator(
 
   const dictatables = new DictatableFinder(
     logger,
-    options.dictatorPath
+    options.dictatorPath,
+    fileOperations
   ).getDictatables();
 
   const unappliedDictatables: any = {};
@@ -38,7 +39,7 @@ export function runDictator(
       `Found dictatables that are not applied:\n`,
       unappliedDictatables
     );
-    process.exit(1)
+    process.exit(1);
   }
 }
 

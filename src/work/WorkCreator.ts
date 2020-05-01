@@ -1,5 +1,5 @@
 import { Logger, LEVEL } from '../common/Logger';
-import { DictatableConfigWithExtras } from '../DictatableFinder';
+import { DictatableConfigWithExtras } from '../dictatable/DictatableFinder';
 import { CopyWork } from './CopyWork';
 import { FileOperations } from '../common/FileOperations';
 import { SubsetOfJsonFileWork } from './SubsetOfJsonFileWork';

@@ -109,28 +109,22 @@ can be regular expression.
 
 The object is an array with all elements of the type `string`.
 
-### `haveXPathValues` (array)
-
-The object is an array with all elements of the type `DictatableConfigActionExpression`.
-
 ### `itShould` (string)
 
 A file that should EXIST or NOT_EXIST.
 
-### `message` (string)
-
-Optional message. Can be used to explain this requirement.
-
 ### `notHaveEnvironmentVariable` (DictatableConfigActionEnvironmentVariable)
 
-### `notHaveJsonPathNodes` (array)
+### `notHaveJsonPathValues` (array)
+
+The object is an array with all elements of the type `DictatableConfigActionExpression`.
+
+### `notHaveLineContaining` (array)
+
+can be regular expression.
 
 The object is an array with all elements of the type `string`.
 
-### `notHaveXPathPathNodes` (array)
-
-The object is an array with all elements of the type `string`.
-
-### `target` (string, required)
+### `target` (string)
 
 The file to trigger on.

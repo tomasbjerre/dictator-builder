@@ -3,7 +3,7 @@ import fs from 'fs';
 import {
   DEFAULT_DICTATABLES_FOLDER,
   DictatableConfigWithExtras,
-} from '../DictatableFinder';
+} from '../dictatable/DictatableFinder';
 import Glob from 'glob';
 
 export class FileOperations {

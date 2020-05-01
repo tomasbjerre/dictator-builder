@@ -20,17 +20,12 @@ export interface DictatableConfig {
 export interface DictatableConfigTrigger {
   /**
    * @type string
-   * @description Optional message. Can be used to explain this requirement.
-   */
-  message?: string;
-  /**
-   * @type string
    * @description The file to trigger on.
    */
-  target: string;
+  target?: string;
 
   haveJsonPathValues?: DictatableConfigActionExpression[];
-  notHaveJsonPathNodes?: string[];
+  notHaveJsonPathValues?: DictatableConfigActionExpression[];
 
   /**
    * @items.type string
@@ -38,8 +33,12 @@ export interface DictatableConfigTrigger {
    * @description can be regular expression.
    */
   haveLineContaining?: string[];
-  notHaveXPathPathNodes?: string[];
-  haveXPathValues?: DictatableConfigActionExpression[];
+  /**
+   * @items.type string
+   * @items.minimum 1
+   * @description can be regular expression.
+   */
+  notHaveLineContaining?: string[];
   /**
    * @type string
    * @description A file that should EXIST or NOT_EXIST.
