@@ -1,0 +1,6 @@
+lib
+package.json
+dictatorconfig.md
+src/schema.json
+examples/**/expected/*
+examples/**/actual/*

@@ -1,0 +1,13 @@
+{
+  "message": "Example json subset of other json",
+  "actions": [
+    {
+      "beSubsetOfJsonFile": "dictated_json.json",
+      "target": "new_file.json"
+    },
+    {
+      "beSubsetOfJsonFile": "dictated_json.json",
+      "target": "file_to_patch.json"
+    }
+  ]
+}

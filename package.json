@@ -5,7 +5,7 @@
     "build": "mkdir -p lib && npm run generate-schema && npm run format && tsc -p .",
     "generate-schema": "npx typescript-json-schema src/types.d.ts DictatableConfig --required --noExtraProps --topRef -o src/schema.json && cp src/schema.json lib && npm run generate-markdown-schema",
     "generate-markdown-schema": "node generate-markdown-schema.js",
-    "format": "prettier --write '{*.md,*.js,*.json,**/*.json,src/*.ts,src/**/*.ts}'",
+    "format": "prettier --write '**/*{.md,.js,.json,.json,.ts}'",
     "test": "npm run build && jest",
     "release": "npm version patch && npm run test && npm publish && git push --follow-tags"
   },
@@ -35,7 +35,8 @@
     "glob": "^7.1.6",
     "jsonschema": "^1.2.6",
     "path": "^0.12.7",
-    "pkg-up": "^3.1.0"
+    "pkg-up": "^3.1.0",
+    "underscore": "^1.10.2"
   },
   "homepage": "https://github.com/tomasbjerre/dictator-builder",
   "repository": "git@github.com:tomasbjerre/dictator-builder.git",
