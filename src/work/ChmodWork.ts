@@ -18,9 +18,8 @@ export class ChmodWork implements Work {
 
   isApplied(): boolean {
     if (!fs.existsSync(this.targetFile)) {
-      throw Error(
-        `Cannot apply chmod to none existing file ${this.targetFile}`
-      );
+      //Not failing here, as the file may be created during an action.
+      return false;
     }
     const currentStat = fs.statSync(this.targetFile);
     const currentMode = +(currentStat.mode & 0o777).toString(8);
@@ -33,6 +32,11 @@ export class ChmodWork implements Work {
   }
 
   apply(): void {
+    if (!fs.existsSync(this.targetFile)) {
+      throw Error(
+        `Cannot apply chmod to none existing file ${this.targetFile}`
+      );
+    }
     fs.chmodSync(this.targetFile, this.action.chmod!);
   }
 
