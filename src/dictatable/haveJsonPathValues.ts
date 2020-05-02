@@ -20,7 +20,7 @@ export default function haveJsonPathValues(
         LEVEL.VERBOSE,
         `Found '${found}' from '${it.expression}' checking against '${it.value}'`
       );
-      return found.filter((f: any) => f == it.value);
+      return found == it.value;
     }).length > 0
   );
 }

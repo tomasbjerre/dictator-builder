@@ -1,31 +1,190 @@
+import path from 'path';
 import { DictatableFinder } from '../dictatable/DictatableFinder';
 import { Logger, LEVEL } from '../common/Logger';
 import { FileOperations } from '../common/FileOperations';
-import { DictatableConfigTrigger } from '../types';
+import { DictatableConfigTrigger, PLATFORM_TYPE } from '../types';
 
 let sut: DictatableFinder;
 const logger = new Logger(LEVEL.VERBOSE);
 let targetFile: string;
-let trigger: DictatableConfigTrigger;
+
+const ENV_VAR = 'thevalue';
+let triggerTrue: DictatableConfigTrigger;
+let triggerFalse: DictatableConfigTrigger;
 
 beforeEach(() => {
   const dictatoPath = 'nop';
-  const targetPath = 'not';
+  const targetPath = __dirname;
   const fileOperations = new FileOperations(dictatoPath, targetPath);
   sut = new DictatableFinder(logger, dictatoPath, fileOperations);
   targetFile = 'nop';
-});
 
-test('can trigger on env variable', () => {
-  trigger = {
+  process.env[ENV_VAR] = 'thevalue';
+  triggerTrue = {
     haveEnvironmentVariable: {
-      name: 'thename',
+      name: ENV_VAR,
       value: 'thevalue',
     },
   };
 
-  expect(sut.shouldTrigger(trigger, targetFile, logger)).toBeFalsy();
+  triggerFalse = {
+    haveEnvironmentVariable: {
+      name: ENV_VAR,
+      value: 'theothervalue',
+    },
+  };
+});
 
-  process.env['thename'] = 'thevalue';
-  expect(sut.shouldTrigger(trigger, targetFile, logger)).toBeTruthy();
+describe('and', () => {
+  test('empty triggers should be false', () => {
+    expect(sut.and([])).toBeFalsy();
+  });
+  test('true should be true', () => {
+    expect(sut.and([triggerTrue])).toBeTruthy();
+  });
+  test('one true and one false trigger should be false', () => {
+    expect(sut.and([triggerTrue, triggerFalse])).toBeFalsy();
+  });
+  test('false should be false', () => {
+    expect(sut.and([triggerFalse])).toBeFalsy();
+  });
+});
+
+describe('or', () => {
+  test('empty triggers should be false', () => {
+    expect(sut.or([])).toBeFalsy();
+  });
+  test('true should be true', () => {
+    expect(sut.or([triggerTrue])).toBeTruthy();
+  });
+  test('one true and one false trigger should be false', () => {
+    expect(sut.or([triggerTrue, triggerFalse])).toBeTruthy();
+  });
+  test('false should be false', () => {
+    expect(sut.or([triggerFalse])).toBeFalsy();
+  });
+});
+
+describe('environment variables', () => {
+  beforeEach(() => {
+    process.env[ENV_VAR] = 'thevalue';
+    triggerTrue = {
+      haveEnvironmentVariable: {
+        name: ENV_VAR,
+        value: 'thevalue',
+      },
+    };
+
+    triggerFalse = {
+      haveEnvironmentVariable: {
+        name: ENV_VAR,
+        value: 'theothervalue',
+      },
+    };
+  });
+
+  test('expected value should trigger', () => {
+    expect(sut.shouldTrigger(triggerTrue)).toBeTruthy();
+  });
+  test('unexpected value should not trigger', () => {
+    expect(sut.shouldTrigger(triggerFalse)).toBeFalsy();
+  });
+});
+
+describe('platform', () => {
+  beforeEach(() => {
+    triggerTrue = {
+      runningOnPlatform: [process.platform.toString() as PLATFORM_TYPE],
+    };
+
+    triggerFalse = {
+      runningOnPlatform: ['sunos'],
+    };
+  });
+
+  test('expected value should trigger', () => {
+    expect(sut.shouldTrigger(triggerTrue)).toBeTruthy();
+  });
+  test('unexpected value should not trigger', () => {
+    expect(sut.shouldTrigger(triggerFalse)).toBeFalsy();
+  });
+});
+
+describe('json path values', () => {
+  beforeEach(() => {
+    targetFile = path.join(`dictatableTrigger`, `jsonfile.json`);
+
+    triggerTrue = {
+      target: targetFile,
+      haveJsonPathValues: [
+        {
+          expression: '$.a',
+          value: 'b',
+        },
+      ],
+    };
+
+    triggerFalse = {
+      target: targetFile,
+      haveJsonPathValues: [
+        {
+          expression: '$.a',
+          value: 'c',
+        },
+      ],
+    };
+  });
+
+  test('expected value should trigger', () => {
+    expect(sut.shouldTrigger(triggerTrue)).toBeTruthy();
+  });
+  test('unexpected value should not trigger', () => {
+    expect(sut.shouldTrigger(triggerFalse)).toBeFalsy();
+  });
+});
+
+describe('line containing', () => {
+  beforeEach(() => {
+    targetFile = path.join(`dictatableTrigger`, `textfile.txt`);
+
+    triggerTrue = {
+      target: targetFile,
+      haveLineContaining: ['line1'],
+    };
+
+    triggerFalse = {
+      target: targetFile,
+      haveLineContaining: ['whatever'],
+    };
+  });
+
+  test('expected value should trigger', () => {
+    expect(sut.shouldTrigger(triggerTrue)).toBeTruthy();
+  });
+  test('unexpected value should not trigger', () => {
+    expect(sut.shouldTrigger(triggerFalse)).toBeFalsy();
+  });
+});
+
+describe('it should', () => {
+  beforeEach(() => {
+    targetFile = path.join(`dictatableTrigger`, `textfile.txt`);
+
+    triggerTrue = {
+      target: targetFile,
+      itShould: 'EXIST',
+    };
+
+    triggerFalse = {
+      target: targetFile,
+      itShould: 'NOT_EXIST',
+    };
+  });
+
+  test('expected value should trigger', () => {
+    expect(sut.shouldTrigger(triggerTrue)).toBeTruthy();
+  });
+  test('unexpected value should not trigger', () => {
+    expect(sut.shouldTrigger(triggerFalse)).toBeFalsy();
+  });
 });

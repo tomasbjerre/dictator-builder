@@ -55,9 +55,14 @@ export class DictatableFinder {
       return this.getValidatedDictatableConfig(dictatable);
     });
 
-    const applicableDictatables = validatedDictatables.filter((it) =>
-      this.isDictatableApplicable(it, this.logger)
-    );
+    const applicableDictatables = validatedDictatables.filter((it) => {
+      const noTriggers = (it.triggers || []).length == 0;
+      if (noTriggers) {
+        return true;
+      } else {
+        return this.and(it.triggers || []);
+      }
+    });
 
     this.logger.log(
       LEVEL.VERBOSE,
@@ -101,70 +106,62 @@ export class DictatableFinder {
     );
   }
 
-  private isDictatableApplicable(
-    dictatable: DictatableConfigWithExtras,
-    logger: Logger
-  ): boolean {
-    if (!dictatable.triggers || dictatable.triggers.length == 0) {
-      return true;
-    }
-    for (const trigger of dictatable.triggers) {
-      let targetFile = undefined;
-      if (trigger.target) {
-        targetFile = this.fileOperations.fileInTarget(trigger.target!);
-      }
-      if (this.shouldTrigger(trigger, targetFile, logger)) {
-        return true;
-      }
-    }
-    logger.log(
-      LEVEL.VERBOSE,
-      `No triggers matched for ${dictatable.dictatableName}`
-    );
-    return false;
-  }
-
-  public shouldTrigger(
-    trigger: DictatableConfigTrigger,
-    targetFile: string | undefined,
-    logger: Logger
-  ): boolean {
-    let triggerResult = this.checkTrigger(trigger, targetFile, logger);
+  shouldTrigger(trigger: DictatableConfigTrigger): boolean {
+    let triggerResult = this.checkTrigger(trigger);
     if (trigger.and && triggerResult) {
-      triggerResult =
-        trigger.and.find(
-          (andTrigger) =>
-            this.shouldTrigger(andTrigger, targetFile, logger) == false
-        ) == undefined;
+      triggerResult = this.and(trigger.and);
     }
     if (trigger.or && !triggerResult) {
-      triggerResult =
-        trigger.or.find(
-          (andTrigger) =>
-            this.shouldTrigger(andTrigger, targetFile, logger) == true
-        ) != undefined;
+      triggerResult = this.or(trigger.or);
     }
     if (trigger.not) {
       triggerResult = !triggerResult;
     }
+    this.logger.log(
+      LEVEL.VERBOSE,
+      `shouldTrigger ${JSON.stringify(trigger)} ${triggerResult}`
+    );
     return triggerResult;
   }
 
-  private checkTrigger(
-    trigger: DictatableConfigTrigger,
-    targetFile: string | undefined,
-    logger: Logger
-  ): boolean {
+  or(triggers: DictatableConfigTrigger[]) {
     return (
-      (trigger.itShould && itShould(targetFile, trigger.itShould)) ||
+      triggers.find((trigger) => this.shouldTrigger(trigger) == true) !=
+      undefined
+    );
+  }
+
+  and(triggers: DictatableConfigTrigger[]): boolean {
+    const noTriggers = (triggers || []).length == 0;
+    if (noTriggers) {
+      return false;
+    } else {
+      return (
+        triggers.find((trigger) => this.shouldTrigger(trigger) == false) ==
+        undefined
+      );
+    }
+  }
+
+  checkTrigger(trigger: DictatableConfigTrigger): boolean {
+    let targetFile = undefined;
+    if (trigger.target) {
+      targetFile = this.fileOperations.fileInTarget(trigger.target!);
+    }
+    return (trigger.itShould && itShould(targetFile, trigger.itShould)) ||
       (trigger.runningOnPlatform &&
-        runningOnPlatform(logger, trigger.runningOnPlatform)) ||
+        runningOnPlatform(this.logger, trigger.runningOnPlatform)) ||
       (trigger.haveEnvironmentVariable &&
         haveEnvironmentVariable(trigger.haveEnvironmentVariable)) ||
       (trigger.haveJsonPathValues &&
-        haveJsonPathValues(logger, targetFile, trigger.haveJsonPathValues)) ||
+        haveJsonPathValues(
+          this.logger,
+          targetFile,
+          trigger.haveJsonPathValues
+        )) ||
       (trigger.haveLineContaining &&
         haveLineContaining(targetFile, trigger.haveLineContaining))!
-    );
+      ? true
+      : false;
   }
 }
