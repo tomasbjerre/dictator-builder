@@ -47,7 +47,8 @@ export interface DictatableConfigTrigger {
   haveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
   notHaveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
   /**
-   * @type string
+   * @items.type string
+   * @items.minimum 1
    * @description Trigger when running on platform. process.platform is one of:
    * 'aix', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos', 'win32'.
    */
