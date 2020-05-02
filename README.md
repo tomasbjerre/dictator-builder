@@ -11,8 +11,8 @@ A dictator is basically just a command line tool distributed with NPM. The packa
 
 Se the example:
 
- * [Haffaz Dictator](https://github.com/tomasbjerre/dictator-haffaz), it can be run from command line with: `npx haffaz@latest`.
- * [Cypress Dictator](https://github.com/tomasbjerre/dictator-cypress), shows how to package Cypress binary. 
+- [Haffaz Dictator](https://github.com/tomasbjerre/dictator-haffaz), it can be run from command line with: `npx haffaz@latest`.
+- [Cypress Dictator](https://github.com/tomasbjerre/dictator-cypress), shows how to package Cypress binary.
 
 ## What it solves
 

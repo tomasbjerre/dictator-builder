@@ -10,6 +10,11 @@
       "message": "Should not change the file",
       "haveLineContaining": ["line4", "line5", "line6"],
       "target": "file2.txt"
+    },
+    {
+      "message": "Should create file",
+      "haveLineContaining": ["line4", "line5", "line6"],
+      "target": "newfile.txt"
     }
   ]
 }

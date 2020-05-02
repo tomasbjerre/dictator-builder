@@ -18,10 +18,12 @@ export class HaveLineContainingWork implements Work {
   }
 
   isApplied(): boolean {
+    let content: string[] = [];
     if (!fs.existsSync(this.targetFile)) {
-      return false;
+      content = [];
+    } else {
+      content = fs.readFileSync(this.targetFile, 'utf8').split(/\r?\n/);
     }
-    const content = fs.readFileSync(this.targetFile, 'utf8').split(/\r?\n/);
     this.notApplied = this.action.haveLineContaining!.filter(
       (it) => content.indexOf(it) == -1
     );
@@ -34,10 +36,18 @@ export class HaveLineContainingWork implements Work {
   }
 
   apply(): void {
-    fs.appendFileSync(this.targetFile, os.EOL);
-    this.notApplied.forEach((it) => {
-      fs.appendFileSync(this.targetFile, it + os.EOL);
-    });
+    if (fs.existsSync(this.targetFile)) {
+      this.logger.log(LEVEL.VERBOSE, `Appending to file`, this.notApplied);
+      fs.appendFileSync(this.targetFile, os.EOL);
+      this.notApplied.forEach((it) => {
+        fs.appendFileSync(this.targetFile, it + os.EOL);
+      });
+    } else {
+      this.logger.log(LEVEL.VERBOSE, `Creating file`, this.notApplied);
+      fs.writeFileSync(this.targetFile, this.notApplied.join(os.EOL) + os.EOL, {
+        encoding: 'utf8',
+      });
+    }
   }
 
   info(): string {
