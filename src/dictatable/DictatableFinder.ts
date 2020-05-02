@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { Logger, LEVEL } from '../common/Logger';
-import { DictatableConfig } from '../types';
+import { DictatableConfig, DictatableConfigTrigger } from '../types';
 import { Validator, Schema } from 'jsonschema';
 import haveEnvironmentVariable from './haveEnvironmentVariable';
 import runningOnPlatform from './runningOnPlatform';
@@ -113,27 +113,7 @@ export class DictatableFinder {
       if (trigger.target) {
         targetFile = this.fileOperations.fileInTarget(trigger.target!);
       }
-      if (
-        (trigger.itShould && itShould(targetFile, trigger.itShould)) ||
-        (trigger.runningOnPlatform &&
-          runningOnPlatform(logger, trigger.runningOnPlatform)) ||
-        (trigger.haveEnvironmentVariable &&
-          haveEnvironmentVariable(trigger.haveEnvironmentVariable)) ||
-        (trigger.notHaveEnvironmentVariable &&
-          !haveEnvironmentVariable(trigger.notHaveEnvironmentVariable)) ||
-        (trigger.haveJsonPathValues &&
-          haveJsonPathValues(logger, targetFile, trigger.haveJsonPathValues)) ||
-        (trigger.notHaveJsonPathValues &&
-          !haveJsonPathValues(
-            logger,
-            targetFile,
-            trigger.notHaveJsonPathValues
-          )) ||
-        (trigger.haveLineContaining &&
-          haveLineContaining(targetFile, trigger.haveLineContaining)) ||
-        (trigger.notHaveLineContaining &&
-          !haveLineContaining(targetFile, trigger.notHaveLineContaining))
-      ) {
+      if (this.shouldTrigger(trigger, targetFile, logger)) {
         return true;
       }
     }
@@ -142,5 +122,49 @@ export class DictatableFinder {
       `No triggers matched for ${dictatable.dictatableName}`
     );
     return false;
+  }
+
+  private shouldTrigger(
+    trigger: DictatableConfigTrigger,
+    targetFile: string | undefined,
+    logger: Logger
+  ): boolean {
+    let triggerResult = this.checkTrigger(trigger, targetFile, logger);
+    if (trigger.and && triggerResult) {
+      triggerResult =
+        trigger.and.find(
+          (andTrigger) =>
+            this.shouldTrigger(andTrigger, targetFile, logger) == false
+        ) == undefined;
+    }
+    if (trigger.or && !triggerResult) {
+      triggerResult =
+        trigger.or.find(
+          (andTrigger) =>
+            this.shouldTrigger(andTrigger, targetFile, logger) == true
+        ) != undefined;
+    }
+    if (trigger.not) {
+      triggerResult = !triggerResult;
+    }
+    return triggerResult;
+  }
+
+  private checkTrigger(
+    trigger: DictatableConfigTrigger,
+    targetFile: string | undefined,
+    logger: Logger
+  ): boolean {
+    return (
+      (trigger.itShould && itShould(targetFile, trigger.itShould)) ||
+      (trigger.runningOnPlatform &&
+        runningOnPlatform(logger, trigger.runningOnPlatform)) ||
+      (trigger.haveEnvironmentVariable &&
+        haveEnvironmentVariable(trigger.haveEnvironmentVariable)) ||
+      (trigger.haveJsonPathValues &&
+        haveJsonPathValues(logger, targetFile, trigger.haveJsonPathValues)) ||
+      (trigger.haveLineContaining &&
+        haveLineContaining(targetFile, trigger.haveLineContaining))!
+    );
   }
 }

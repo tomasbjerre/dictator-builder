@@ -25,7 +25,6 @@ export interface DictatableConfigTrigger {
   target?: string;
 
   haveJsonPathValues?: DictatableConfigActionExpression[];
-  notHaveJsonPathValues?: DictatableConfigActionExpression[];
 
   /**
    * @items.type string
@@ -34,24 +33,30 @@ export interface DictatableConfigTrigger {
    */
   haveLineContaining?: string[];
   /**
-   * @items.type string
-   * @items.minimum 1
-   * @description can be regular expression.
-   */
-  notHaveLineContaining?: string[];
-  /**
    * @type string
    * @description A file that should EXIST or NOT_EXIST.
    */
   itShould?: DictatableConfigActionItShould;
   haveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
-  notHaveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
   /**
    * @items.type string
    * @items.minimum 1
    * @description Trigger when running on platform. process.platform. https://nodejs.org/api/process.html#process_process_platform
    */
   runningOnPlatform?: PLATFORM_TYPE[];
+
+  /**
+   * @description Negate the following triggers.
+   */
+  not?: DictatableConfigTrigger[];
+  /**
+   * @description Or any of these triggers.
+   */
+  or?: DictatableConfigTrigger[];
+  /**
+   * @description And all these triggers.
+   */
+  and?: DictatableConfigTrigger[];
 }
 
 export type PLATFORM_TYPE =

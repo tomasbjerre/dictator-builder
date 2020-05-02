@@ -97,6 +97,12 @@ A value that should match.
 
 Properties of the `DictatableConfigTrigger` object:
 
+### `and` (array)
+
+And all these triggers.
+
+The object is an array with all elements of the type `DictatableConfigTrigger`.
+
 ### `haveEnvironmentVariable` (DictatableConfigActionEnvironmentVariable)
 
 ### `haveJsonPathValues` (array)
@@ -113,17 +119,17 @@ The object is an array with all elements of the type `string`.
 
 A file that should EXIST or NOT_EXIST.
 
-### `notHaveEnvironmentVariable` (DictatableConfigActionEnvironmentVariable)
+### `not` (array)
 
-### `notHaveJsonPathValues` (array)
+Negate the following triggers.
 
-The object is an array with all elements of the type `DictatableConfigActionExpression`.
+The object is an array with all elements of the type `DictatableConfigTrigger`.
 
-### `notHaveLineContaining` (array)
+### `or` (array)
 
-can be regular expression.
+Or any of these triggers.
 
-The object is an array with all elements of the type `string`.
+The object is an array with all elements of the type `DictatableConfigTrigger`.
 
 ### `runningOnPlatform` (array)
 
