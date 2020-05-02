@@ -4,6 +4,7 @@ import { Logger, LEVEL } from '../common/Logger';
 import { DictatableConfig } from '../types';
 import { Validator, Schema } from 'jsonschema';
 import haveEnvironmentVariable from './haveEnvironmentVariable';
+import runningOnPlatform from './runningOnPlatform';
 import haveJsonPathValues from './haveJsonPathValues';
 import haveLineContaining from './haveLineContaining';
 import itShould from './itShould';
@@ -114,6 +115,8 @@ export class DictatableFinder {
       }
       if (
         (trigger.itShould && itShould(targetFile, trigger.itShould)) ||
+        (trigger.runningOnPlatform &&
+          runningOnPlatform(logger, trigger.runningOnPlatform)) ||
         (trigger.haveEnvironmentVariable &&
           haveEnvironmentVariable(trigger.haveEnvironmentVariable)) ||
         (trigger.notHaveEnvironmentVariable &&

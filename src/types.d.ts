@@ -46,6 +46,12 @@ export interface DictatableConfigTrigger {
   itShould?: DictatableConfigActionItShould;
   haveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
   notHaveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
+  /**
+   * @type string
+   * @description Trigger when running on platform. process.platform is one of:
+   * 'aix', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos', 'win32'.
+   */
+  runningOnPlatform?: string[];
 }
 
 export interface DictatableConfigAction {

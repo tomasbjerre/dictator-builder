@@ -125,6 +125,11 @@ can be regular expression.
 
 The object is an array with all elements of the type `string`.
 
+### `runningOnPlatform` (string)
+
+Trigger when running on platform. process.platform is one of:
+'aix', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos', 'win32'.
+
 ### `target` (string)
 
 The file to trigger on.
