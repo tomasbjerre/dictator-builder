@@ -138,7 +138,7 @@ export class DictatableFinder {
       }
     }
     logger.log(
-      LEVEL.INFO,
+      LEVEL.VERBOSE,
       `No triggers matched for ${dictatable.dictatableName}`
     );
     return false;

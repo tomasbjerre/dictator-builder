@@ -49,11 +49,19 @@ export interface DictatableConfigTrigger {
   /**
    * @items.type string
    * @items.minimum 1
-   * @description Trigger when running on platform. process.platform is one of:
-   * 'aix', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos', 'win32'.
+   * @description Trigger when running on platform. process.platform. https://nodejs.org/api/process.html#process_process_platform
    */
-  runningOnPlatform?: string[];
+  runningOnPlatform?: PLATFORM_TYPE[];
 }
+
+export type PLATFORM_TYPE =
+  | 'aix'
+  | 'darwin'
+  | 'freebsd'
+  | 'linux'
+  | 'openbsd'
+  | 'sunos'
+  | 'win32';
 
 export interface DictatableConfigAction {
   /**

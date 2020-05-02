@@ -127,8 +127,7 @@ The object is an array with all elements of the type `string`.
 
 ### `runningOnPlatform` (array)
 
-Trigger when running on platform. process.platform is one of:
-'aix', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos', 'win32'.
+Trigger when running on platform. process.platform. https://nodejs.org/api/process.html#process_process_platform
 
 The object is an array with all elements of the type `string`.
 
