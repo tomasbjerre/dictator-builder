@@ -124,7 +124,7 @@ export class DictatableFinder {
     return false;
   }
 
-  private shouldTrigger(
+  public shouldTrigger(
     trigger: DictatableConfigTrigger,
     targetFile: string | undefined,
     logger: Logger
