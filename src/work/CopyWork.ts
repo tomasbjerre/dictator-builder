@@ -65,7 +65,7 @@ export class CopyWork implements Work {
       }
       const targetDir = path.dirname(copyTo);
       if (!fs.existsSync(targetDir)) {
-        fs.mkdirSync(targetDir);
+        fs.mkdirSync(targetDir, { recursive: true });
       }
       this.logger.log(LEVEL.VERBOSE, `Copying ${copyFrom} to ${copyTo}`);
       fs.copyFileSync(copyFrom, copyTo);

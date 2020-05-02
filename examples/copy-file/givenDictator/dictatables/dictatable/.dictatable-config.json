@@ -14,6 +14,10 @@
       "target": "file_to_new_folder/README2.md"
     },
     {
+      "copyFrom": "readmefile2.txt",
+      "target": "file_to_/new_folder/with/parents/README2.md"
+    },
+    {
       "copyFrom": "mix/*.txt",
       "target": "files_to_new_folder"
     },
