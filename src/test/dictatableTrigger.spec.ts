@@ -94,11 +94,11 @@ describe('environment variables', () => {
 describe('platform', () => {
   beforeEach(() => {
     triggerTrue = {
-      runningOnPlatform: [process.platform.toString() as PLATFORM_TYPE],
+      runningOnPlatform: process.platform.toString() as PLATFORM_TYPE,
     };
 
     triggerFalse = {
-      runningOnPlatform: ['sunos'],
+      runningOnPlatform: 'sunos',
     };
   });
 
@@ -116,22 +116,18 @@ describe('json path values', () => {
 
     triggerTrue = {
       target: targetFile,
-      haveJsonPathValues: [
-        {
-          expression: '$.a',
-          value: 'b',
-        },
-      ],
+      haveJsonPathValue: {
+        expression: '$.a',
+        value: 'b',
+      },
     };
 
     triggerFalse = {
       target: targetFile,
-      haveJsonPathValues: [
-        {
-          expression: '$.a',
-          value: 'c',
-        },
-      ],
+      haveJsonPathValue: {
+        expression: '$.a',
+        value: 'c',
+      },
     };
   });
 
@@ -144,17 +140,29 @@ describe('json path values', () => {
 });
 
 describe('line containing', () => {
+  let triggerTrueRegexp: DictatableConfigTrigger;
+  let triggerFalseRegexp: DictatableConfigTrigger;
   beforeEach(() => {
     targetFile = path.join(`dictatableTrigger`, `textfile.txt`);
 
     triggerTrue = {
       target: targetFile,
-      haveLineContaining: ['line1'],
+      haveLineContaining: 'line1',
+    };
+
+    triggerTrueRegexp = {
+      target: targetFile,
+      haveLineContaining: '^[a-z0-9]+',
+    };
+
+    triggerFalseRegexp = {
+      target: targetFile,
+      haveLineContaining: '^[0-9]+',
     };
 
     triggerFalse = {
       target: targetFile,
-      haveLineContaining: ['whatever'],
+      haveLineContaining: 'whatever',
     };
   });
 
@@ -163,6 +171,12 @@ describe('line containing', () => {
   });
   test('unexpected value should not trigger', () => {
     expect(sut.shouldTrigger(triggerFalse)).toBeFalsy();
+  });
+  test('expected value should trigger on regexp', () => {
+    expect(sut.shouldTrigger(triggerTrueRegexp)).toBeTruthy();
+  });
+  test('unexpected value should not trigger on regexp', () => {
+    expect(sut.shouldTrigger(triggerFalseRegexp)).toBeFalsy();
   });
 });
 

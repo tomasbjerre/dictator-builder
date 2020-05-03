@@ -105,15 +105,11 @@ The object is an array with all elements of the type `DictatableConfigTrigger`.
 
 ### `haveEnvironmentVariable` (DictatableConfigActionEnvironmentVariable)
 
-### `haveJsonPathValues` (array)
+### `haveJsonPathValue` (DictatableConfigActionExpression)
 
-The object is an array with all elements of the type `DictatableConfigActionExpression`.
-
-### `haveLineContaining` (array)
+### `haveLineContaining` (string)
 
 can be regular expression.
-
-The object is an array with all elements of the type `string`.
 
 ### `itShould` (string)
 
@@ -131,12 +127,12 @@ Or any of these triggers.
 
 The object is an array with all elements of the type `DictatableConfigTrigger`.
 
-### `runningOnPlatform` (array)
+### `runningOnPlatform` (PLATFORM_TYPE)
 
 Trigger when running on platform. process.platform. https://nodejs.org/api/process.html#process_process_platform
-
-The object is an array with all elements of the type `string`.
 
 ### `target` (string)
 
 The file to trigger on.
+
+## `PLATFORM_TYPE` (string)

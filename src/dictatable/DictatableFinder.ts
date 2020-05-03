@@ -5,7 +5,7 @@ import { DictatableConfig, DictatableConfigTrigger } from '../types';
 import { Validator, Schema } from 'jsonschema';
 import haveEnvironmentVariable from './haveEnvironmentVariable';
 import runningOnPlatform from './runningOnPlatform';
-import haveJsonPathValues from './haveJsonPathValues';
+import haveJsonPathValue from './haveJsonPathValue';
 import haveLineContaining from './haveLineContaining';
 import itShould from './itShould';
 import { FileOperations } from '../common/FileOperations';
@@ -153,11 +153,11 @@ export class DictatableFinder {
         runningOnPlatform(this.logger, trigger.runningOnPlatform)) ||
       (trigger.haveEnvironmentVariable &&
         haveEnvironmentVariable(trigger.haveEnvironmentVariable)) ||
-      (trigger.haveJsonPathValues &&
-        haveJsonPathValues(
+      (trigger.haveJsonPathValue &&
+        haveJsonPathValue(
           this.logger,
           targetFile,
-          trigger.haveJsonPathValues
+          trigger.haveJsonPathValue
         )) ||
       (trigger.haveLineContaining &&
         haveLineContaining(targetFile, trigger.haveLineContaining))!

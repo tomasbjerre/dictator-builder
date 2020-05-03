@@ -2,25 +2,20 @@ import { DictatableConfigActionExpression } from '../types';
 const jsonpath = require('jsonpath');
 import fs from 'fs';
 import { Logger, LEVEL } from '../common/Logger';
-export default function haveJsonPathValues(
+export default function haveJsonPathValue(
   logger: Logger,
   targetFile: string | undefined,
-  expressions: DictatableConfigActionExpression[]
+  expression: DictatableConfigActionExpression
 ): boolean {
   if (!targetFile) {
     throw Error(`targetFile not specified.`);
   }
 
   const targetFileData = JSON.parse(fs.readFileSync(targetFile, 'utf8'));
-
-  return (
-    expressions.filter((it) => {
-      const found = jsonpath.query(targetFileData, it.expression);
-      logger.log(
-        LEVEL.VERBOSE,
-        `Found '${found}' from '${it.expression}' checking against '${it.value}'`
-      );
-      return found == it.value;
-    }).length > 0
+  const found = jsonpath.query(targetFileData, expression.expression);
+  logger.log(
+    LEVEL.VERBOSE,
+    `Found '${found}' from '${expression.expression}' checking against '${expression.value}'`
   );
+  return found == expression.value;
 }
