@@ -7,6 +7,8 @@ import { ChmodWork } from './ChmodWork';
 import { HaveJsonPathValuesWork } from './HaveJsonPathValuesWork';
 import { NotHaveJsonPathNodesWork } from './NotHaveJsonPathNodesWork';
 import { HaveLineContainingWork } from './HaveLineContainingWork';
+import { ItShouldNotBeInGitWork } from './ItShouldNotBeInGitWork';
+import { ItShouldNotHavePathWork } from './ItShouldNotHavePathWork';
 
 export interface Work {
   isApplied(): boolean;
@@ -27,6 +29,16 @@ export class WorkCreator {
     );
 
     (dictatableConfig.actions || []).forEach((action) => {
+      if (action.itShould && action.itShould == 'NOT_BE_IN_GIT') {
+        work.push(
+          new ItShouldNotBeInGitWork(this.logger, fileOperations, action)
+        );
+      }
+      if (action.itShould && action.itShould == 'NOT_EXIST') {
+        work.push(
+          new ItShouldNotHavePathWork(this.logger, fileOperations, action)
+        );
+      }
       if (action.copyFrom) {
         work.push(
           new CopyWork(

@@ -34,9 +34,9 @@ export interface DictatableConfigTrigger {
   haveLineContaining?: string;
   /**
    * @type string
-   * @description A file that should EXIST or NOT_EXIST.
+   * @description A path that should EXIST or NOT_EXIST.
    */
-  itShould?: DictatableConfigActionItShould;
+  itShould?: DictatableConfigTriggerItShould;
   haveEnvironmentVariable?: DictatableConfigActionEnvironmentVariable;
   /**
    * @items.type string
@@ -58,6 +58,8 @@ export interface DictatableConfigTrigger {
    */
   and?: DictatableConfigTrigger[];
 }
+
+export type DictatableConfigTriggerItShould = 'NOT_EXIST' | 'EXIST';
 
 export type PLATFORM_TYPE =
   | 'aix'
@@ -100,9 +102,14 @@ export interface DictatableConfigAction {
    * @description The target should have this chmod.
    */
   chmod?: string;
+  /**
+   * @type string
+   * @description A path that should EXIST or NOT_EXIST.
+   */
+  itShould?: DictatableConfigActionItShould;
 }
 
-export type DictatableConfigActionItShould = 'NOT_EXIST' | 'EXIST';
+export type DictatableConfigActionItShould = 'NOT_EXIST' | 'NOT_BE_IN_GIT';
 
 /**
  * @description These may be used to make the tool behave differently, perhaps

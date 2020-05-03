@@ -1,9 +1,9 @@
-import { DictatableConfigActionItShould } from '../types';
+import { DictatableConfigTriggerItShould } from '../types';
 import fs from 'fs';
 
 export default function itShould(
   targetFile: string | undefined,
-  trigger: DictatableConfigActionItShould
+  trigger: DictatableConfigTriggerItShould
 ): boolean {
   if (!targetFile) {
     throw Error(`targetFile not specified.`);

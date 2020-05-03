@@ -1,0 +1,15 @@
+{
+  "message": "Example of not having paths",
+  "actions": [
+    {
+      "message": "should remove folder1",
+      "target": "folder1",
+      "itShould": "NOT_EXIST"
+    },
+    {
+      "message": "should remove file2.txt",
+      "target": "file2.txt",
+      "itShould": "NOT_EXIST"
+    }
+  ]
+}
