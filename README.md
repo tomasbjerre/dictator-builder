@@ -5,7 +5,7 @@
 
 A tool designed to help create dictators. A dictator dictates how parts of a folder should look like. Originally designed to avoid code duplication in source code repositories.
 
-When working with `npm` within an organization you typically aggree on some parts of the `package.json`, like some `scripts` that should always be there or some `dependencies` that should, or should not, be used. You may also have an identical `tsconfig.json` in every repository.
+When working with `npm` within an organization you typically aggree on some parts of the `package.json`, like some `scripts` that should always be there or some `dependencies` that should, or should not, be used. You may also have identical linting configurations like `tsconfig.json`, `.prettierignore`, `.prettierrc.json`... in every repository.
 
 A dictator is basically just a command line tool distributed with NPM. The package is self contained including all files and configuration needed. A user can **work with any language**, or tools, as the dictator is run from command line and its only output are files.
 
@@ -66,7 +66,7 @@ What you need is a `/package.json` like:
 {
   "name": "your-dictator-name",
   "bin": {
-    "dictator-builder": "dictator-builder/lib/index.js"
+    "your-dictator-name": "dictator-builder/lib/index.js"
   },
   "dependencies": {
     "dictator-builder": "^a.b.c"
