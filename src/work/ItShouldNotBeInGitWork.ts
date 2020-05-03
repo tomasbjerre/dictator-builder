@@ -21,12 +21,11 @@ export class ItShouldNotBeInGitWork implements Work {
       this.targetFile
     );
     try {
-      return (
         require('child_process').execSync(
           `git ls-files --error-unmatch "${this.targetFile}" 2>/dev/null`,
           { encoding: 'utf8' }
         ) != 0
-      );
+        return false;
     } catch (error) {
       return true;
     }
