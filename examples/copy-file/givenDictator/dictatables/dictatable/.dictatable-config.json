@@ -28,6 +28,14 @@
     {
       "copyFrom": "mix/*.txt",
       "target": "files_to_existing_folder"
+    },
+    {
+      "copyFrom": "folder_with_one_file",
+      "target": "copy_one_file"
+    },
+    {
+      "copyFrom": ".",
+      "target": "copy_everything"
     }
   ]
 }
