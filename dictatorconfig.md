@@ -42,7 +42,8 @@ The target should have this chmod.
 
 ### `copyFrom` (string)
 
-Can be a glob pattern to match many files or folders.
+Can be a glob pattern to match many files or folders. Target will always be
+considered a folder preserving original filenames.
 
 ### `haveJsonPathValues` (array)
 

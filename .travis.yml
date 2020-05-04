@@ -2,6 +2,13 @@ sudo: false
 language: node_js
 node_js:
   - 10
+os:
+  - linux
+  - osx
+#  - windows
+#jobs:
+#  allow_failures:
+#    - os: windows
 script:
   - npm install
   - npm run test

@@ -82,7 +82,8 @@ export interface DictatableConfigAction {
   target: string;
   /**
    * @type string
-   * @description Can be a glob pattern to match many files or folders.
+   * @description Can be a glob pattern to match many files or folders. Target will always be
+   * considered a folder preserving original filenames.
    */
   copyFrom?: string;
   notHaveJsonPathNodes?: string[];

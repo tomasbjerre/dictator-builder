@@ -18,12 +18,11 @@ export class CopyWork implements Work {
   }
 
   public isApplied() {
-    const copyFrom = this.fileOperations.getFilesFromGlob(
-      this.fileOperations.fileInDictator(
-        this.dictatableName,
-        this.action.copyFrom!
-      )
+    const copyFromInTarget = this.fileOperations.fileInDictator(
+      this.dictatableName,
+      this.action.copyFrom!
     );
+    const copyFrom = this.fileOperations.getFilesFromGlob(copyFromInTarget);
     const copyTo = this.fileOperations.fileInTarget(this.action.target);
 
     if (copyFrom.length == 0) {
@@ -34,23 +33,10 @@ export class CopyWork implements Work {
       LEVEL.VERBOSE,
       `Evaluated ${this.action.copyFrom} to ${copyFrom.length} ${copyFrom} will copy to ${copyTo}`
     );
-    const targetIsAFile =
-      (fs.existsSync(copyTo) && fs.statSync(copyTo).isFile()) ||
-      !fs.existsSync(copyTo);
-    if (copyFrom.length == 1 && targetIsAFile) {
-      this.notApplied = [[copyFrom[0], copyTo]];
-      this.logger.log(LEVEL.VERBOSE, `will copy file to file`, this.notApplied);
-    } else {
-      this.notApplied = copyFrom.map((copyFrom) => {
-        const filename = path.basename(copyFrom);
-        return [copyFrom, path.join(copyTo, filename)];
-      });
-      this.logger.log(
-        LEVEL.VERBOSE,
-        `will copy files to folder`,
-        this.notApplied
-      );
-    }
+    this.notApplied = copyFrom.map((copyFromFile) =>
+      this.toNotAppliedItem(copyFromFile, copyFromInTarget, copyTo)
+    );
+    this.logger.log(LEVEL.VERBOSE, `will copy file to folder`, this.notApplied);
     this.notApplied = this.notApplied.filter(
       (it) => !this.fileOperations.isSameFile(it[0], it[1])
     );
@@ -74,5 +60,36 @@ export class CopyWork implements Work {
 
   public info() {
     return `copy ${this.action.copyFrom} to ${this.action.target}`;
+  }
+
+  private toNotAppliedItem(
+    copyFromFile: string,
+    copyFromInTarget: string,
+    copyTo: string
+  ): [string, string] {
+    const filename = path.basename(copyFromFile);
+    const relativePath = this.getRelativeTargetDir(
+      copyFromInTarget,
+      copyFromFile
+    );
+    const to = path.join(copyTo, relativePath, filename);
+    return [copyFromFile, to];
+  }
+
+  public getRelativeTargetDir(
+    copyFromInTargetParam: string,
+    evaluatedCopyFrom: string
+  ): string {
+    let copyFromInTarget = copyFromInTargetParam;
+    let indexOfStart = copyFromInTarget.search(/[\[\*\?]/);
+    if (indexOfStart != -1) {
+      copyFromInTarget = copyFromInTarget.substring(0, indexOfStart);
+      if (!fs.existsSync(copyFromInTarget)) {
+        // like /folder/f* becomes /folder
+        copyFromInTarget = path.dirname(copyFromInTarget);
+      }
+    }
+    const relativeFile = path.relative(copyFromInTarget, evaluatedCopyFrom);
+    return path.dirname(relativeFile);
   }
 }

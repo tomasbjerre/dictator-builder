@@ -1,4 +1,8 @@
-lib
 node_modules
 src/schema.json
 examples/*/actual
+/lib/*
+/lib/.*
+!.gitkeep
+jest_html_reporters.html
+*.html
