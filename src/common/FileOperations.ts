@@ -40,10 +40,21 @@ export class FileOperations {
 
   public getFilesFromGlob(glob: string) {
     this.logger.log(LEVEL.VERBOSE, `getFilesFromGlob from ${glob}`);
+    if (fs.existsSync(glob)) {
+      if (fs.statSync(glob).isFile()) {
+        this.logger.log(LEVEL.VERBOSE, `getFilesFromGlob is a file`);
+        return [glob];
+      }
+      if (fs.statSync(glob).isDirectory()) {
+        this.logger.log(LEVEL.VERBOSE, `getFilesFromGlob is a directory`);
+        return this.getFilesInFolder(glob);
+      }
+    }
     const evaluated = Glob.sync(glob);
     this.logger.log(
       LEVEL.VERBOSE,
-      `getFilesFromGlob from evaluated ${evaluated}`
+      `getFilesFromGlob from evaluated`,
+      evaluated
     );
     const filesFiles = evaluated.map((it) => {
       if (fs.statSync(it).isFile()) {
