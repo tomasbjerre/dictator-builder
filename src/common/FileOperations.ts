@@ -1,9 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import {
-  DEFAULT_DICTATABLES_FOLDER,
-  DictatableConfigWithExtras,
-} from '../dictatable/DictatableFinder';
+import { DEFAULT_DICTATABLES_FOLDER } from '../dictatable/DictatableFinder';
 import Glob from 'glob';
 
 export class FileOperations {
