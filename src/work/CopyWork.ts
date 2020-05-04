@@ -26,6 +26,7 @@ export class CopyWork implements Work {
     const copyTo = this.fileOperations.fileInTarget(this.action.target);
 
     if (copyFrom.length == 0) {
+      this.logger.log(LEVEL.VERBOSE,`copyFromInTarget '${copyFromInTarget}' ${this.dictatableName} ${this.action.copyFrom}`)
       this.logger.log(LEVEL.INFO, `0 files matched ${this.action.copyFrom}`);
       return true;
     }
