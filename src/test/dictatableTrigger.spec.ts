@@ -15,7 +15,8 @@ let triggerFalse: DictatableConfigTrigger;
 beforeEach(() => {
   const dictatoPath = 'nop';
   const targetPath = __dirname;
-  const fileOperations = new FileOperations(dictatoPath, targetPath);
+  const logger = new Logger();
+  const fileOperations = new FileOperations(logger, dictatoPath, targetPath);
   sut = new DictatableFinder(logger, dictatoPath, fileOperations);
   targetFile = 'nop';
 

@@ -2,9 +2,14 @@ import path from 'path';
 import fs from 'fs';
 import { DEFAULT_DICTATABLES_FOLDER } from '../dictatable/DictatableFinder';
 import Glob from 'glob';
+import { Logger, LEVEL } from './Logger';
 
 export class FileOperations {
-  constructor(private dictatorPath: string, private targetPath: string) {}
+  constructor(
+    private logger: Logger,
+    private dictatorPath: string,
+    private targetPath: string
+  ) {}
 
   public fileInDictator(dictatableName: string, file: string): string {
     return path.join(
@@ -34,10 +39,26 @@ export class FileOperations {
   }
 
   public getFilesFromGlob(glob: string) {
+    this.logger.log(LEVEL.VERBOSE, `getFilesFromGlob from ${glob}`);
     const evaluated = Glob.sync(glob);
-    const filesFiles = evaluated.map((it) =>
-      fs.statSync(it).isFile() ? [it] : this.getFilesInFolder(it)
+    this.logger.log(
+      LEVEL.VERBOSE,
+      `getFilesFromGlob from evaluated ${evaluated}`
     );
+    const filesFiles = evaluated.map((it) => {
+      if (fs.statSync(it).isFile()) {
+        this.logger.log(LEVEL.VERBOSE, `getFilesFromGlob ${it} is file`);
+        return [it];
+      } else {
+        const files = this.getFilesInFolder(it);
+        this.logger.log(
+          LEVEL.VERBOSE,
+          `getFilesFromGlob ${it} is folder with `,
+          files
+        );
+        return files;
+      }
+    });
     const flatterned = ([] as string[]).concat(...filesFiles);
     return flatterned;
   }

@@ -14,7 +14,11 @@ export function runDictator(
   logger: Logger,
   targetPath = process.cwd()
 ) {
-  const fileOperations = new FileOperations(options.dictatorPath, targetPath);
+  const fileOperations = new FileOperations(
+    logger,
+    options.dictatorPath,
+    targetPath
+  );
 
   const dictatables = new DictatableFinder(
     logger,

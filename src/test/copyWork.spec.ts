@@ -11,7 +11,8 @@ let targetFile: string;
 beforeEach(() => {
   const dictatoPath = 'nop';
   const targetPath = __dirname;
-  const fileOperations = new FileOperations(dictatoPath, targetPath);
+  const logger = new Logger();
+  const fileOperations = new FileOperations(logger, dictatoPath, targetPath);
   const action: DictatableConfigAction = {
     target: targetFile,
   };
