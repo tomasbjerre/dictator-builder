@@ -36,6 +36,10 @@
     {
       "copyFrom": ".",
       "target": "copy_everything"
+    },
+    {
+      "copyFrom": ".gitmessage",
+      "target": "."
     }
   ]
 }
