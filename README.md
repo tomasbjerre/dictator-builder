@@ -111,3 +111,40 @@ Options:
   -c, --check            Fail if all requirements are not fulfilled.
   -h, --help             display help for command
 ```
+
+## Using dictator
+
+It can be used from command line like `npx dictatorname` or `npx dictatorname@version`.
+
+### NPM
+
+If you are working with NPM you may use it with some variations.
+
+You may add it as a `dependency`. This means you can easily manage version updates. Also you can add some extra packages to the package and use it as a meta-package, depend on it and you will get its transitive dependencies.
+
+```json
+{
+  "name": "dictator-example",
+  "version": "0.0.1",
+  "description": "Just example",
+  "scripts": {
+    "prepare": "dictatorname"
+  },
+  "dependencies": {
+    "dictatorname": "0.0.28"
+  }
+}
+```
+
+Or just in `prepare` or `preinstall`:
+
+```json
+{
+  "name": "dictator-example",
+  "version": "0.0.1",
+  "description": "Just example",
+  "scripts": {
+    "prepare": "npx dictatorname@0.0.28"
+  }
+}
+```
