@@ -66,7 +66,7 @@ What you need is a `/package.json` like:
 {
   "name": "your-dictator-name",
   "bin": {
-    "your-dictator-name": "dictator-builder/lib/index.js"
+    "your-dictator-name": "index.js"
   },
   "dependencies": {
     "dictator-builder": "^a.b.c"
@@ -74,7 +74,14 @@ What you need is a `/package.json` like:
 }
 ```
 
-You also need a folder `/dictatables/[dictatableName]/[dictatableConfig]` like:
+Create an `index.js` file containing:
+
+```javascript
+#!/usr/bin/env node
+require("./index.lib").run();
+```
+
+You need a folder `/dictatables/[dictatableName]/[dictatableConfig]` like:
 
 ```bash
 /dictatables/a_dictatable/.dictatable-config.json
