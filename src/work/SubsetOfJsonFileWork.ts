@@ -58,7 +58,7 @@ export class SubsetOfJsonFileWork implements Work {
     this.logger.log(LEVEL.VERBOSE, `Writing file ${this.targetFile}`);
     fs.writeFileSync(
       this.targetFile,
-      JSON.stringify(this.patchedTargetFile, null, 4),
+      JSON.stringify(this.patchedTargetFile, null, 2),
       {
         encoding: 'utf8',
       }

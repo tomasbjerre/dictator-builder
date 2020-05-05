@@ -37,7 +37,7 @@ export class HaveJsonPathValuesWork implements Work {
       jsonpath.value(this.targetFileData, it.expression, it.value);
     });
     const targetFile = this.fileOperations.fileInTarget(this.action.target);
-    const jsonString = JSON.stringify(this.targetFileData, null, 4);
+    const jsonString = JSON.stringify(this.targetFileData, null, 2);
     fs.writeFileSync(targetFile, jsonString, {
       encoding: 'utf8',
     });

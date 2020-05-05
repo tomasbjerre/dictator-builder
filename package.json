@@ -3,7 +3,7 @@
   "version": "0.0.28",
   "scripts": {
     "build": "npm run generate-schema && npm run format && tsc -p .",
-    "generate-schema": "npx typescript-json-schema src/types.d.ts DictatableConfig --required --noExtraProps --topRef -o src/schema.json && cp src/schema.json lib && npm run generate-markdown-schema",
+    "generate-schema": "typescript-json-schema src/types.d.ts DictatableConfig --required --noExtraProps --topRef -o src/schema.json && cp src/schema.json lib && npm run generate-markdown-schema",
     "generate-markdown-schema": "node generate-markdown-schema.js",
     "format": "prettier --write .",
     "test": "npm run build && jest",
@@ -23,7 +23,8 @@
     "nodemon": "^2.0.3",
     "prettier": "^2.0.5",
     "ts-node": "^8.9.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "typescript-json-schema": "^0.42.0"
   },
   "dependencies": {
     "@types/glob": "^7.1.1",
