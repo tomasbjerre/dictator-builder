@@ -4,6 +4,7 @@ import { DictatableConfigAction } from '../types';
 import { Work } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
+import { DictatorConfigReader } from '../common/DictatorConfigReader';
 
 export class CopyWork implements Work {
   private notApplied: [string, string][];
@@ -44,6 +45,9 @@ export class CopyWork implements Work {
       (it) => !this.fileOperations.isSameFile(it[0], it[1])
     );
     Logger.log(LEVEL.VERBOSE, `not applied files: `, this.notApplied);
+    this.notApplied = this.notApplied.filter(
+      (it) => !DictatorConfigReader.isIgnored(it[1])
+    );
     return this.notApplied.length == 0;
   }
 

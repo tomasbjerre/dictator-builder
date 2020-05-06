@@ -10,16 +10,21 @@ import { DictatorConfigReader } from '../common/DictatorConfigReader';
 const jsonpath = require('jsonpath');
 export class HaveJsonPathValuesWork implements Work {
   private targetFileData: any;
+  private targetFile: string;
   private notApplied: DictatableConfigActionExpression[];
   constructor(
     private fileOperations: FileOperations,
     private action: DictatableConfigAction
   ) {
     this.targetFileData = fileOperations.getTargetFileData(action.target);
+    this.targetFile = fileOperations.fileInTarget(action.target);
     this.notApplied = [];
   }
 
   isApplied(): boolean {
+    if (DictatorConfigReader.isIgnored(this.targetFile)) {
+      return true;
+    }
     this.notApplied = this.action.haveJsonPathValues!.filter((it) => {
       const found = jsonpath.query(this.targetFileData, it.expression);
       Logger.log(
@@ -28,7 +33,6 @@ export class HaveJsonPathValuesWork implements Work {
       );
       return found.filter((f: any) => f == it.value);
     });
-
     return this.notApplied.length == 0;
   }
 

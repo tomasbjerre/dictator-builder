@@ -4,6 +4,7 @@ import { DictatableConfigAction } from '../types';
 import { Work } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
+import { DictatorConfigReader } from '../common/DictatorConfigReader';
 
 export class ChmodWork implements Work {
   private targetFile: string;
@@ -16,6 +17,9 @@ export class ChmodWork implements Work {
   }
 
   isApplied(): boolean {
+    if (DictatorConfigReader.isIgnored(this.targetFile)) {
+      return true;
+    }
     if (!fs.existsSync(this.targetFile)) {
       //Not failing here, as the file may be created during an action.
       return false;

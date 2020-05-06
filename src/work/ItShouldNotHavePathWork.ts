@@ -4,6 +4,7 @@ import { DictatableConfigAction } from '../types';
 import { Work } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
+import { DictatorConfigReader } from '../common/DictatorConfigReader';
 
 export class ItShouldNotHavePathWork implements Work {
   private targetFile: string;
@@ -20,6 +21,9 @@ export class ItShouldNotHavePathWork implements Work {
   }
 
   public apply() {
+    if (DictatorConfigReader.isIgnored(this.targetFile)) {
+      return true;
+    }
     if (!fs.existsSync(this.targetFile)) {
       //It may have been removed by one of the iterations in this loop
       return;

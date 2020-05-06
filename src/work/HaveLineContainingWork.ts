@@ -3,6 +3,7 @@ import { DictatableConfigAction } from '../types';
 import { Work } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
+import { DictatorConfigReader } from '../common/DictatorConfigReader';
 var os = require('os');
 
 export class HaveLineContainingWork implements Work {
@@ -17,6 +18,9 @@ export class HaveLineContainingWork implements Work {
   }
 
   isApplied(): boolean {
+    if (DictatorConfigReader.isIgnored(this.targetFile)) {
+      return true;
+    }
     let content: string[] = [];
     if (!fs.existsSync(this.targetFile)) {
       content = [];

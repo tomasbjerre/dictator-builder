@@ -2,6 +2,7 @@ import { DictatableConfigAction } from '../types';
 import { Work } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
+import { DictatorConfigReader } from '../common/DictatorConfigReader';
 
 export class ItShouldNotBeInGitWork implements Work {
   private targetFile: string;
@@ -14,6 +15,9 @@ export class ItShouldNotBeInGitWork implements Work {
   }
 
   public isApplied() {
+    if (DictatorConfigReader.isIgnored(this.targetFile)) {
+      return true;
+    }
     Logger.log(LEVEL.VERBOSE, `path should not be in git `, this.targetFile);
     try {
       require('child_process').execSync(

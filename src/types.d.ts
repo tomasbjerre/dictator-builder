@@ -142,11 +142,22 @@ export interface DictatableConfigActionExpression {
   value?: string;
 }
 
+/**
+ * @description This describes the .dictatorconfig that can be placed in the dictated folder.
+ */
 export interface DictatorConfig {
+  /**
+   * @description List of glob patterns in the folder to ignore.
+   * @items.type string
+   * @items.minimum 1
+   */
   ignore?: string[];
   options?: DictatorConfigOptions;
 }
 
 export interface DictatorConfigOptions {
+  /**
+   * @description This indentation will be used when/if manipulating json files.
+   */
   jsonIndentation: number;
 }

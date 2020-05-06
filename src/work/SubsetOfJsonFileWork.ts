@@ -24,6 +24,9 @@ export class SubsetOfJsonFileWork implements Work {
   }
 
   isApplied(): boolean {
+    if (DictatorConfigReader.isIgnored(this.targetFile)) {
+      return true;
+    }
     const originalActionFile = JSON.parse(
       fs.readFileSync(this.actionFile, 'utf8')
     );

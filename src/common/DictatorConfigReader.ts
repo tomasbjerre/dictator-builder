@@ -3,6 +3,7 @@ import fs from 'fs';
 import { JSONValidator } from './JSONValidator';
 import { DictatorConfig, DictatorConfigOptions } from '../types';
 import { Logger, LEVEL } from './Logger';
+var minimatch = require('minimatch');
 
 export class DictatorConfigReader {
   private static dictatorConfig: DictatorConfig;
@@ -28,5 +29,18 @@ export class DictatorConfigReader {
     return this.dictatorConfig?.options?.jsonIndentation
       ? this.dictatorConfig?.options?.jsonIndentation
       : 2;
+  }
+
+  public static isIgnored(file: string): boolean {
+    return (
+      this.dictatorConfig.ignore?.findIndex((pattern) => {
+        const match = minimatch(file, pattern);
+        Logger.log(
+          LEVEL.INFO,
+          `isIgnored '${match}' with file '${file}' and pattern '${pattern}'`
+        );
+        return match;
+      }) != -1
+    );
   }
 }

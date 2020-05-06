@@ -12,16 +12,21 @@ const _ = require('underscore');
 
 export class NotHaveJsonPathNodesWork implements Work {
   private targetFileData: any;
+  private targetFile: string;
   private notApplied: string[];
   constructor(
     private fileOperations: FileOperations,
     private action: DictatableConfigAction
   ) {
     this.targetFileData = fileOperations.getTargetFileData(action.target);
+    this.targetFile = fileOperations.fileInTarget(action.target);
     this.notApplied = [];
   }
 
   isApplied(): boolean {
+    if (DictatorConfigReader.isIgnored(this.targetFile)) {
+      return true;
+    }
     this.notApplied = this.action.notHaveJsonPathNodes!.filter((expression) => {
       const found = jsonpath.query(this.targetFileData, expression);
       Logger.log(LEVEL.VERBOSE, `Found '${found}' from '${expression}'`);
