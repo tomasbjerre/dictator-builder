@@ -5,12 +5,11 @@ import program from 'commander';
 import { Logger, LEVEL } from './common/Logger';
 import { runDictator, DictatorOptions } from './dictatorBuilder';
 import pkgUp from 'pkg-up';
-const packageJsonDictatorIn = path.join(__dirname, '..', '..', '..');
-const packageJsonDictatorPath = pkgUp.sync({ cwd: packageJsonDictatorIn });
 
-export function run() {
+export function run(dictatorPath: string) {
+  const packageJsonDictatorPath = path.join(dictatorPath, 'package.json');
   if (!packageJsonDictatorPath) {
-    console.log(`Unable to find package.json withing ${packageJsonDictatorIn}`);
+    console.log(`Unable to find package.json within ${dictatorPath}`);
     //This happens when testing with "npm link", so is not failing here!
   }
   const packageJsonDictator = packageJsonDictatorPath
@@ -48,7 +47,7 @@ export function run() {
   const options: DictatorOptions = {
     dryRun: program.dryRun,
     check: program.check,
-    dictatorPath: packageJsonDictatorIn,
+    dictatorPath: dictatorPath,
   };
   runDictator(options, logger);
 }
