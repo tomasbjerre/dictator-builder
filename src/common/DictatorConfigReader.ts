@@ -36,7 +36,7 @@ export class DictatorConfigReader {
       this.dictatorConfig.ignore?.findIndex((pattern) => {
         const match = minimatch(file, pattern);
         Logger.log(
-          LEVEL.INFO,
+          LEVEL.VERBOSE,
           `isIgnored '${match}' with file '${file}' and pattern '${pattern}'`
         );
         return match;
