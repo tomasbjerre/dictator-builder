@@ -51,8 +51,6 @@ export function run(dictatorPath: string) {
     ? packageJsonDictator.description + '. '
     : '';
 
-  printFancyBanner(packageJsonDictator);
-
   program
     .version(packageJsonDictator.version)
     .description(description)
@@ -62,8 +60,15 @@ export function run(dictatorPath: string) {
     )
     .option(`-d, --dry-run`, `Only show what will be done.`)
     .option(`-c, --check`, `Fail if all requirements are not fulfilled.`)
+    .option(`-nb, --no-banner`, `Do not print banner.`)
     .parse(process.argv);
+
+  if (program.banner) {
+    printFancyBanner(packageJsonDictator);
+  }
+
   Logger.setLevel(program.logging || LEVEL.INFO);
+
   const options: DictatorOptions = {
     dryRun: program.dryRun,
     check: program.check,

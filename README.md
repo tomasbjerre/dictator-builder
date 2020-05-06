@@ -111,6 +111,7 @@ Options:
   -l, --logging <level>  One of VERBOSE,INFO,ERROR default is INFO.
   -d, --dry-run          Only show what will be done.
   -c, --check            Fail if all requirements are not fulfilled.
+  -nb, --no-banner       Do not print banner.
   -h, --help             display help for command
 ```
 
