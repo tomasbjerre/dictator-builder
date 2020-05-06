@@ -1,0 +1,34 @@
+{
+  "message": "Example dictatorconfig",
+  "actions": [
+    {
+      "beSubsetOfJsonFile": "jsonfile.json",
+      "target": "beSubsetOfJsonFile.json"
+    },
+    {
+      "haveJsonPathValues": [
+        {
+          "expression": "$.e",
+          "value": "f"
+        }
+      ],
+      "target": "haveJsonPathValues.json"
+    },
+    {
+      "copyFrom": "copyfile.txt",
+      "target": "."
+    },
+    {
+      "haveLineContaining": ["line4"],
+      "target": "haveLineContaining.txt"
+    },
+    {
+      "notHaveJsonPathNodes": ["$.a"],
+      "target": "notHaveJsonPathNodes.json"
+    },
+    {
+      "target": "noteexist.txt",
+      "itShould": "NOT_EXIST"
+    }
+  ]
+}

@@ -6,6 +6,7 @@ import {
 import { Work } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
+import { DictatorConfigReader } from '../common/DictatorConfigReader';
 const jsonpath = require('jsonpath');
 const _ = require('underscore');
 
@@ -36,7 +37,11 @@ export class NotHaveJsonPathNodesWork implements Work {
     });
     this.removeEmpty(this.targetFileData);
     const targetFile = this.fileOperations.fileInTarget(this.action.target);
-    const jsonString = JSON.stringify(this.targetFileData, null, 2);
+    const jsonString = JSON.stringify(
+      this.targetFileData,
+      null,
+      DictatorConfigReader.getJsonIndentation()
+    );
     fs.writeFileSync(targetFile, jsonString, {
       encoding: 'utf8',
     });

@@ -1,7 +1,7 @@
 lib
 package.json
 dictatorconfig.md
-schema.json
+*.schema.json
 examples/**/expected/*
 examples/**/actual/*
 node_modules

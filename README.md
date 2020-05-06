@@ -95,11 +95,13 @@ You need a folder `/dictatables/[dictatableName]/[dictatableConfig]` like:
 
 The dictatable config is documented with:
 
-- A [markdown file](/dictatorconfig.md) in the repository
-- A `schema.json` in the distributed package
+- A [markdown file](/dictatableconfig.md) in the repository
+- A `dictatableconfig.schema.json` in the distributed package
 - TypeScript types [here](/src/types.d.ts)
 
-It can be run like this:
+## Using dictator
+
+It can be used from command line like `npx dictatorname` or `npx dictatorname@version`:
 
 ```bash
 <dictator-name> [options]
@@ -112,9 +114,12 @@ Options:
   -h, --help             display help for command
 ```
 
-## Using dictator
+The folder to be dictated can place an optoinal `.dictatorconfig.json` file in its root to make some adjustments. The dictator config is documented with:
 
-It can be used from command line like `npx dictatorname` or `npx dictatorname@version`.
+- A [markdown file](/dictatorconfig.md) in the repository
+- A `dictatorconfig.schema.json` in the distributed package
+- TypeScript types [here](/src/types.d.ts)
+
 
 ### NPM
 

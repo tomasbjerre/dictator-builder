@@ -2,6 +2,7 @@ import { DictatableFinder } from './dictatable/DictatableFinder';
 import { WorkCreator, Work } from './work/WorkCreator';
 import { LEVEL, Logger } from './common/Logger';
 import { FileOperations } from './common/FileOperations';
+import { DictatorConfigReader } from './common/DictatorConfigReader';
 
 export interface DictatorOptions {
   dryRun: false;
@@ -13,6 +14,8 @@ export function runDictator(
   options: DictatorOptions,
   targetPath = process.cwd()
 ) {
+  DictatorConfigReader.load(targetPath);
+
   const fileOperations = new FileOperations(options.dictatorPath, targetPath);
 
   const dictatables = new DictatableFinder(

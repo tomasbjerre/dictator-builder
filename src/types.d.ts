@@ -141,3 +141,12 @@ export interface DictatableConfigActionExpression {
    */
   value?: string;
 }
+
+export interface DictatorConfig {
+  ignore?: string[];
+  options?: DictatorConfigOptions;
+}
+
+export interface DictatorConfigOptions {
+  jsonIndentation: number;
+}

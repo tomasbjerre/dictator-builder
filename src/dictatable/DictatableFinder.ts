@@ -9,6 +9,7 @@ import haveJsonPathValue from './haveJsonPathValue';
 import haveLineContaining from './haveLineContaining';
 import itShould from './itShould';
 import { FileOperations } from '../common/FileOperations';
+import { JSONValidator } from '../common/JSONValidator';
 export const DEFAULT_DICTATABLES_FOLDER = 'dictatables';
 const DEFAULT_DICTATABLE_CONFIG = '.dictatable-config.json';
 
@@ -86,23 +87,15 @@ export class DictatableFinder {
       dictatable,
       DEFAULT_DICTATABLE_CONFIG
     );
-    const dictatableConfigJson = fs.readFileSync(jsonFilePath, 'utf8');
-    const schema = JSON.parse(
-      fs.readFileSync(path.join(__dirname, '../schema.json'), 'utf8')
-    ) as Schema;
-    Logger.log(LEVEL.VERBOSE, `Found config:\n`, dictatableConfigJson);
-    const validationConfig = JSON.parse(dictatableConfigJson);
-    const v = new Validator();
-    const result = v.validate(validationConfig, schema);
-    if (result.valid) {
-      validationConfig.dictatableConfigFilename = jsonFilePath;
-      validationConfig.dictatableName = dictatable;
-      return validationConfig;
-    }
-    const errors = result.errors.map((it) => it.toString()).join('\n');
-    throw Error(
-      `The configuration in ${jsonFilePath} is not valid:\n${errors}`
+
+    const validationConfig = JSONValidator.validate(
+      jsonFilePath,
+      path.join(__dirname, '../dictatableconfig.schema.json')
     );
+
+    validationConfig.dictatableConfigFilename = jsonFilePath;
+    validationConfig.dictatableName = dictatable;
+    return validationConfig;
   }
 
   shouldTrigger(trigger: DictatableConfigTrigger): boolean {

@@ -1,5 +1,5 @@
 node_modules
-src/schema.json
+*.schema.json
 examples/*/actual
 /lib/*
 /lib/.*

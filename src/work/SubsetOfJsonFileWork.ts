@@ -3,6 +3,7 @@ import { DictatableConfigAction } from '../types';
 import { Work } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
+import { DictatorConfigReader } from '../common/DictatorConfigReader';
 const _ = require('underscore');
 
 export class SubsetOfJsonFileWork implements Work {
@@ -57,7 +58,11 @@ export class SubsetOfJsonFileWork implements Work {
     Logger.log(LEVEL.VERBOSE, `Writing file ${this.targetFile}`);
     fs.writeFileSync(
       this.targetFile,
-      JSON.stringify(this.patchedTargetFile, null, 2),
+      JSON.stringify(
+        this.patchedTargetFile,
+        null,
+        DictatorConfigReader.getJsonIndentation()
+      ),
       {
         encoding: 'utf8',
       }
