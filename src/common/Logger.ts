@@ -14,23 +14,16 @@ export class Logger {
   }
 
   public static log(level: LEVEL, message?: string, ...optionalParams: any[]) {
-    Logger.getInstance().doLog(level, message, optionalParams);
-  }
-
-  private constructor(private loggingLevel: LEVEL = LEVEL.INFO) {}
-
-  private static getInstance(): Logger {
-    if (!Logger.instance) {
-      Logger.instance = new Logger();
-    }
-    return Logger.instance;
-  }
-
-  private doLog(level: LEVEL, message?: string, ...optionalParams: any[]) {
-    if (this.loggingLevel === LEVEL.INFO && level === LEVEL.VERBOSE) {
+    if (
+      Logger.getInstance().loggingLevel === LEVEL.INFO &&
+      level === LEVEL.VERBOSE
+    ) {
       return;
     }
-    if (this.loggingLevel === LEVEL.ERROR && level !== LEVEL.ERROR) {
+    if (
+      Logger.getInstance().loggingLevel === LEVEL.ERROR &&
+      level !== LEVEL.ERROR
+    ) {
       return;
     }
     if (level === LEVEL.ERROR) {
@@ -46,5 +39,14 @@ export class Logger {
         console.log(message);
       }
     }
+  }
+
+  private constructor(private loggingLevel: LEVEL = LEVEL.INFO) {}
+
+  private static getInstance(): Logger {
+    if (!Logger.instance) {
+      Logger.instance = new Logger();
+    }
+    return Logger.instance;
   }
 }

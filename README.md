@@ -120,7 +120,6 @@ The folder to be dictated can place an optoinal `.dictatorconfig.json` file in i
 - A `dictatorconfig.schema.json` in the distributed package
 - TypeScript types [here](/src/types.d.ts)
 
-
 ### NPM
 
 If you are working with NPM you may use it with some variations.
