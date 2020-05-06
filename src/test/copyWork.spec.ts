@@ -1,23 +1,20 @@
 import path from 'path';
-import { Logger, LEVEL } from '../common/Logger';
 import { FileOperations } from '../common/FileOperations';
 import { CopyWork } from '../work/CopyWork';
 import { DictatableConfigAction } from '../types';
 
 let sut: CopyWork;
-const logger = new Logger(LEVEL.VERBOSE);
 let targetFile: string;
 
 beforeEach(() => {
   const dictatoPath = 'nop';
   const targetPath = __dirname;
-  const logger = new Logger();
-  const fileOperations = new FileOperations(logger, dictatoPath, targetPath);
+  const fileOperations = new FileOperations(dictatoPath, targetPath);
   const action: DictatableConfigAction = {
     target: targetFile,
   };
   const dictatableName = 'copyWorkDictatable';
-  sut = new CopyWork(logger, fileOperations, action, dictatableName);
+  sut = new CopyWork(fileOperations, action, dictatableName);
   targetFile = 'nop';
 });
 

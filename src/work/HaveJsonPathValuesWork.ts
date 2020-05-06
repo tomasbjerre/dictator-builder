@@ -11,7 +11,6 @@ export class HaveJsonPathValuesWork implements Work {
   private targetFileData: any;
   private notApplied: DictatableConfigActionExpression[];
   constructor(
-    private logger: Logger,
     private fileOperations: FileOperations,
     private action: DictatableConfigAction
   ) {
@@ -22,7 +21,7 @@ export class HaveJsonPathValuesWork implements Work {
   isApplied(): boolean {
     this.notApplied = this.action.haveJsonPathValues!.filter((it) => {
       const found = jsonpath.query(this.targetFileData, it.expression);
-      this.logger.log(
+      Logger.log(
         LEVEL.VERBOSE,
         `Found '${found}' from '${it.expression}' checking against '${it.value}'`
       );

@@ -9,7 +9,6 @@ export class ChmodWork implements Work {
   private targetFile: string;
 
   constructor(
-    private logger: Logger,
     fileOperations: FileOperations,
     private action: DictatableConfigAction
   ) {
@@ -24,7 +23,7 @@ export class ChmodWork implements Work {
     const currentStat = fs.statSync(this.targetFile);
     const currentMode = +(currentStat.mode & 0o777).toString(8);
     const givenMode = +this.action.chmod!;
-    this.logger.log(
+    Logger.log(
       LEVEL.VERBOSE,
       `current mode on ${this.targetFile} is ${currentMode} got ${givenMode}`
     );

@@ -11,7 +11,6 @@ export class SubsetOfJsonFileWork implements Work {
   private patchedTargetFile?: any;
 
   constructor(
-    private logger: Logger,
     fileOperations: FileOperations,
     private action: DictatableConfigAction,
     dictatableName: string
@@ -29,7 +28,7 @@ export class SubsetOfJsonFileWork implements Work {
     );
     if (!fs.existsSync(this.targetFile)) {
       this.patchedTargetFile = originalActionFile;
-      this.logger.log(
+      Logger.log(
         LEVEL.VERBOSE,
         `target file (${this.targetFile}) does not exist, copying action file`,
         this.patchedTargetFile
@@ -43,10 +42,10 @@ export class SubsetOfJsonFileWork implements Work {
       { ...originalTargetFile },
       originalActionFile
     );
-    this.logger.log(LEVEL.VERBOSE, `${this.targetFile}: `, originalTargetFile);
-    this.logger.log(LEVEL.VERBOSE, `${this.actionFile}: `, originalActionFile);
+    Logger.log(LEVEL.VERBOSE, `${this.targetFile}: `, originalTargetFile);
+    Logger.log(LEVEL.VERBOSE, `${this.actionFile}: `, originalActionFile);
     const applied = _.isEqual(this.patchedTargetFile!, originalTargetFile);
-    this.logger.log(
+    Logger.log(
       LEVEL.VERBOSE,
       `patchedTargetFile: ${applied} `,
       this.patchedTargetFile
@@ -55,7 +54,7 @@ export class SubsetOfJsonFileWork implements Work {
   }
 
   apply(): void {
-    this.logger.log(LEVEL.VERBOSE, `Writing file ${this.targetFile}`);
+    Logger.log(LEVEL.VERBOSE, `Writing file ${this.targetFile}`);
     fs.writeFileSync(
       this.targetFile,
       JSON.stringify(this.patchedTargetFile, null, 2),

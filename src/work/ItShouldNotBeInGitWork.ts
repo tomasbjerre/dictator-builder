@@ -7,7 +7,6 @@ export class ItShouldNotBeInGitWork implements Work {
   private targetFile: string;
 
   constructor(
-    private logger: Logger,
     fileOperations: FileOperations,
     private action: DictatableConfigAction
   ) {
@@ -15,11 +14,7 @@ export class ItShouldNotBeInGitWork implements Work {
   }
 
   public isApplied() {
-    this.logger.log(
-      LEVEL.VERBOSE,
-      `path should not be in git `,
-      this.targetFile
-    );
+    Logger.log(LEVEL.VERBOSE, `path should not be in git `, this.targetFile);
     try {
       require('child_process').execSync(
         `git ls-files --error-unmatch "${this.targetFile}" 2>/dev/null`,

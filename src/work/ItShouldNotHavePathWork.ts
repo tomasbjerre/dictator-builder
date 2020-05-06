@@ -9,7 +9,6 @@ export class ItShouldNotHavePathWork implements Work {
   private targetFile: string;
 
   constructor(
-    private logger: Logger,
     fileOperations: FileOperations,
     private action: DictatableConfigAction
   ) {
@@ -27,10 +26,10 @@ export class ItShouldNotHavePathWork implements Work {
     }
     const stat = fs.statSync(this.targetFile);
     if (stat.isDirectory()) {
-      this.logger.log(LEVEL.VERBOSE, `removing dif ${this.targetFile}`);
+      Logger.log(LEVEL.VERBOSE, `removing dif ${this.targetFile}`);
       rimraf.sync(this.targetFile);
     } else {
-      this.logger.log(LEVEL.VERBOSE, `removing file ${this.targetFile}`);
+      Logger.log(LEVEL.VERBOSE, `removing file ${this.targetFile}`);
       fs.unlinkSync(this.targetFile);
     }
   }

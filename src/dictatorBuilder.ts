@@ -11,17 +11,11 @@ export interface DictatorOptions {
 
 export function runDictator(
   options: DictatorOptions,
-  logger: Logger,
   targetPath = process.cwd()
 ) {
-  const fileOperations = new FileOperations(
-    logger,
-    options.dictatorPath,
-    targetPath
-  );
+  const fileOperations = new FileOperations(options.dictatorPath, targetPath);
 
   const dictatables = new DictatableFinder(
-    logger,
     options.dictatorPath,
     fileOperations
   ).getDictatables();
@@ -29,16 +23,16 @@ export function runDictator(
   const unappliedDictatables: any = {};
   dictatables.forEach((dictatable) => {
     if (dictatable.message) {
-      logger.log(LEVEL.INFO, dictatable.message);
+      Logger.log(LEVEL.INFO, dictatable.message);
     }
-    const work = new WorkCreator(logger).getWork(dictatable, fileOperations);
-    const unapplied = performWork(options, logger, work);
+    const work = new WorkCreator().getWork(dictatable, fileOperations);
+    const unapplied = performWork(options, work);
     if (options.check && unapplied.length > 0) {
       unappliedDictatables[dictatable.dictatableName] = unapplied;
     }
   });
   if (options.check && Object.keys(unappliedDictatables).length > 0) {
-    logger.log(
+    Logger.log(
       LEVEL.ERROR,
       `Found dictatables that are not applied:\n`,
       unappliedDictatables
@@ -47,17 +41,13 @@ export function runDictator(
   }
 }
 
-function performWork(
-  options: DictatorOptions,
-  logger: Logger,
-  work: Work[]
-): string[] {
+function performWork(options: DictatorOptions, work: Work[]): string[] {
   const unapplied: string[] = [];
   work
     .filter((it) => {
       const applied = it.isApplied();
       if (applied) {
-        logger.log(LEVEL.INFO, `    Up to date: ${it.info()}`);
+        Logger.log(LEVEL.INFO, `    Up to date: ${it.info()}`);
       }
       return !applied;
     })
@@ -66,7 +56,7 @@ function performWork(
         unapplied.push(it.info());
         return;
       }
-      logger.log(LEVEL.INFO, `    Applying: ${it.info()}`);
+      Logger.log(LEVEL.INFO, `    Applying: ${it.info()}`);
       if (!options.dryRun) {
         it.apply();
       }

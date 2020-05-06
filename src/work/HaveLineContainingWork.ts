@@ -9,7 +9,6 @@ export class HaveLineContainingWork implements Work {
   private targetFile: string;
   private notApplied: string[];
   constructor(
-    private logger: Logger,
     fileOperations: FileOperations,
     private action: DictatableConfigAction
   ) {
@@ -27,7 +26,7 @@ export class HaveLineContainingWork implements Work {
     this.notApplied = this.action.haveLineContaining!.filter(
       (it) => content.indexOf(it) == -1
     );
-    this.logger.log(
+    Logger.log(
       LEVEL.VERBOSE,
       `Found lines not in ${this.targetFile}`,
       this.notApplied
@@ -37,13 +36,13 @@ export class HaveLineContainingWork implements Work {
 
   apply(): void {
     if (fs.existsSync(this.targetFile)) {
-      this.logger.log(LEVEL.VERBOSE, `Appending to file`, this.notApplied);
+      Logger.log(LEVEL.VERBOSE, `Appending to file`, this.notApplied);
       fs.appendFileSync(this.targetFile, os.EOL);
       this.notApplied.forEach((it) => {
         fs.appendFileSync(this.targetFile, it + os.EOL);
       });
     } else {
-      this.logger.log(LEVEL.VERBOSE, `Creating file`, this.notApplied);
+      Logger.log(LEVEL.VERBOSE, `Creating file`, this.notApplied);
       fs.writeFileSync(this.targetFile, this.notApplied.join(os.EOL) + os.EOL, {
         encoding: 'utf8',
       });

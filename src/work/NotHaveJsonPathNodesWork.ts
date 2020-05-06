@@ -13,7 +13,6 @@ export class NotHaveJsonPathNodesWork implements Work {
   private targetFileData: any;
   private notApplied: string[];
   constructor(
-    private logger: Logger,
     private fileOperations: FileOperations,
     private action: DictatableConfigAction
   ) {
@@ -24,7 +23,7 @@ export class NotHaveJsonPathNodesWork implements Work {
   isApplied(): boolean {
     this.notApplied = this.action.notHaveJsonPathNodes!.filter((expression) => {
       const found = jsonpath.query(this.targetFileData, expression);
-      this.logger.log(LEVEL.VERBOSE, `Found '${found}' from '${expression}'`);
+      Logger.log(LEVEL.VERBOSE, `Found '${found}' from '${expression}'`);
       return found.length > 0;
     });
 

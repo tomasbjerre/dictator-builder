@@ -5,7 +5,6 @@ import { FileOperations } from '../common/FileOperations';
 import { DictatableConfigTrigger, PLATFORM_TYPE } from '../types';
 
 let sut: DictatableFinder;
-const logger = new Logger(LEVEL.VERBOSE);
 let targetFile: string;
 
 const ENV_VAR = 'thevalue';
@@ -15,9 +14,8 @@ let triggerFalse: DictatableConfigTrigger;
 beforeEach(() => {
   const dictatoPath = 'nop';
   const targetPath = __dirname;
-  const logger = new Logger();
-  const fileOperations = new FileOperations(logger, dictatoPath, targetPath);
-  sut = new DictatableFinder(logger, dictatoPath, fileOperations);
+  const fileOperations = new FileOperations(dictatoPath, targetPath);
+  sut = new DictatableFinder(dictatoPath, fileOperations);
   targetFile = 'nop';
 
   process.env[ENV_VAR] = 'thevalue';

@@ -5,11 +5,7 @@ import Glob from 'glob';
 import { Logger, LEVEL } from './Logger';
 
 export class FileOperations {
-  constructor(
-    private logger: Logger,
-    private dictatorPath: string,
-    private targetPath: string
-  ) {}
+  constructor(private dictatorPath: string, private targetPath: string) {}
 
   public fileInDictator(dictatableName: string, file: string): string {
     return path.join(
@@ -39,30 +35,26 @@ export class FileOperations {
   }
 
   public getFilesFromGlob(glob: string) {
-    this.logger.log(LEVEL.VERBOSE, `getFilesFromGlob from ${glob}`);
+    Logger.log(LEVEL.VERBOSE, `getFilesFromGlob from ${glob}`);
     if (fs.existsSync(glob)) {
       if (fs.statSync(glob).isFile()) {
-        this.logger.log(LEVEL.VERBOSE, `getFilesFromGlob is a file`);
+        Logger.log(LEVEL.VERBOSE, `getFilesFromGlob is a file`);
         return [glob];
       }
       if (fs.statSync(glob).isDirectory()) {
-        this.logger.log(LEVEL.VERBOSE, `getFilesFromGlob is a directory`);
+        Logger.log(LEVEL.VERBOSE, `getFilesFromGlob is a directory`);
         return this.getFilesInFolder(glob);
       }
     }
     const evaluated = Glob.sync(glob);
-    this.logger.log(
-      LEVEL.VERBOSE,
-      `getFilesFromGlob from evaluated`,
-      evaluated
-    );
+    Logger.log(LEVEL.VERBOSE, `getFilesFromGlob from evaluated`, evaluated);
     const filesFiles = evaluated.map((it) => {
       if (fs.statSync(it).isFile()) {
-        this.logger.log(LEVEL.VERBOSE, `getFilesFromGlob ${it} is file`);
+        Logger.log(LEVEL.VERBOSE, `getFilesFromGlob ${it} is file`);
         return [it];
       } else {
         const files = this.getFilesInFolder(it);
-        this.logger.log(
+        Logger.log(
           LEVEL.VERBOSE,
           `getFilesFromGlob ${it} is folder with `,
           files

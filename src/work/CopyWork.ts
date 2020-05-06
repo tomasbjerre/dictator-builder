@@ -9,7 +9,6 @@ export class CopyWork implements Work {
   private notApplied: [string, string][];
 
   constructor(
-    private logger: Logger,
     private fileOperations: FileOperations,
     private action: DictatableConfigAction,
     private dictatableName: string
@@ -26,25 +25,25 @@ export class CopyWork implements Work {
     const copyTo = this.fileOperations.fileInTarget(this.action.target);
 
     if (copyFrom.length == 0) {
-      this.logger.log(
+      Logger.log(
         LEVEL.VERBOSE,
         `copyFromInTarget '${copyFromInTarget}' ${this.dictatableName} ${this.action.copyFrom}`
       );
-      this.logger.log(LEVEL.INFO, `0 files matched ${this.action.copyFrom}`);
+      Logger.log(LEVEL.INFO, `0 files matched ${this.action.copyFrom}`);
       return true;
     }
-    this.logger.log(
+    Logger.log(
       LEVEL.VERBOSE,
       `Evaluated ${this.action.copyFrom} to ${copyFrom.length} ${copyFrom} will copy to ${copyTo}`
     );
     this.notApplied = copyFrom.map((copyFromFile) =>
       this.toNotAppliedItem(copyFromFile, copyFromInTarget, copyTo)
     );
-    this.logger.log(LEVEL.VERBOSE, `will copy file to folder`, this.notApplied);
+    Logger.log(LEVEL.VERBOSE, `will copy file to folder`, this.notApplied);
     this.notApplied = this.notApplied.filter(
       (it) => !this.fileOperations.isSameFile(it[0], it[1])
     );
-    this.logger.log(LEVEL.VERBOSE, `not applied files: `, this.notApplied);
+    Logger.log(LEVEL.VERBOSE, `not applied files: `, this.notApplied);
     return this.notApplied.length == 0;
   }
 
@@ -57,7 +56,7 @@ export class CopyWork implements Work {
       if (!fs.existsSync(targetDir)) {
         fs.mkdirSync(targetDir, { recursive: true });
       }
-      this.logger.log(LEVEL.VERBOSE, `Copying ${copyFrom} to ${copyTo}`);
+      Logger.log(LEVEL.VERBOSE, `Copying ${copyFrom} to ${copyTo}`);
       fs.copyFileSync(copyFrom, copyTo);
     }
   }

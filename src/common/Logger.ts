@@ -7,8 +7,26 @@ export enum LEVEL {
 }
 
 export class Logger {
-  constructor(private loggingLevel: LEVEL = LEVEL.INFO) {}
-  log(level: LEVEL, message?: string, ...optionalParams: any[]) {
+  private static instance: Logger;
+
+  public static setLevel(level: LEVEL) {
+    Logger.getInstance().loggingLevel = level;
+  }
+
+  public static log(level: LEVEL, message?: string, ...optionalParams: any[]) {
+    Logger.getInstance().doLog(level, message, optionalParams);
+  }
+
+  private constructor(private loggingLevel: LEVEL = LEVEL.INFO) {}
+
+  private static getInstance(): Logger {
+    if (!Logger.instance) {
+      Logger.instance = new Logger();
+    }
+    return Logger.instance;
+  }
+
+  private doLog(level: LEVEL, message?: string, ...optionalParams: any[]) {
     if (this.loggingLevel === LEVEL.INFO && level === LEVEL.VERBOSE) {
       return;
     }

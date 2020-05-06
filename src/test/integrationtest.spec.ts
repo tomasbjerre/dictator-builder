@@ -1,11 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 var rimraf = require('rimraf');
-import { runDictator, DictatorOptions } from '../dictatorBuilder';
+import { runDictator } from '../dictatorBuilder';
 import { Logger, LEVEL } from '../common/Logger';
 import { compareSync, Result } from 'dir-compare';
 const fsextra = require('fs-extra');
 
+Logger.setLevel(LEVEL.INFO);
 const examplesPath = path.join(__dirname, '..', '..', 'examples');
 const examples = fs.readdirSync(examplesPath);
 test.each(examples)('%s', (example) => {
@@ -35,7 +36,6 @@ test.each(examples)('%s', (example) => {
       check: false,
       dryRun: false,
     },
-    new Logger(LEVEL.VERBOSE),
     actualTarget
   );
 

@@ -19,7 +19,6 @@ export interface DictatableConfigWithExtras extends DictatableConfig {
 
 export class DictatableFinder {
   constructor(
-    private logger: Logger,
     private dictatorPath: string,
     private fileOperations: FileOperations
   ) {}
@@ -44,7 +43,7 @@ export class DictatableFinder {
         `Was unable to find any dictatables within folder: ${dictatablesFolder}`
       );
     } else {
-      this.logger.log(
+      Logger.log(
         LEVEL.VERBOSE,
         `Found a total of ${dictatables.length} dictatables:\n\n`,
         ...dictatables
@@ -64,13 +63,13 @@ export class DictatableFinder {
       }
     });
 
-    this.logger.log(
+    Logger.log(
       LEVEL.VERBOSE,
       `Found a total of ${applicableDictatables.length} applicable dictatables:\n\n`,
       ...applicableDictatables
     );
 
-    this.logger.log(LEVEL.VERBOSE, ``);
+    Logger.log(LEVEL.VERBOSE, ``);
 
     return applicableDictatables;
   }
@@ -91,7 +90,7 @@ export class DictatableFinder {
     const schema = JSON.parse(
       fs.readFileSync(path.join(__dirname, '../schema.json'), 'utf8')
     ) as Schema;
-    this.logger.log(LEVEL.VERBOSE, `Found config:\n`, dictatableConfigJson);
+    Logger.log(LEVEL.VERBOSE, `Found config:\n`, dictatableConfigJson);
     const validationConfig = JSON.parse(dictatableConfigJson);
     const v = new Validator();
     const result = v.validate(validationConfig, schema);
@@ -117,7 +116,7 @@ export class DictatableFinder {
     if (trigger.not) {
       triggerResult = !triggerResult;
     }
-    this.logger.log(
+    Logger.log(
       LEVEL.VERBOSE,
       `shouldTrigger ${JSON.stringify(trigger)} ${triggerResult}`
     );
@@ -150,15 +149,11 @@ export class DictatableFinder {
     }
     return (trigger.itShould && itShould(targetFile, trigger.itShould)) ||
       (trigger.runningOnPlatform &&
-        runningOnPlatform(this.logger, trigger.runningOnPlatform)) ||
+        runningOnPlatform(trigger.runningOnPlatform)) ||
       (trigger.haveEnvironmentVariable &&
         haveEnvironmentVariable(trigger.haveEnvironmentVariable)) ||
       (trigger.haveJsonPathValue &&
-        haveJsonPathValue(
-          this.logger,
-          targetFile,
-          trigger.haveJsonPathValue
-        )) ||
+        haveJsonPathValue(targetFile, trigger.haveJsonPathValue)) ||
       (trigger.haveLineContaining &&
         haveLineContaining(targetFile, trigger.haveLineContaining))!
       ? true

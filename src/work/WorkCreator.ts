@@ -17,42 +17,32 @@ export interface Work {
 }
 
 export class WorkCreator {
-  constructor(private logger: Logger) {}
+  constructor() {}
   getWork(
     dictatableConfig: DictatableConfigWithExtras,
     fileOperations: FileOperations
   ): Work[] {
     const work: Work[] = [];
-    this.logger.log(
+    Logger.log(
       LEVEL.VERBOSE,
       `Analyzing ${dictatableConfig.dictatableConfigFilename}...`
     );
 
     (dictatableConfig.actions || []).forEach((action) => {
       if (action.itShould && action.itShould == 'NOT_BE_IN_GIT') {
-        work.push(
-          new ItShouldNotBeInGitWork(this.logger, fileOperations, action)
-        );
+        work.push(new ItShouldNotBeInGitWork(fileOperations, action));
       }
       if (action.itShould && action.itShould == 'NOT_EXIST') {
-        work.push(
-          new ItShouldNotHavePathWork(this.logger, fileOperations, action)
-        );
+        work.push(new ItShouldNotHavePathWork(fileOperations, action));
       }
       if (action.copyFrom) {
         work.push(
-          new CopyWork(
-            this.logger,
-            fileOperations,
-            action,
-            dictatableConfig.dictatableName
-          )
+          new CopyWork(fileOperations, action, dictatableConfig.dictatableName)
         );
       }
       if (action.beSubsetOfJsonFile) {
         work.push(
           new SubsetOfJsonFileWork(
-            this.logger,
             fileOperations,
             action,
             dictatableConfig.dictatableName
@@ -60,22 +50,16 @@ export class WorkCreator {
         );
       }
       if (action.chmod) {
-        work.push(new ChmodWork(this.logger, fileOperations, action));
+        work.push(new ChmodWork(fileOperations, action));
       }
       if (action.haveJsonPathValues) {
-        work.push(
-          new HaveJsonPathValuesWork(this.logger, fileOperations, action)
-        );
+        work.push(new HaveJsonPathValuesWork(fileOperations, action));
       }
       if (action.notHaveJsonPathNodes) {
-        work.push(
-          new NotHaveJsonPathNodesWork(this.logger, fileOperations, action)
-        );
+        work.push(new NotHaveJsonPathNodesWork(fileOperations, action));
       }
       if (action.haveLineContaining) {
-        work.push(
-          new HaveLineContainingWork(this.logger, fileOperations, action)
-        );
+        work.push(new HaveLineContainingWork(fileOperations, action));
       }
     });
     return work;

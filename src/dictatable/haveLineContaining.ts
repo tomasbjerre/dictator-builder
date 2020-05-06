@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { LEVEL, Logger } from '../common/Logger';
 export default function haveLineContaining(
   targetFile: string | undefined,
   expression: string
