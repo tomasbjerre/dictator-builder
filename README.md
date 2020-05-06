@@ -9,7 +9,7 @@ When working with `npm` within an organization you typically aggree on some part
 
 A dictator is basically just a command line tool distributed with NPM. The package is self contained including all files and configuration needed. A user can **work with any language**, or tools, as the dictator is run from command line and its only output are files.
 
-Se the examples:
+See the examples:
 
 - [Haffaz Dictator](https://github.com/tomasbjerre/dictator-haffaz), try it with: `npx haffaz@latest`.
 - [Cypress Dictator](https://github.com/tomasbjerre/dictator-cypress), try it with: `npx dictator-cypress@latest`.
