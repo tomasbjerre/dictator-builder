@@ -2,19 +2,19 @@
   "message": "Example json subset of other json",
   "actions": [
     {
-      "beSubsetOfJsonFile": "dictated_json.json",
+      "beSupersetOfJsonFile": "dictated_json.json",
       "target": "new_file.json"
     },
     {
-      "beSubsetOfJsonFile": "dictated_json.json",
+      "beSupersetOfJsonFile": "dictated_json.json",
       "target": "file_to_patch.json"
     },
     {
-      "beSubsetOfJsonFile": "dictated_package.json",
+      "beSupersetOfJsonFile": "dictated_package.json",
       "target": "package.json"
     },
     {
-      "beSubsetOfJsonFile": "untouched_no_changes.json",
+      "beSupersetOfJsonFile": "untouched_no_changes.json",
       "target": "untouched_no_changes.json"
     }
   ]

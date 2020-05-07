@@ -32,7 +32,7 @@ The object is an array with all elements of the type `DictatableConfigTrigger`.
 
 Properties of the `DictatableConfigAction` object:
 
-### `beSubsetOfJsonFile` (string)
+### `beSupersetOfJsonFile` (string)
 
 A file that should contain a superset of the target file.
 

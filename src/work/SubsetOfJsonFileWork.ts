@@ -6,7 +6,7 @@ import { Logger, LEVEL } from '../common/Logger';
 import { DictatorConfigReader } from '../common/DictatorConfigReader';
 const _ = require('underscore');
 
-export class SubsetOfJsonFileWork implements Work {
+export class SupersetOfJsonFileWork implements Work {
   private targetFile: string;
   private actionFile: string;
   private patchedTargetFile?: any;
@@ -19,7 +19,7 @@ export class SubsetOfJsonFileWork implements Work {
     this.targetFile = fileOperations.fileInTarget(action.target);
     this.actionFile = fileOperations.fileInDictator(
       dictatableName,
-      action.beSubsetOfJsonFile!
+      action.beSupersetOfJsonFile!
     );
   }
 
@@ -73,6 +73,6 @@ export class SubsetOfJsonFileWork implements Work {
   }
 
   info(): string {
-    return `${this.action.target} should be subset of JSON in ${this.action.beSubsetOfJsonFile}`;
+    return `${this.action.target} should be superset of JSON in ${this.action.beSupersetOfJsonFile}`;
   }
 }

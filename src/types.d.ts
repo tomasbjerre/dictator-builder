@@ -92,7 +92,7 @@ export interface DictatableConfigAction {
    * @type string
    * @description A file that should contain a superset of the target file.
    */
-  beSubsetOfJsonFile?: string;
+  beSupersetOfJsonFile?: string;
   /**
    * @items.type string
    * @items.minimum 1

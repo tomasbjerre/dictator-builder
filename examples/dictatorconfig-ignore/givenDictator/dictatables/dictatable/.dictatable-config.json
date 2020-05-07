@@ -2,8 +2,8 @@
   "message": "Example dictatable config",
   "actions": [
     {
-      "beSubsetOfJsonFile": "jsonfile.json",
-      "target": "beSubsetOfJsonFile.json"
+      "beSupersetOfJsonFile": "jsonfile.json",
+      "target": "beSupersetOfJsonFile.json"
     },
     {
       "haveJsonPathValues": [

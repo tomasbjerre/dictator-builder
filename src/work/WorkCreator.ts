@@ -2,7 +2,7 @@ import { Logger, LEVEL } from '../common/Logger';
 import { DictatableConfigWithExtras } from '../dictatable/DictatableFinder';
 import { CopyWork } from './CopyWork';
 import { FileOperations } from '../common/FileOperations';
-import { SubsetOfJsonFileWork } from './SubsetOfJsonFileWork';
+import { SupersetOfJsonFileWork } from './SubsetOfJsonFileWork';
 import { ChmodWork } from './ChmodWork';
 import { HaveJsonPathValuesWork } from './HaveJsonPathValuesWork';
 import { NotHaveJsonPathNodesWork } from './NotHaveJsonPathNodesWork';
@@ -40,9 +40,9 @@ export class WorkCreator {
           new CopyWork(fileOperations, action, dictatableConfig.dictatableName)
         );
       }
-      if (action.beSubsetOfJsonFile) {
+      if (action.beSupersetOfJsonFile) {
         work.push(
-          new SubsetOfJsonFileWork(
+          new SupersetOfJsonFileWork(
             fileOperations,
             action,
             dictatableConfig.dictatableName
