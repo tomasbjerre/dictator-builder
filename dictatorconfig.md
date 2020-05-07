@@ -24,6 +24,6 @@ The object is an array with all elements of the type `string`.
 
 Properties of the `DictatorConfigOptions` object:
 
-### `jsonIndentation` (number, required)
+### `jsonIndentation` (number)
 
 This indentation will be used when/if manipulating json files.

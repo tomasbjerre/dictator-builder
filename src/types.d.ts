@@ -166,5 +166,5 @@ export interface DictatorConfigOptions {
   /**
    * @description This indentation will be used when/if manipulating json files.
    */
-  jsonIndentation: number;
+  jsonIndentation?: number;
 }

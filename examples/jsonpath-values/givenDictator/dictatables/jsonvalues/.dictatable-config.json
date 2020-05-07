@@ -24,6 +24,16 @@
         }
       ],
       "target": "jsonfile2.json"
+    },
+    {
+      "message": "Should have lint script in package.json",
+      "haveJsonPathValues": [
+        {
+          "expression": "$.scripts.lint",
+          "value": "npm run eslint"
+        }
+      ],
+      "target": "package.json"
     }
   ]
 }

@@ -9,6 +9,12 @@ test.each([
   ['/a/b/c', '/whatever', '.whatever', false],
   ['/a/b/c', '/*.json', 'whatever', false],
   ['/a/b/c', '/*.json', 'whatever.json', true],
+  [
+    '/examples/dictatorconfig-ignore/actual/.github/FUNDING.yml',
+    '/.github/*',
+    '/.github/FUNDING.yml',
+    true,
+  ],
 ])(
   'targetPath: %s ignored: %s file: %s expected: %s',
   (targetPath, ignored, file, expected) => {

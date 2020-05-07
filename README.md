@@ -13,6 +13,7 @@ See the examples:
 
 - [Haffaz Dictator](https://github.com/tomasbjerre/dictator-haffaz), try it with: `npx haffaz@latest`.
 - [Cypress Dictator](https://github.com/tomasbjerre/dictator-cypress), try it with: `npx dictator-cypress@latest`.
+- [React Boilerplate](https://github.com/tomasbjerre/dictator-react-boilerplate), try it with: `npx dictator-react-boilerplate@latest`.
 
 ## What it solves
 

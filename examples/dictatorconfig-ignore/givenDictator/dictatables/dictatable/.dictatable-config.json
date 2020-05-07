@@ -19,6 +19,10 @@
       "target": "."
     },
     {
+      "copyFrom": "copyfolder",
+      "target": "."
+    },
+    {
       "haveLineContaining": ["line4"],
       "target": "haveLineContaining.txt"
     },

@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "build": "ls",
+    "lint": "npm run eslint"
+  }
+}
