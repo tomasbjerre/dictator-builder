@@ -55,6 +55,13 @@ Will be added to the end of the file if not found.
 
 The object is an array with all elements of the type `string`.
 
+### `haveLineContainingFile` (array)
+
+Will be added to the end of the file if not found. This works just like haveLineContaining
+but will respect the .dictatorConfig.json ignore.
+
+The object is an array with all elements of the type `string`.
+
 ### `itShould` (string)
 
 A path that should EXIST or NOT_EXIST.

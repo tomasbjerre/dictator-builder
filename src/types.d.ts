@@ -100,6 +100,13 @@ export interface DictatableConfigAction {
    */
   haveLineContaining?: string[];
   /**
+   * @items.type string
+   * @items.minimum 1
+   * @description Will be added to the end of the file if not found. This works just like haveLineContaining
+   * but will respect the .dictatorConfig.json ignore.
+   */
+  haveLineContainingFile?: string[];
+  /**
    * @description The target should have this chmod.
    */
   chmod?: string;

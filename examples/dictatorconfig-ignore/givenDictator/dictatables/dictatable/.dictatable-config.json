@@ -23,6 +23,14 @@
       "target": "haveLineContaining.txt"
     },
     {
+      "haveLineContainingFile": ["not ignored", "is ignored.txt"],
+      "target": "haveLineContainingFile"
+    },
+    {
+      "haveLineContainingFile": ["not ignored", "is ignored.txt"],
+      "target": "haveLineContainingFile.txt"
+    },
+    {
       "notHaveJsonPathNodes": ["$.a"],
       "target": "notHaveJsonPathNodes.json"
     },

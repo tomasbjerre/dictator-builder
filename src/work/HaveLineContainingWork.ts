@@ -8,16 +8,16 @@ var os = require('os');
 
 export class HaveLineContainingWork implements Work {
   private targetFile: string;
-  private notApplied: string[];
+  protected notApplied: string[];
   constructor(
     fileOperations: FileOperations,
-    private action: DictatableConfigAction
+    protected action: DictatableConfigAction
   ) {
     this.targetFile = fileOperations.fileInTarget(action.target);
     this.notApplied = [];
   }
 
-  isApplied(): boolean {
+  public getNotApplied(from?: string[]) {
     if (DictatorConfigReader.isIgnored(this.targetFile)) {
       return true;
     }
@@ -27,15 +27,17 @@ export class HaveLineContainingWork implements Work {
     } else {
       content = fs.readFileSync(this.targetFile, 'utf8').split(/\r?\n/);
     }
-    this.notApplied = this.action.haveLineContaining!.filter(
-      (it) => content.indexOf(it) == -1
-    );
+    this.notApplied = from!.filter((it) => content.indexOf(it) == -1);
     Logger.log(
       LEVEL.VERBOSE,
       `Found lines not in ${this.targetFile}`,
       this.notApplied
     );
     return this.notApplied.length == 0;
+  }
+
+  isApplied(): boolean {
+    return this.getNotApplied(this.action.haveLineContaining);
   }
 
   apply(): void {

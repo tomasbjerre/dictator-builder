@@ -2,13 +2,14 @@ import { Logger, LEVEL } from '../common/Logger';
 import { DictatableConfigWithExtras } from '../dictatable/DictatableFinder';
 import { CopyWork } from './CopyWork';
 import { FileOperations } from '../common/FileOperations';
-import { SupersetOfJsonFileWork } from './SubsetOfJsonFileWork';
+import { SupersetOfJsonFileWork } from './SupersetOfJsonFileWork';
 import { ChmodWork } from './ChmodWork';
 import { HaveJsonPathValuesWork } from './HaveJsonPathValuesWork';
 import { NotHaveJsonPathNodesWork } from './NotHaveJsonPathNodesWork';
 import { HaveLineContainingWork } from './HaveLineContainingWork';
 import { ItShouldNotBeInGitWork } from './ItShouldNotBeInGitWork';
 import { ItShouldNotHavePathWork } from './ItShouldNotHavePathWork';
+import { HaveLineContainingFileWork } from './HaveLineContainingFileWork';
 
 export interface Work {
   isApplied(): boolean;
@@ -60,6 +61,9 @@ export class WorkCreator {
       }
       if (action.haveLineContaining) {
         work.push(new HaveLineContainingWork(fileOperations, action));
+      }
+      if (action.haveLineContainingFile) {
+        work.push(new HaveLineContainingFileWork(fileOperations, action));
       }
     });
     return work;
