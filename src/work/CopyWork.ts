@@ -48,11 +48,28 @@ export class CopyWork implements Work {
     this.notApplied = this.notApplied.filter(
       (it) => !DictatorConfigReader.isIgnored(it[1])
     );
+    Logger.log(LEVEL.VERBOSE, `filtered ignored files: `, this.notApplied);
     return this.notApplied.length == 0;
   }
 
-  public apply() {
-    for (const [copyFrom, copyTo] of this.notApplied) {
+  public apply(touched: string[]): string[] {
+    const notAppliedOrTouched = this.notApplied.filter((it) => {
+      const isTouched = touched.indexOf(it[1]) != -1;
+      if (isTouched) {
+        Logger.log(
+          LEVEL.INFO,
+          `${it[1]} is touched by previous action, will not copy.`
+        );
+      }
+      return !isTouched;
+    });
+    Logger.log(
+      LEVEL.VERBOSE,
+      `filtered touched ${touched} files: `,
+      notAppliedOrTouched
+    );
+    const copied = [];
+    for (const [copyFrom, copyTo] of notAppliedOrTouched) {
       if (fs.existsSync(copyTo) && fs.statSync(copyTo).isFile()) {
         fs.unlinkSync(copyTo);
       }
@@ -62,7 +79,9 @@ export class CopyWork implements Work {
       }
       Logger.log(LEVEL.VERBOSE, `Copying ${copyFrom} to ${copyTo}`);
       fs.copyFileSync(copyFrom, copyTo);
+      copied.push(copyTo);
     }
+    return copied;
   }
 
   public info() {

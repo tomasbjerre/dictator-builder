@@ -47,7 +47,7 @@ export class DictatableFinder {
       Logger.log(
         LEVEL.VERBOSE,
         `Found a total of ${dictatables.length} dictatables:\n\n`,
-        ...dictatables
+        JSON.stringify(dictatables)
       );
     }
 
@@ -67,7 +67,7 @@ export class DictatableFinder {
     Logger.log(
       LEVEL.VERBOSE,
       `Found a total of ${applicableDictatables.length} applicable dictatables:\n\n`,
-      ...applicableDictatables
+      JSON.stringify(applicableDictatables)
     );
 
     Logger.log(LEVEL.VERBOSE, ``);

@@ -40,7 +40,7 @@ export class HaveLineContainingWork implements Work {
     return this.getNotApplied(this.action.haveLineContaining);
   }
 
-  apply(): void {
+  apply(touched: string[]): string[] {
     if (fs.existsSync(this.targetFile)) {
       Logger.log(LEVEL.VERBOSE, `Appending to file`, this.notApplied);
       fs.appendFileSync(this.targetFile, os.EOL);
@@ -53,6 +53,7 @@ export class HaveLineContainingWork implements Work {
         encoding: 'utf8',
       });
     }
+    return [this.targetFile];
   }
 
   info(): string {

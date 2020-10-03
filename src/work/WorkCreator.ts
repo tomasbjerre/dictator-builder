@@ -13,7 +13,7 @@ import { HaveLineContainingFileWork } from './HaveLineContainingFileWork';
 
 export interface Work {
   isApplied(): boolean;
-  apply(): void;
+  apply(touched: string[]): string[];
   info(): string;
 }
 

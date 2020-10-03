@@ -57,7 +57,7 @@ export class SupersetOfJsonFileWork implements Work {
     return applied;
   }
 
-  apply(): void {
+  apply(touched: string[]): string[] {
     Logger.log(LEVEL.VERBOSE, `Writing file ${this.targetFile}`);
     fs.writeFileSync(
       this.targetFile,
@@ -70,6 +70,7 @@ export class SupersetOfJsonFileWork implements Work {
         encoding: 'utf8',
       }
     );
+    return [this.targetFile];
   }
 
   info(): string {

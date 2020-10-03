@@ -34,13 +34,14 @@ export class ChmodWork implements Work {
     return currentMode == givenMode;
   }
 
-  apply(): void {
+  apply(touched: string[]): string[] {
     if (!fs.existsSync(this.targetFile)) {
       throw Error(
         `Cannot apply chmod to none existing file ${this.targetFile}`
       );
     }
     fs.chmodSync(this.targetFile, this.action.chmod!);
+    return [this.targetFile];
   }
 
   info(): string {

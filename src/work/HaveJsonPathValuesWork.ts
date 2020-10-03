@@ -36,7 +36,7 @@ export class HaveJsonPathValuesWork implements Work {
     return this.notApplied.length == 0;
   }
 
-  apply(): void {
+  apply(touched: string[]): string[] {
     this.notApplied.forEach((it) => {
       jsonpath.value(this.targetFileData, it.expression, it.value);
     });
@@ -49,6 +49,7 @@ export class HaveJsonPathValuesWork implements Work {
     fs.writeFileSync(targetFile, jsonString, {
       encoding: 'utf8',
     });
+    return [targetFile];
   }
 
   info(): string {

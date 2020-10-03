@@ -1,0 +1,13 @@
+{
+  "message": "Example dictator copying touched files",
+  "actions": [
+    {
+      "beSupersetOfJsonFile": "static-files/package.json",
+      "target": "package.json"
+    },
+    {
+      "copyFrom": "static-files",
+      "target": "."
+    }
+  ]
+}

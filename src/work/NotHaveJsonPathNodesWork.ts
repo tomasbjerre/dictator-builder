@@ -36,7 +36,7 @@ export class NotHaveJsonPathNodesWork implements Work {
     return this.notApplied.length == 0;
   }
 
-  apply(): void {
+  apply(touched: string[]): string[] {
     this.notApplied.forEach((expression) => {
       jsonpath.value(this.targetFileData, expression, null);
     });
@@ -50,6 +50,7 @@ export class NotHaveJsonPathNodesWork implements Work {
     fs.writeFileSync(targetFile, jsonString, {
       encoding: 'utf8',
     });
+    return [targetFile];
   }
 
   info(): string {

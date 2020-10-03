@@ -45,6 +45,7 @@ export function runDictator(
 }
 
 function performWork(options: DictatorOptions, work: Work[]): string[] {
+  let touched: string[] = [];
   const unapplied: string[] = [];
   work
     .filter((it) => {
@@ -61,7 +62,8 @@ function performWork(options: DictatorOptions, work: Work[]): string[] {
       }
       Logger.log(LEVEL.INFO, `    Applying: ${it.info()}`);
       if (!options.dryRun) {
-        it.apply();
+        touched = touched.concat(it.apply(touched));
+        Logger.log(LEVEL.VERBOSE, `Files touched: `, touched);
       }
     });
   return unapplied;

@@ -30,11 +30,12 @@ export class ItShouldNotBeInGitWork implements Work {
     }
   }
 
-  public apply() {
+  public apply(touched: string[]): string[] {
     require('child_process').execSync(
       `git rm --cached "${this.targetFile}" 2>/dev/null`,
       { encoding: 'utf8' }
     );
+    return [this.targetFile];
   }
 
   public info() {

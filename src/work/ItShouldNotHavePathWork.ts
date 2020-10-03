@@ -20,13 +20,13 @@ export class ItShouldNotHavePathWork implements Work {
     return !fs.existsSync(this.targetFile);
   }
 
-  public apply() {
+  public apply(touched: string[]): string[] {
     if (DictatorConfigReader.isIgnored(this.targetFile)) {
-      return true;
+      return [];
     }
     if (!fs.existsSync(this.targetFile)) {
       //It may have been removed by one of the iterations in this loop
-      return;
+      return [];
     }
     const stat = fs.statSync(this.targetFile);
     if (stat.isDirectory()) {
@@ -36,6 +36,7 @@ export class ItShouldNotHavePathWork implements Work {
       Logger.log(LEVEL.VERBOSE, `removing file ${this.targetFile}`);
       fs.unlinkSync(this.targetFile);
     }
+    return [this.targetFile];
   }
 
   public info() {
