@@ -8,7 +8,6 @@ import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
 import { DictatorConfigReader } from '../common/DictatorConfigReader';
 const jsonpath = require('jsonpath');
-const _ = require('underscore');
 
 export class NotHaveJsonPathNodesWork implements Work {
   private targetFileData: any;

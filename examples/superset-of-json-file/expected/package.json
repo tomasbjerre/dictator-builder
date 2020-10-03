@@ -2,11 +2,14 @@
   "name": "dictator-builder",
   "version": "0.0.7",
   "scripts": {
+    "test": "ls test",
     "build": "ls build"
   },
   "dependencies": {
-    "@types/glob": "^7.1.1",
-    "underscore": "^1.10.2"
+    "chalk": "^4.0.0",
+    "clear": "^0.1.0",
+    "underscore": "^1.10.2",
+    "@types/glob": "^7.1.1"
   },
   "license": "Apache 2",
   "devDependencies": {

@@ -42,23 +42,25 @@ export class SupersetOfJsonFileWork implements Work {
     const originalTargetFile = JSON.parse(
       fs.readFileSync(this.targetFile, 'utf8')
     );
-    this.patchedTargetFile = _.extend(
-      { ...originalTargetFile },
-      originalActionFile
-    );
-    Logger.log(LEVEL.VERBOSE, `${this.targetFile}: `, originalTargetFile);
-    Logger.log(LEVEL.VERBOSE, `${this.actionFile}: `, originalActionFile);
-    const applied = _.isEqual(this.patchedTargetFile!, originalTargetFile);
+    Logger.log(LEVEL.VERBOSE, `${this.targetFile}:\n`, originalTargetFile);
+    Logger.log(LEVEL.VERBOSE, `${this.actionFile}:\n`, originalActionFile);
+    this.patchedTargetFile = originalTargetFile;
+    mergeDeep(this.patchedTargetFile, originalActionFile);
+    const applied = _.isEqual(this.patchedTargetFile!, originalActionFile);
     Logger.log(
       LEVEL.VERBOSE,
-      `patchedTargetFile: ${applied} `,
+      `patchedTargetFile: ${applied}\n`,
       this.patchedTargetFile
     );
     return applied;
   }
 
   apply(touched: string[]): string[] {
-    Logger.log(LEVEL.VERBOSE, `Writing file ${this.targetFile}`);
+    Logger.log(
+      LEVEL.VERBOSE,
+      `Writing file ${this.targetFile} with:\n`,
+      this.patchedTargetFile
+    );
     fs.writeFileSync(
       this.targetFile,
       JSON.stringify(
@@ -76,4 +78,29 @@ export class SupersetOfJsonFileWork implements Work {
   info(): string {
     return `${this.action.target} should be superset of JSON in ${this.action.beSupersetOfJsonFile}`;
   }
+}
+
+/**
+ * https://stackoverflow.com/a/34749873/2477084
+ */
+function isObject(item: any) {
+  return item && typeof item === 'object' && !Array.isArray(item);
+}
+
+function mergeDeep(target: any, ...sources: any): any {
+  if (!sources.length) return target;
+  const source = sources.shift();
+
+  if (isObject(target) && isObject(source)) {
+    for (const key in source) {
+      if (isObject(source[key])) {
+        if (!target[key]) Object.assign(target, { [key]: {} });
+        mergeDeep(target[key], source[key]);
+      } else {
+        Object.assign(target, { [key]: source[key] });
+      }
+    }
+  }
+
+  return mergeDeep(target, ...sources);
 }
