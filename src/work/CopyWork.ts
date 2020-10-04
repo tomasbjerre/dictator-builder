@@ -58,7 +58,7 @@ export class CopyWork implements Work {
       if (isTouched) {
         Logger.log(
           LEVEL.INFO,
-          `${it[1]} is touched by previous action, will not copy.`
+          `        ${it[1]} is touched by previous action, will not copy.`
         );
       }
       return !isTouched;
