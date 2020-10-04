@@ -44,9 +44,9 @@ export class SupersetOfJsonFileWork implements Work {
     );
     Logger.log(LEVEL.VERBOSE, `${this.targetFile}:\n`, originalTargetFile);
     Logger.log(LEVEL.VERBOSE, `${this.actionFile}:\n`, originalActionFile);
-    this.patchedTargetFile = originalTargetFile;
+    this.patchedTargetFile = JSON.parse(JSON.stringify(originalTargetFile));
     mergeDeep(this.patchedTargetFile, originalActionFile);
-    const applied = _.isEqual(this.patchedTargetFile!, originalActionFile);
+    const applied = _.isEqual(this.patchedTargetFile!, originalTargetFile);
     Logger.log(
       LEVEL.VERBOSE,
       `patchedTargetFile: ${applied}\n`,
