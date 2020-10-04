@@ -56,8 +56,8 @@ export class CopyWork implements Work {
       const isTouched = previouslyApplied.indexOf(it[1]) != -1;
       if (isTouched) {
         Logger.log(
-          LEVEL.INFO,
-          `        ${it[1]} is touched by previous action, will not copy.`
+          LEVEL.VERBOSE,
+          `${it[1]} is touched by previous action, will not copy.`
         );
       }
       return !isTouched;
