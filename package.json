@@ -1,6 +1,6 @@
 {
   "name": "dictator-builder",
-  "version": "0.0.42",
+  "version": "0.0.43",
   "scripts": {
     "build": "npm run generate-schema-dictatable && npm run generate-schema-dictatorconfig && npm run generate-markdown-schema && cp src/*.schema.json lib && npm run format && tsc -p .",
     "generate-schema-dictatable": "typescript-json-schema src/types.d.ts DictatableConfig --required --noExtraProps --topRef -o src/dictatableconfig.schema.json",
