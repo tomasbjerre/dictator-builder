@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { DictatableConfigAction } from '../types';
-import { Work } from './WorkCreator';
+import { Work, AppliedWork } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
 import { DictatorConfigReader } from '../common/DictatorConfigReader';
@@ -17,7 +17,7 @@ export class CopyWork implements Work {
     this.notApplied = [];
   }
 
-  public isApplied() {
+  public isApplied(previouslyApplied: string[]): AppliedWork {
     const copyFromInTarget = this.fileOperations.fileInDictator(
       this.dictatableName,
       this.action.copyFrom!
@@ -31,7 +31,10 @@ export class CopyWork implements Work {
         `copyFromInTarget '${copyFromInTarget}' ${this.dictatableName} ${this.action.copyFrom}`
       );
       Logger.log(LEVEL.INFO, `0 files matched ${this.action.copyFrom}`);
-      return true;
+      return {
+        appliesTo: [],
+        isApplied: true,
+      };
     }
     Logger.log(
       LEVEL.VERBOSE,
@@ -49,12 +52,8 @@ export class CopyWork implements Work {
       (it) => !DictatorConfigReader.isIgnored(it[1])
     );
     Logger.log(LEVEL.VERBOSE, `filtered ignored files: `, this.notApplied);
-    return this.notApplied.length == 0;
-  }
-
-  public apply(touched: string[]): string[] {
-    const notAppliedOrTouched = this.notApplied.filter((it) => {
-      const isTouched = touched.indexOf(it[1]) != -1;
+    this.notApplied = this.notApplied.filter((it) => {
+      const isTouched = previouslyApplied.indexOf(it[1]) != -1;
       if (isTouched) {
         Logger.log(
           LEVEL.INFO,
@@ -63,13 +62,15 @@ export class CopyWork implements Work {
       }
       return !isTouched;
     });
-    Logger.log(
-      LEVEL.VERBOSE,
-      `filtered touched ${touched} files: `,
-      notAppliedOrTouched
-    );
-    const copied = [];
-    for (const [copyFrom, copyTo] of notAppliedOrTouched) {
+
+    return {
+      appliesTo: this.notApplied.map((it) => it[1]),
+      isApplied: this.notApplied.length == 0,
+    };
+  }
+
+  public apply(): void {
+    for (const [copyFrom, copyTo] of this.notApplied) {
       if (fs.existsSync(copyTo) && fs.statSync(copyTo).isFile()) {
         fs.unlinkSync(copyTo);
       }
@@ -79,9 +80,7 @@ export class CopyWork implements Work {
       }
       Logger.log(LEVEL.VERBOSE, `Copying ${copyFrom} to ${copyTo}`);
       fs.copyFileSync(copyFrom, copyTo);
-      copied.push(copyTo);
     }
-    return copied;
   }
 
   public info() {

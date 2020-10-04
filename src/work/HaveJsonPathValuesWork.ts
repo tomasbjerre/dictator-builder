@@ -3,7 +3,7 @@ import {
   DictatableConfigAction,
   DictatableConfigActionExpression,
 } from '../types';
-import { Work } from './WorkCreator';
+import { Work, AppliedWork } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
 import { DictatorConfigReader } from '../common/DictatorConfigReader';
@@ -21,9 +21,12 @@ export class HaveJsonPathValuesWork implements Work {
     this.notApplied = [];
   }
 
-  isApplied(): boolean {
+  isApplied(previouslyApplied: string[]): AppliedWork {
     if (DictatorConfigReader.isIgnored(this.targetFile)) {
-      return true;
+      return {
+        isApplied: true,
+        appliesTo: [this.targetFile],
+      };
     }
     this.notApplied = this.action.haveJsonPathValues!.filter((it) => {
       const found = jsonpath.query(this.targetFileData, it.expression);
@@ -33,10 +36,13 @@ export class HaveJsonPathValuesWork implements Work {
       );
       return found.filter((f: any) => f == it.value);
     });
-    return this.notApplied.length == 0;
+    return {
+      isApplied: this.notApplied.length == 0,
+      appliesTo: [this.targetFile],
+    };
   }
 
-  apply(touched: string[]): string[] {
+  apply(): void {
     this.notApplied.forEach((it) => {
       jsonpath.value(this.targetFileData, it.expression, it.value);
     });
@@ -49,7 +55,6 @@ export class HaveJsonPathValuesWork implements Work {
     fs.writeFileSync(targetFile, jsonString, {
       encoding: 'utf8',
     });
-    return [targetFile];
   }
 
   info(): string {

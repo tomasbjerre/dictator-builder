@@ -1,13 +1,13 @@
 import fs from 'fs';
 import { DictatableConfigAction } from '../types';
-import { Work } from './WorkCreator';
+import { Work, AppliedWork } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
 import { DictatorConfigReader } from '../common/DictatorConfigReader';
 var os = require('os');
 
 export class HaveLineContainingWork implements Work {
-  private targetFile: string;
+  protected targetFile: string;
   protected notApplied: string[];
   constructor(
     fileOperations: FileOperations,
@@ -17,9 +17,12 @@ export class HaveLineContainingWork implements Work {
     this.notApplied = [];
   }
 
-  public getNotApplied(from?: string[]) {
+  public getNotApplied(from?: string[]): AppliedWork {
     if (DictatorConfigReader.isIgnored(this.targetFile)) {
-      return true;
+      return {
+        appliesTo: [this.targetFile],
+        isApplied: true,
+      };
     }
     let content: string[] = [];
     if (!fs.existsSync(this.targetFile)) {
@@ -33,14 +36,17 @@ export class HaveLineContainingWork implements Work {
       `Found lines not in ${this.targetFile}`,
       this.notApplied
     );
-    return this.notApplied.length == 0;
+    return {
+      appliesTo: [this.targetFile],
+      isApplied: this.notApplied.length == 0,
+    };
   }
 
-  isApplied(): boolean {
+  isApplied(previouslyApplied: string[]): AppliedWork {
     return this.getNotApplied(this.action.haveLineContaining);
   }
 
-  apply(touched: string[]): string[] {
+  apply(): void {
     if (fs.existsSync(this.targetFile)) {
       Logger.log(LEVEL.VERBOSE, `Appending to file`, this.notApplied);
       fs.appendFileSync(this.targetFile, os.EOL);
@@ -53,7 +59,6 @@ export class HaveLineContainingWork implements Work {
         encoding: 'utf8',
       });
     }
-    return [this.targetFile];
   }
 
   info(): string {

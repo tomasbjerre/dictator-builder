@@ -3,7 +3,7 @@ import {
   DictatableConfigAction,
   DictatableConfigActionExpression,
 } from '../types';
-import { Work } from './WorkCreator';
+import { Work, AppliedWork } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
 import { DictatorConfigReader } from '../common/DictatorConfigReader';
@@ -22,9 +22,12 @@ export class NotHaveJsonPathNodesWork implements Work {
     this.notApplied = [];
   }
 
-  isApplied(): boolean {
+  isApplied(): AppliedWork {
     if (DictatorConfigReader.isIgnored(this.targetFile)) {
-      return true;
+      return {
+        isApplied: true,
+        appliesTo: [this.targetFile],
+      };
     }
     this.notApplied = this.action.notHaveJsonPathNodes!.filter((expression) => {
       const found = jsonpath.query(this.targetFileData, expression);
@@ -32,10 +35,13 @@ export class NotHaveJsonPathNodesWork implements Work {
       return found.length > 0;
     });
 
-    return this.notApplied.length == 0;
+    return {
+      isApplied: this.notApplied.length == 0,
+      appliesTo: [this.targetFile],
+    };
   }
 
-  apply(touched: string[]): string[] {
+  apply(): void {
     this.notApplied.forEach((expression) => {
       jsonpath.value(this.targetFileData, expression, null);
     });
@@ -49,7 +55,6 @@ export class NotHaveJsonPathNodesWork implements Work {
     fs.writeFileSync(targetFile, jsonString, {
       encoding: 'utf8',
     });
-    return [targetFile];
   }
 
   info(): string {

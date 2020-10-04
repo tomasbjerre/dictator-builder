@@ -12,9 +12,13 @@ import { ItShouldNotHavePathWork } from './ItShouldNotHavePathWork';
 import { HaveLineContainingFileWork } from './HaveLineContainingFileWork';
 
 export interface Work {
-  isApplied(): boolean;
-  apply(touched: string[]): string[];
+  isApplied(previouslyApplied: string[]): AppliedWork;
+  apply(): void;
   info(): string;
+}
+export interface AppliedWork {
+  isApplied: boolean;
+  appliesTo: string[];
 }
 
 export class WorkCreator {

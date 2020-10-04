@@ -1,7 +1,7 @@
 import fs from 'fs';
 var rimraf = require('rimraf');
 import { DictatableConfigAction } from '../types';
-import { Work } from './WorkCreator';
+import { Work, AppliedWork } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
 import { DictatorConfigReader } from '../common/DictatorConfigReader';
@@ -16,17 +16,20 @@ export class ItShouldNotHavePathWork implements Work {
     this.targetFile = fileOperations.fileInTarget(action.target);
   }
 
-  public isApplied() {
-    return !fs.existsSync(this.targetFile);
+  public isApplied(): AppliedWork {
+    return {
+      appliesTo: [this.targetFile],
+      isApplied: !fs.existsSync(this.targetFile),
+    };
   }
 
-  public apply(touched: string[]): string[] {
+  public apply(): void {
     if (DictatorConfigReader.isIgnored(this.targetFile)) {
-      return [];
+      return;
     }
     if (!fs.existsSync(this.targetFile)) {
       //It may have been removed by one of the iterations in this loop
-      return [];
+      return;
     }
     const stat = fs.statSync(this.targetFile);
     if (stat.isDirectory()) {
@@ -36,7 +39,6 @@ export class ItShouldNotHavePathWork implements Work {
       Logger.log(LEVEL.VERBOSE, `removing file ${this.targetFile}`);
       fs.unlinkSync(this.targetFile);
     }
-    return [this.targetFile];
   }
 
   public info() {

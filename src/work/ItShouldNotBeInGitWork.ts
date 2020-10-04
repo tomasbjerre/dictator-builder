@@ -1,5 +1,5 @@
 import { DictatableConfigAction } from '../types';
-import { Work } from './WorkCreator';
+import { Work, AppliedWork } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
 import { DictatorConfigReader } from '../common/DictatorConfigReader';
@@ -14,9 +14,12 @@ export class ItShouldNotBeInGitWork implements Work {
     this.targetFile = fileOperations.fileInTarget(action.target);
   }
 
-  public isApplied() {
+  public isApplied(previouslyApplied: string[]): AppliedWork {
     if (DictatorConfigReader.isIgnored(this.targetFile)) {
-      return true;
+      return {
+        appliesTo: [this.targetFile],
+        isApplied: true,
+      };
     }
     Logger.log(LEVEL.VERBOSE, `path should not be in git `, this.targetFile);
     try {
@@ -24,18 +27,23 @@ export class ItShouldNotBeInGitWork implements Work {
         `git ls-files --error-unmatch "${this.targetFile}" 2>/dev/null`,
         { encoding: 'utf8' }
       ) != 0;
-      return false;
+      return {
+        appliesTo: [this.targetFile],
+        isApplied: false,
+      };
     } catch (error) {
-      return true;
+      return {
+        appliesTo: [this.targetFile],
+        isApplied: true,
+      };
     }
   }
 
-  public apply(touched: string[]): string[] {
+  public apply(): void {
     require('child_process').execSync(
       `git rm --cached "${this.targetFile}" 2>/dev/null`,
       { encoding: 'utf8' }
     );
-    return [this.targetFile];
   }
 
   public info() {

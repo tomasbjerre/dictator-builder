@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { DictatableConfigAction } from '../types';
-import { Work } from './WorkCreator';
+import { Work, AppliedWork } from './WorkCreator';
 import { FileOperations } from '../common/FileOperations';
 import { Logger, LEVEL } from '../common/Logger';
 import { DictatorConfigReader } from '../common/DictatorConfigReader';
@@ -23,9 +23,12 @@ export class SupersetOfJsonFileWork implements Work {
     );
   }
 
-  isApplied(): boolean {
+  isApplied(): AppliedWork {
     if (DictatorConfigReader.isIgnored(this.targetFile)) {
-      return true;
+      return {
+        appliesTo: [this.targetFile],
+        isApplied: true,
+      };
     }
     const originalActionFile = JSON.parse(
       fs.readFileSync(this.actionFile, 'utf8')
@@ -37,7 +40,10 @@ export class SupersetOfJsonFileWork implements Work {
         `target file (${this.targetFile}) does not exist, copying action file`,
         this.patchedTargetFile
       );
-      return false;
+      return {
+        appliesTo: [this.targetFile],
+        isApplied: false,
+      };
     }
     const originalTargetFile = JSON.parse(
       fs.readFileSync(this.targetFile, 'utf8')
@@ -52,10 +58,13 @@ export class SupersetOfJsonFileWork implements Work {
       `patchedTargetFile: ${applied}\n`,
       this.patchedTargetFile
     );
-    return applied;
+    return {
+      appliesTo: [this.targetFile],
+      isApplied: applied,
+    };
   }
 
-  apply(touched: string[]): string[] {
+  apply(): void {
     Logger.log(
       LEVEL.VERBOSE,
       `Writing file ${this.targetFile} with:\n`,
@@ -72,7 +81,6 @@ export class SupersetOfJsonFileWork implements Work {
         encoding: 'utf8',
       }
     );
-    return [this.targetFile];
   }
 
   info(): string {
