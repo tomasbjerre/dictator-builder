@@ -3,6 +3,14 @@
 [![NPM](https://img.shields.io/npm/v/dictator-builder.svg?style=flat-square) ](https://www.npmjs.com/package/dictator-builder)
 [![Build Status](https://travis-ci.org/tomasbjerre/dictator-builder.svg?branch=master)](https://travis-ci.org/tomasbjerre/dictator-builder)
 
+
+------------------------------------
+
+After developing this tool I discovered [MRM](https://github.com/sapegin/mrm). It seems to solve the exact same thing which means I am archiving this repo.
+
+------------------------------------
+
+
 A tool designed to help create dictators. A dictator dictates how parts of a folder should look like. Originally designed to avoid code duplication in source code repositories.
 
 When working with `npm` within an organization you typically agree on some parts of the `package.json`, like some `scripts` that should always be there or some `dependencies` that should, or should not, be used. You may also have identical linting configurations like `tsconfig.json`, `.prettierignore`, `.prettierrc.json`... in every repository.
